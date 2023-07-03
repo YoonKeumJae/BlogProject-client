@@ -7,7 +7,7 @@
   },
   "extends": [
     "plugin:react/recommended", // eslint에서 제공하는 react 스타일 내장 기능
-    "airbnb", // airbnb에서 제공하는 스타일 가이드 기능
+    "airbnb-base", // airbnb에서 제공하는 스타일 가이드 기능
     "prettier", // eslint와 prettier를 함께 쓰기 위한 기능
     "plugin:react/jsx-runtime" // react에서 JSX 활성화 기능
   ],
@@ -28,7 +28,9 @@
     "no-console": "warn", // console 경고
     "no-alert": "warn", // alert 경고
     "react/prop-types": "off", // props-types 끄기
-    "import/no-unresolved": "off"
+    "import/no-unresolved": "off",
+    "import/no-extraneous-dependencies": "off",
+    "arrow-body-style": "off"
   },
   "settings": {
     "import/resolver": {
