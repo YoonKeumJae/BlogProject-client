@@ -1,12 +1,8 @@
-import styled from 'styled-components';
+import StyledIndex from '../../styles/main/Index-styled';
 
 import Header from './Header';
 import Aside from './Aside';
 import Content from './Content';
-
-const StyledIndex = styled.div`
-  padding: 8px 0 128px;
-`;
 
 const Index = () => (
   <StyledIndex>
