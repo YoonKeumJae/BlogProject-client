@@ -1,5 +1,5 @@
-import DefaultProfileImage from '../../assets/default-profile-image.png';
-import StyledAside from '../../styles/main/Aside-styled';
+import DefaultProfileImage from '@assets/default-profile-image.png';
+import StyledAside from '@styles/main/Aside-styled';
 import Category from './main-aside/Category';
 import Search from './main-aside/Search';
 

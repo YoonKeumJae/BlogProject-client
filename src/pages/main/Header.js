@@ -1,5 +1,5 @@
-import DefaultProfileImage from '../../assets/default-profile-image.png';
-import StyledHeader from '../../styles/main/Header-styled';
+import DefaultProfileImage from '@assets/default-profile-image.png';
+import StyledHeader from '@styles/main/Header-styled';
 
 const Header = () => (
   <StyledHeader>

@@ -1,4 +1,4 @@
-import StyledIndex from '../../../styles/main/Index-styled';
+import StyledIndex from '@styles/main/Index-styled';
 import Aside from '../Aside';
 import Header from '../Header';
 import Post from './detail-post/Post';

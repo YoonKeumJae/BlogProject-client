@@ -1,5 +1,5 @@
-import DefaultPostImage from '../../../assets/default-post-image.png';
-import StyledContentItem from '../../../styles/main/main-content/ContentItem-styled';
+import DefaultPostImage from '@assets/default-post-image.png';
+import StyledContentItem from '@styles/main/main-content/ContentItem-styled';
 
 const ContentItem = ({ content }) => {
   const { title, description, date } = content;

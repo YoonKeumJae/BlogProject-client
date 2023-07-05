@@ -1,7 +1,7 @@
-import DefaultProfileImage from '../../../../assets/default-profile-image.png';
-import TestPostImage from '../../../../assets/test-post-image.png';
+import DefaultProfileImage from '@assets/default-profile-image.png';
+import TestPostImage from '@assets/test-post-image.png';
 
-import StyledPostContent from '../../../../styles/main/post/detail-post/PostContent';
+import StyledPostContent from '@styles/main/post/detail-post/PostContent';
 
 const PostContent = () => {
   return (
