@@ -1,4 +1,4 @@
-import StyledCategoryList from '../../../../styles/main/post/detail-post/CategoryList-styled';
+import StyledCategoryList from '@styles/main/post/detail-post/CategoryList-styled';
 
 const DUMMY_CATEGORY_ITEMS = [
   {

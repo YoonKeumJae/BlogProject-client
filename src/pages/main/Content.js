@@ -1,5 +1,5 @@
+import StyledContent from '@styles/main/Content-styled';
 import Header from './main-content/Header';
-import StyledContent from '../../styles/main/Content-styled';
 import ContentItem from './main-content/ContentItem';
 
 const DUMMY_CONTENTS = [

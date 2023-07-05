@@ -1,4 +1,4 @@
-import StyledSearch from '../../../styles/main/main-aside/Search-styled';
+import StyledSearch from '@styles/main/main-aside/Search-styled';
 
 const Search = () => {
   return (
