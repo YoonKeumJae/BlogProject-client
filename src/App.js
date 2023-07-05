@@ -1,7 +1,5 @@
-const App = () => (
-  <div>
-    <h3>Hello World</h3>
-  </div>
-);
+import StyledApp from './styles/App-styled';
+
+const App = () => <StyledApp></StyledApp>;
 
 export default App;
