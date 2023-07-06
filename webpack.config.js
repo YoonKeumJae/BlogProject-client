@@ -20,7 +20,7 @@ const config = {
   // 아웃풋 파일 출력 설정
   output: {
     // 경로
-    path: path.resolve(__dirname, 'dist'),
+    path: path.resolve(__dirname, 'build'),
     // 빌드(컴파일, 번들링 등) 결과 파일 브라우저 캐싱(Cachinig)
     filename: '[name].[contenthash].js',
     // 모든 요청에 대해서 루트 경로(/)를 기준으로 파일을 찾도록 수정
@@ -86,7 +86,7 @@ const config = {
     },
 
     // 생략 가능한 확장자
-    extensions: ['.js', '.jsx', '.json'],
+    extensions: ['.js', '.jsx'],
   },
   plugins: [
     // index.html 설정
@@ -104,6 +104,7 @@ const config = {
     new webpack.optimize.MinChunkSizePlugin({
       minChunkSize: 20000,
     }),
+    new MiniCssExtractPlugin(),
   ],
   optimization: {
     // 압축
