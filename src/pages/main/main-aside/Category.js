@@ -1,28 +1,116 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useReducer, useState } from 'react';
 
 import StyledCategory from '@styles/main/main-aside/Category-styled';
+import {
+  getCategories,
+  createCategory,
+  updateCategory,
+  deleteCategory,
+} from '@services/category';
 import CategoryItem from './CategoryItem';
 
-const DUMMY_CATEGORYS = [
-  {
-    id: 'category1',
-    name: '전체 글',
-  },
-  {
-    id: 'category2',
-    name: '맛그당어',
-  },
-  {
-    id: 'category3',
-    name: '노래',
-  },
-];
+const LOAD = 'LOAD';
+const CREATE = 'CREATE';
+const UPDATE = 'UPDATE';
+const DELETE = 'DELETE';
+
+const initialCategories = [];
+
+const categoryReducer = (state, action) => {
+  switch (action.type) {
+    case LOAD:
+      // eslint-disable-next-line no-console
+      console.log(action.payload);
+      return action.payload;
+    case CREATE:
+      return state.concat(action.payload);
+    case UPDATE:
+      return state.map((category) =>
+        category.id === action.payload.id
+          ? { ...category, name: action.payload.inputItem }
+          : category,
+      );
+    case DELETE:
+      return state.filter((category) => category.id !== action.payload);
+    default:
+      return state;
+  }
+};
 
 const Category = () => {
+  const [isSettingMode, setIsSettingMode] = useState(false);
   const [isShowCategory, setIsShowCategory] = useState(false);
+  const [isCreateMode, setIsCreateMode] = useState(false);
+  const [inputCategory, setInputCategory] = useState('');
+  const [categories, dispatchCategory] = useReducer(
+    categoryReducer,
+    initialCategories,
+  );
+  const [clickedCategory, setClickedCategory] = useState('category1');
+
+  useEffect(() => {
+    const getCategoriesAPI = async () => {
+      const categoriesData = await getCategories();
+      dispatchCategory({ type: LOAD, payload: categoriesData });
+    };
+
+    getCategoriesAPI();
+  }, []);
+
+  const onChangeCategory = useCallback(
+    (e) => setInputCategory(e.target.value),
+    [],
+  );
+
+  const clickSettingHandler = useCallback(() => {
+    setIsSettingMode((prevMode) => !prevMode);
+  }, []);
 
   const showCategoryHandler = useCallback(() => {
     setIsShowCategory((prevState) => !prevState);
+  }, []);
+
+  const clickCategoryHandler = useCallback((id) => {
+    setClickedCategory(id);
+  }, []);
+
+  const createCategoryHandler = useCallback(
+    async (e) => {
+      e.preventDefault();
+
+      if (inputCategory.trim().length === 0) {
+        setInputCategory('');
+        setIsCreateMode(false);
+        return;
+      }
+
+      const newItem = {
+        id: `category${categories.length + 1}`,
+        name: inputCategory,
+        count: 0,
+      };
+
+      dispatchCategory({ type: CREATE, payload: newItem });
+      await createCategory();
+      setInputCategory('');
+      setIsCreateMode(false);
+    },
+    [categories, inputCategory],
+  );
+  const updateCategoryHandler = useCallback(async (updatedItem) => {
+    dispatchCategory({ type: UPDATE, payload: updatedItem });
+    await updateCategory();
+  }, []);
+
+  const deleteCategoryHandler = useCallback(async (id) => {
+    // eslint-disable-next-line no-alert, no-restricted-globals
+    const isDelete = confirm('정말 삭제하시겠습니까?');
+
+    if (isDelete) {
+      dispatchCategory({ type: DELETE, payload: id });
+      setIsSettingMode(false);
+      await deleteCategory();
+    }
   }, []);
 
   const toggleButton = isShowCategory ? (
@@ -63,7 +151,11 @@ const Category = () => {
       <div className='head'>
         <div className='left'>
           <span>category</span>
-          <button type='button' className='setting-button'>
+          <button
+            type='button'
+            className='setting-button'
+            onClick={clickSettingHandler}
+          >
             <svg
               width='16'
               height='16'
@@ -87,9 +179,42 @@ const Category = () => {
       {/* Category List */}
       <div className='items'>
         {isShowCategory &&
-          DUMMY_CATEGORYS.map((category) => (
-            <CategoryItem key={category.id} name={category.name} />
+          categories.map((category) => (
+            <CategoryItem
+              key={category.id}
+              id={category.id}
+              name={category.name}
+              count={category.count}
+              clicked={clickedCategory === category.id}
+              isSetting={category.id !== 'category1' && isSettingMode}
+              clickCategory={clickCategoryHandler}
+              updateCategory={updateCategoryHandler}
+              deleteCategory={deleteCategoryHandler}
+            />
           ))}
+        {isCreateMode && (
+          <form className='category-form' onSubmit={createCategoryHandler}>
+            <input
+              className='category-input'
+              value={inputCategory}
+              onChange={onChangeCategory}
+              placeholder='카테고리를 입력해주세요.'
+            />
+            <button type='submit'>추가</button>
+            <button type='button' onClick={() => setIsCreateMode(false)}>
+              취소
+            </button>
+          </form>
+        )}
+        {!isCreateMode && (
+          <button
+            type='button'
+            className='item-create'
+            onClick={() => setIsCreateMode(true)}
+          >
+            카테고리 추가하기
+          </button>
+        )}
       </div>
     </StyledCategory>
   );
