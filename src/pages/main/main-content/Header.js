@@ -1,4 +1,4 @@
-import StyledHeader from '../../../styles/main/main-content/Header-styled';
+import StyledHeader from '@styles/main/main-content/Header-styled';
 
 const Header = () => {
   return (

@@ -1,7 +1,7 @@
 import { useCallback, useState } from 'react';
 
+import StyledCategory from '@styles/main/main-aside/Category-styled';
 import CategoryItem from './CategoryItem';
-import StyledCategory from '../../../styles/main/main-aside/Category-styled';
 
 const DUMMY_CATEGORYS = [
   {
