@@ -1,30 +1,39 @@
 import { useCallback, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { getContent } from '@services/content';
+import { getContent } from '@services/content-api';
+import { initContent } from '@store/content-store';
 import StyledContent from '@styles/main/Content-styled';
 import Header from './main-content/Header';
 import ContentItem from './main-content/ContentItem';
 
 const Content = () => {
   const [curPage, setCurPage] = useState(1);
-  const [contents, setContents] = useState([]);
-  const [renderedContents, setRenderedContents] = useState([]);
+  const [filteredContents, setFilteredContents] = useState([]);
+
+  const clickedCategory = useSelector((state) => state.category.current);
+  const contents = useSelector((state) => state.content.items);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const getContentData = async () => {
       const data = await getContent();
 
-      setContents(data);
+      dispatch(initContent(data));
     };
 
     getContentData();
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
-    const contentsSlice = contents.slice(8 * curPage - 8, 8 * curPage);
+    const contentsInCategory = contents.filter(
+      (content) =>
+        content.category === clickedCategory || clickedCategory === '전체글',
+    );
 
-    setRenderedContents(contentsSlice);
-  }, [contents, curPage]);
+    setFilteredContents(contentsInCategory);
+    setCurPage(1);
+  }, [contents, clickedCategory]);
 
   const clickPageHandler = useCallback(
     (clickedPage) => {
@@ -35,7 +44,8 @@ const Content = () => {
     [curPage],
   );
 
-  const totPage = contents.length / 8 + 1;
+  const renderedContents = filteredContents.slice(8 * curPage - 8, 8 * curPage);
+  const totPage = filteredContents.length / 8 + 1;
   const pageArray = [];
   for (let i = 1; i <= totPage; i += 1) pageArray.push(i);
 
