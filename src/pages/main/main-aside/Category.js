@@ -1,61 +1,42 @@
-import { useCallback, useEffect, useReducer, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
-import StyledCategory from '@styles/main/main-aside/Category-styled';
 import {
-  getCategories,
+  getCategoriesAPI,
+  createCategoryAPI,
+  updateCategoryAPI,
+  deleteCategoryAPI,
+} from '@services/category-api';
+import {
+  initCategories,
+  changeCategory,
   createCategory,
   updateCategory,
   deleteCategory,
-} from '@services/category';
+} from '@store/category-store';
+import { updateContentCategory } from '@store/content-store';
+import StyledCategory from '@styles/main/main-aside/Category-styled';
 import CategoryItem from './CategoryItem';
-
-const LOAD = 'LOAD';
-const CREATE = 'CREATE';
-const UPDATE = 'UPDATE';
-const DELETE = 'DELETE';
-
-const initialCategories = [];
-
-const categoryReducer = (state, action) => {
-  switch (action.type) {
-    case LOAD:
-      // eslint-disable-next-line no-console
-      console.log(action.payload);
-      return action.payload;
-    case CREATE:
-      return state.concat(action.payload);
-    case UPDATE:
-      return state.map((category) =>
-        category.id === action.payload.id
-          ? { ...category, name: action.payload.inputItem }
-          : category,
-      );
-    case DELETE:
-      return state.filter((category) => category.id !== action.payload);
-    default:
-      return state;
-  }
-};
 
 const Category = () => {
   const [isSettingMode, setIsSettingMode] = useState(false);
   const [isShowCategory, setIsShowCategory] = useState(false);
   const [isCreateMode, setIsCreateMode] = useState(false);
   const [inputCategory, setInputCategory] = useState('');
-  const [categories, dispatchCategory] = useReducer(
-    categoryReducer,
-    initialCategories,
-  );
-  const [clickedCategory, setClickedCategory] = useState('category1');
+
+  const clickedCategory = useSelector((state) => state.category.current);
+  const categories = useSelector((state) => state.category.items);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    const getCategoriesAPI = async () => {
-      const categoriesData = await getCategories();
-      dispatchCategory({ type: LOAD, payload: categoriesData });
+    const getCategories = async () => {
+      const categoriesData = await getCategoriesAPI();
+
+      dispatch(initCategories(categoriesData));
     };
 
-    getCategoriesAPI();
-  }, []);
+    getCategories();
+  }, [dispatch]);
 
   const onChangeCategory = useCallback(
     (e) => setInputCategory(e.target.value),
@@ -68,10 +49,6 @@ const Category = () => {
 
   const showCategoryHandler = useCallback(() => {
     setIsShowCategory((prevState) => !prevState);
-  }, []);
-
-  const clickCategoryHandler = useCallback((id) => {
-    setClickedCategory(id);
   }, []);
 
   const createCategoryHandler = useCallback(
@@ -90,28 +67,37 @@ const Category = () => {
         count: 0,
       };
 
-      dispatchCategory({ type: CREATE, payload: newItem });
-      await createCategory();
+      dispatch(createCategory(newItem));
+      await createCategoryAPI();
       setInputCategory('');
       setIsCreateMode(false);
     },
-    [categories, inputCategory],
+    [dispatch, categories, inputCategory],
   );
-  const updateCategoryHandler = useCallback(async (updatedItem) => {
-    dispatchCategory({ type: UPDATE, payload: updatedItem });
-    await updateCategory();
-  }, []);
 
-  const deleteCategoryHandler = useCallback(async (id) => {
-    // eslint-disable-next-line no-alert, no-restricted-globals
-    const isDelete = confirm('정말 삭제하시겠습니까?');
+  const updateCategoryHandler = useCallback(
+    async (updatedItem) => {
+      dispatch(updateCategory(updatedItem));
+      dispatch(updateContentCategory(updatedItem));
+      dispatch(changeCategory(updatedItem.newName));
+      await updateCategoryAPI();
+    },
+    [dispatch],
+  );
 
-    if (isDelete) {
-      dispatchCategory({ type: DELETE, payload: id });
-      setIsSettingMode(false);
-      await deleteCategory();
-    }
-  }, []);
+  const deleteCategoryHandler = useCallback(
+    async (id) => {
+      // eslint-disable-next-line no-alert, no-restricted-globals
+      const isDelete = confirm('정말 삭제하시겠습니까?');
+
+      if (isDelete) {
+        dispatch(deleteCategory(id));
+        setIsSettingMode(false);
+        await deleteCategoryAPI();
+      }
+    },
+    [dispatch],
+  );
 
   const toggleButton = isShowCategory ? (
     <svg
@@ -185,9 +171,8 @@ const Category = () => {
               id={category.id}
               name={category.name}
               count={category.count}
-              clicked={clickedCategory === category.id}
+              clicked={clickedCategory === category.name}
               isSetting={category.id !== 'category1' && isSettingMode}
-              clickCategory={clickCategoryHandler}
               updateCategory={updateCategoryHandler}
               deleteCategory={deleteCategoryHandler}
             />

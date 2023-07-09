@@ -1,4 +1,7 @@
 import { useCallback, useState } from 'react';
+import { useDispatch } from 'react-redux';
+
+import { changeCategory } from '@store/category-store';
 
 const CategoryItem = ({
   id,
@@ -6,12 +9,19 @@ const CategoryItem = ({
   count,
   clicked,
   isSetting,
-  clickCategory,
   updateCategory,
   deleteCategory,
 }) => {
   const [inputItem, setInputItem] = useState(name);
   const [isUpdateMode, setIsUpdateMode] = useState(false);
+
+  const dispatch = useDispatch();
+
+  const clickCategoryHandler = useCallback(() => {
+    if (isUpdateMode) return;
+
+    dispatch(changeCategory(name));
+  }, [dispatch, name, isUpdateMode]);
 
   const changeItemHandler = useCallback((e) => {
     setInputItem(e.target.value);
@@ -30,10 +40,15 @@ const CategoryItem = ({
         return;
       }
 
-      updateCategory({ id, inputItem });
+      if (inputItem.trim().length > 7) {
+        alert('카테고리명의 길이를 7이하로 설정해주세요.');
+        return;
+      }
+
+      updateCategory({ prevName: name, newName: inputItem });
       setIsUpdateMode(false);
     },
-    [updateCategory, id, inputItem],
+    [updateCategory, name, inputItem],
   );
 
   return (
@@ -42,7 +57,7 @@ const CategoryItem = ({
         <button
           type='button'
           className='item-button'
-          onClick={() => clickCategory(id)}
+          onClick={clickCategoryHandler}
         >
           <svg
             width='15'
