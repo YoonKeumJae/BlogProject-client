@@ -1,6 +1,8 @@
 import { useCallback, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
+import { getPostAPI } from '@services/post-api';
+import { replacePost } from '@store/post-store';
 import { changeCategory } from '@store/category-store';
 
 const CategoryItem = ({
@@ -15,13 +17,19 @@ const CategoryItem = ({
   const [inputItem, setInputItem] = useState(name);
   const [isUpdateMode, setIsUpdateMode] = useState(false);
 
+  const filterMode = useSelector((state) => state.post.filterMode);
   const dispatch = useDispatch();
 
-  const clickCategoryHandler = useCallback(() => {
+  const clickCategoryHandler = useCallback(async () => {
     if (isUpdateMode) return;
+    if (filterMode === 'search') {
+      const postsData = await getPostAPI();
+
+      await dispatch(replacePost({ postsData, mode: 'category' }));
+    }
 
     dispatch(changeCategory(name));
-  }, [dispatch, name, isUpdateMode]);
+  }, [dispatch, name, isUpdateMode, filterMode]);
 
   const changeItemHandler = useCallback((e) => {
     setInputItem(e.target.value);
@@ -94,7 +102,9 @@ const CategoryItem = ({
           )}
         </div>
 
-        {clicked && !isUpdateMode && <div className='underline' />}
+        {clicked && !isUpdateMode && filterMode === 'category' && (
+          <div className='underline' />
+        )}
       </div>
       {isSetting && !isUpdateMode && (
         <div className='setting-option'>
