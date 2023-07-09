@@ -13,6 +13,7 @@ const StyledContentItem = styled.div`
     width: 260px;
     height: 260px;
 
+    cursor: pointer;
     img {
       object-fit: contain;
       vertical-align: middle;
@@ -23,6 +24,7 @@ const StyledContentItem = styled.div`
     font-size: 18px;
 
     margin: 12px 0 8px;
+    cursor: pointer;
   }
 
   .description {
@@ -30,6 +32,7 @@ const StyledContentItem = styled.div`
 
     margin-bottom: 4px;
     color: #676767;
+    cursor: pointer;
   }
 
   .date {
