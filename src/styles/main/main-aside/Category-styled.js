@@ -53,6 +53,7 @@ const StyledCategory = styled.div`
         .item-button {
           display: flex;
           align-items: center;
+          cursor: pointer;
 
           .item-name {
             font-size: 14px;

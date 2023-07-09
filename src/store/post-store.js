@@ -32,12 +32,12 @@ const contentReducer = handleActions(
       };
     },
     [UPDATE_POST_CATEGORY]: (state, action) => {
-      const { prevName, newName } = action.payload;
+      const { name, updatedName } = action.payload;
 
       return {
         ...state,
         items: state.items.map((item) =>
-          item.category === prevName ? { ...item, category: newName } : item,
+          item.category === name ? { ...item, category: updatedName } : item,
         ),
       };
     },
