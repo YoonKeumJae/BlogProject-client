@@ -1,13 +1,24 @@
+import { useCallback, useState } from 'react';
 import StyledSearch from '@styles/main/main-aside/Search-styled';
 
 const Search = () => {
+  const [inputQuery, setInputQuery] = useState('');
+
+  const onInputQuery = useCallback((e) => setInputQuery(e.target.value), []);
+
+  const searchHandler = useCallback(() => {
+    // Query 검색
+  }, []);
+
   return (
-    <StyledSearch>
+    <StyledSearch onSubmit={searchHandler}>
       <div className='search-box'>
         <input
           className='input-query'
           type='text'
           placeholder='input search query ...'
+          value={inputQuery}
+          onChange={onInputQuery}
         />
         <button className='search-button'>
           <svg

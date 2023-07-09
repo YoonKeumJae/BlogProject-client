@@ -17,13 +17,13 @@ const Aside = () => (
     </div>
 
     {/* Filter Section */}
-    <form className='filter'>
+    <div className='filter'>
       {/* Category */}
       <Category />
 
       {/* Search */}
       <Search />
-    </form>
+    </div>
   </StyledAside>
 );
 

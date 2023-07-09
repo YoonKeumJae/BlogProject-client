@@ -1,9 +1,13 @@
+import { useSelector } from 'react-redux';
+
 import StyledHeader from '@styles/main/main-content/Header-styled';
 
 const Header = () => {
+  const clickedCategory = useSelector((state) => state.category.current);
+
   return (
     <StyledHeader>
-      <h3 className='title'>전체 글</h3>
+      <h3 className='title'>{clickedCategory}</h3>
       <div className='lnb'>
         <button className='menu'>
           <svg
