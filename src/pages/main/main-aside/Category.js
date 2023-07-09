@@ -14,7 +14,7 @@ import {
   updateCategory,
   deleteCategory,
 } from '@store/category-store';
-import { updateContentCategory } from '@store/content-store';
+import { updatePostCategory } from '@store/post-store';
 import StyledCategory from '@styles/main/main-aside/Category-styled';
 import CategoryItem from './CategoryItem';
 
@@ -78,7 +78,7 @@ const Category = () => {
   const updateCategoryHandler = useCallback(
     async (updatedItem) => {
       dispatch(updateCategory(updatedItem));
-      dispatch(updateContentCategory(updatedItem));
+      dispatch(updatePostCategory(updatedItem));
       dispatch(changeCategory(updatedItem.newName));
       await updateCategoryAPI();
     },

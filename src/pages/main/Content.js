@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { getContent } from '@services/content-api';
-import { initContent } from '@store/content-store';
+import { getPostAPI } from '@services/content-api';
+import { initPost } from '@store/post-store';
 import StyledContent from '@styles/main/Content-styled';
 import Header from './main-content/Header';
 import ContentItem from './main-content/ContentItem';
@@ -16,13 +16,13 @@ const Content = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const getContentData = async () => {
-      const data = await getContent();
+    const getPost = async () => {
+      const data = await getPostAPI();
 
-      dispatch(initContent(data));
+      dispatch(initPost(data));
     };
 
-    getContentData();
+    getPost();
   }, [dispatch]);
 
   useEffect(() => {
