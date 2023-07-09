@@ -2,7 +2,7 @@
  * Category 정보를 받아오기 위한 API
  * @returns API Data
  */
-export const getCategories = async () => {
+export const getCategoriesAPI = async () => {
   const response = await fetch(
     'https://blog-miniproject-6fc40-default-rtdb.firebaseio.com/categories.json',
   );
@@ -13,6 +13,6 @@ export const getCategories = async () => {
   return responseData;
 };
 
-export const createCategory = async () => {};
-export const updateCategory = async () => {};
-export const deleteCategory = async () => {};
+export const createCategoryAPI = async () => {};
+export const updateCategoryAPI = async () => {};
+export const deleteCategoryAPI = async () => {};
