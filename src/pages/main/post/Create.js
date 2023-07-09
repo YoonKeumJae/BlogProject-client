@@ -1,5 +1,5 @@
-import StyledIndex from '../../../styles/main/Index-styled';
-import StyledCreate from '../../../styles/main/post/Create-styled';
+import StyledIndex from '@styles/main/Index-styled';
+import StyledCreate from '@styles/main/post/Create-styled';
 import Header from '../Header';
 
 const DUMMY_CATEGORYS = [

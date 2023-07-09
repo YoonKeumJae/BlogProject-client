@@ -24,6 +24,10 @@ const StyledApp = styled.div`
 
     cursor: pointer;
   }
+
+  textarea {
+    padding: 0;
+  }
 `;
 
 export default StyledApp;
