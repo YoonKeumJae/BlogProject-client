@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const StyledSearch = styled.div`
+const StyledSearch = styled.form`
   .search-box {
     position: relative;
 
