@@ -31,18 +31,12 @@ const categoryReducer = handleActions(
       ...state,
       items: state.items.concat(action.payload),
     }),
-    [UPDATE_CATEGORY]: (state, action) => {
-      const { prevName, newName } = action.payload;
-
-      return {
-        ...state,
-        items: state.items.map((item) =>
-          item.name === prevName
-            ? { ...item, name: newName }
-            : item,
-        ),
-      }
-    },
+    [UPDATE_CATEGORY]: (state, action) => ({
+      ...state,
+      items: state.items.map((item) =>
+        item.id === action.payload.id ? action.payload : item,
+      ),
+    }),
     [DELETE_CATEGORY]: (state, action) => ({
       ...state,
       items: state.items.filter((category) => category.id !== action.payload),
