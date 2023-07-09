@@ -1,5 +1,20 @@
-import StyledApp from './styles/App-styled';
+import { Routes, Route } from 'react-router';
 
-const App = () => <StyledApp></StyledApp>;
+import StyledApp from './styles/App-styled';
+import Main from './pages/main/Index';
+import Create from './pages/main/post/Create';
+import Detail from './pages/main/post/Detail';
+
+const App = () => {
+  return (
+    <StyledApp>
+      <Routes>
+        <Route path='/' element={<Main />} />
+        <Route path='/create' element={<Create />} />
+        <Route path='/post' element={<Detail />} />
+      </Routes>
+    </StyledApp>
+  );
+};
 
 export default App;
