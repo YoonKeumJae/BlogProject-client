@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { getPostAPI } from '@services/content-api';
+import { getPostAPI } from '@services/post-api';
 import { initPost } from '@store/post-store';
 import StyledContent from '@styles/main/Content-styled';
 import Header from './main-content/Header';
@@ -12,7 +12,7 @@ const Content = () => {
   const [filteredContents, setFilteredContents] = useState([]);
 
   const clickedCategory = useSelector((state) => state.category.current);
-  const contents = useSelector((state) => state.content.items);
+  const contents = useSelector((state) => state.post.items);
   const dispatch = useDispatch();
 
   useEffect(() => {

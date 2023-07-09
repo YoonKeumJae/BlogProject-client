@@ -1,5 +1,6 @@
 import { useCallback, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router';
 
 import { createPostAPI, createTempPostAPI } from '@services/post-api';
 import { createPost } from '@store/post-store';
@@ -16,6 +17,7 @@ const Create = () => {
 
   const categories = useSelector((state) => state.category.items);
   const dispatch = useDispatch();
+  const navigation = useNavigate();
 
   const onInputCategoryHandler = useCallback(
     (e) => setEnteredCategory(e.target.value),
@@ -34,7 +36,8 @@ const Create = () => {
     setEnteredCategory('');
     setEnteredTitle('');
     setEnteredContent('');
-  }, []);
+    navigation('/');
+  }, [navigation]);
 
   const createTempPostHandler = useCallback(async () => {
     const postForm = {
@@ -49,7 +52,8 @@ const Create = () => {
     console.log(postForm);
     // createPost(postForm);
     await createTempPostAPI();
-  }, [enteredCategory, enteredTitle, enteredContent, tagList]);
+    navigation('/');
+  }, [navigation, enteredCategory, enteredTitle, enteredContent, tagList]);
 
   const createPostHandler = useCallback(async () => {
     if (enteredCategory.trim().length === 0) return;
@@ -66,7 +70,15 @@ const Create = () => {
 
     dispatch(createPost(postForm));
     await createPostAPI();
-  }, [dispatch, enteredCategory, enteredTitle, enteredContent, tagList]);
+    navigation('/');
+  }, [
+    navigation,
+    dispatch,
+    enteredCategory,
+    enteredTitle,
+    enteredContent,
+    tagList,
+  ]);
 
   return (
     <StyledIndex>
