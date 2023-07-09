@@ -45,20 +45,16 @@ const CategoryItem = ({
         return;
       }
 
-      updateCategory({ prevName: name, newName: inputItem });
+      updateCategory({ id, name, count, updatedName: inputItem });
       setIsUpdateMode(false);
     },
-    [updateCategory, name, inputItem],
+    [updateCategory, id, name, count, inputItem],
   );
 
   return (
     <div className='category'>
       <div className='item'>
-        <button
-          type='button'
-          className='item-button'
-          onClick={clickCategoryHandler}
-        >
+        <div className='item-button' onClick={clickCategoryHandler}>
           <svg
             width='15'
             height='18'
@@ -96,7 +92,7 @@ const CategoryItem = ({
               <button>수정</button>
             </form>
           )}
-        </button>
+        </div>
 
         {clicked && !isUpdateMode && <div className='underline' />}
       </div>

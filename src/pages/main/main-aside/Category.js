@@ -68,7 +68,7 @@ const Category = () => {
       };
 
       dispatch(createCategory(newItem));
-      await createCategoryAPI();
+      await createCategoryAPI(newItem);
       setInputCategory('');
       setIsCreateMode(false);
     },
@@ -77,10 +77,12 @@ const Category = () => {
 
   const updateCategoryHandler = useCallback(
     async (updatedItem) => {
-      dispatch(updateCategory(updatedItem));
-      dispatch(updatePostCategory(updatedItem));
-      dispatch(changeCategory(updatedItem.newName));
-      await updateCategoryAPI();
+      const { id, name, count, updatedName } = updatedItem;
+
+      dispatch(updateCategory({ id, name: updatedName, count }));
+      dispatch(updatePostCategory({ name, updatedName }));
+      dispatch(changeCategory(updatedName));
+      await updateCategoryAPI({ id, name: updatedName, count });
     },
     [dispatch],
   );
@@ -93,7 +95,7 @@ const Category = () => {
       if (isDelete) {
         dispatch(deleteCategory(id));
         setIsSettingMode(false);
-        await deleteCategoryAPI();
+        await deleteCategoryAPI(id);
       }
     },
     [dispatch],
