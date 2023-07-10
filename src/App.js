@@ -1,6 +1,8 @@
+import Signup from './pages/auth/SignUp';
+
 const App = () => (
   <div>
-    <h3>Hello World</h3>
+    <Signup/>
   </div>
 );
 
