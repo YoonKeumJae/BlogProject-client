@@ -23,6 +23,10 @@ export const getPostAPI = async () => {
       description: responseData[key].description,
       date: responseData[key].date,
       tagList: responseData[key].tagList,
+      username: responseData[key].username,
+      article: responseData[key].article,
+      like: responseData[key].like,
+      comment: responseData[key].comment,
     });
   });
 
@@ -53,6 +57,10 @@ export const getQueryPostAPI = async (type, query) => {
       description: responseData[key].description,
       date: responseData[key].date,
       tagList: responseData[key].tagList,
+      username: responseData[key].username,
+      article: responseData[key].article,
+      like: responseData[key].like,
+      comment: responseData[key].comment,
     });
   });
 

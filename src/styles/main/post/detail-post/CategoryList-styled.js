@@ -31,6 +31,8 @@ const StyledCategoryList = styled.div`
       .item-left {
         color: #bcbcbc;
 
+        cursor: pointer;
+
         .item-title {
           margin-right: 12px;
         }
@@ -70,7 +72,7 @@ const StyledCategoryList = styled.div`
       border-radius: 10px;
     }
 
-    span {
+    button {
       margin: 0 8px;
     }
   }

@@ -9,9 +9,11 @@ const App = () => {
   return (
     <StyledApp>
       <Routes>
-        <Route path='/' element={<Main />} />
+        <Route path='/' element={<Main />}>
+          <Route path='/search?' element={<Main />} />
+        </Route>
         <Route path='/create' element={<Create />} />
-        <Route path='/post' element={<Detail />} />
+        <Route path='/post/:postId' element={<Detail />} />
       </Routes>
     </StyledApp>
   );
