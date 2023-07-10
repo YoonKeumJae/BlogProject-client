@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
+import { DEFAULT, SETTING, CREATE } from '@constants/category-mode';
 import {
   getCategoriesAPI,
   createCategoryAPI,
@@ -19,14 +20,18 @@ import StyledCategory from '@styles/main/main-aside/Category-styled';
 import CategoryItem from './CategoryItem';
 
 const Category = () => {
-  const [isSettingMode, setIsSettingMode] = useState(false);
+  const [modeState, setModeState] = useState({
+    mode: DEFAULT,
+    selectedId: '',
+  });
   const [isShowCategory, setIsShowCategory] = useState(false);
-  const [isCreateMode, setIsCreateMode] = useState(false);
   const [inputCategory, setInputCategory] = useState('');
 
   const clickedCategory = useSelector((state) => state.category.current);
   const categories = useSelector((state) => state.category.items);
   const dispatch = useDispatch();
+
+  const { mode } = modeState;
 
   useEffect(() => {
     const getCategories = async () => {
@@ -44,8 +49,11 @@ const Category = () => {
   );
 
   const clickSettingHandler = useCallback(() => {
-    setIsSettingMode((prevMode) => !prevMode);
-  }, []);
+    // eslint-disable-next-line no-console
+    console.log(mode);
+    if (mode === SETTING) setModeState({ mode: DEFAULT, selectedId: '' });
+    else setModeState({ mode: SETTING, selectedId: '' });
+  }, [mode]);
 
   const showCategoryHandler = useCallback(() => {
     setIsShowCategory((prevState) => !prevState);
@@ -57,7 +65,7 @@ const Category = () => {
 
       if (inputCategory.trim().length === 0) {
         setInputCategory('');
-        setIsCreateMode(false);
+        setModeState({ mode: DEFAULT, selectedId: '' });
         return;
       }
 
@@ -68,19 +76,21 @@ const Category = () => {
       };
 
       dispatch(createCategory(newItem));
-      await createCategoryAPI();
+      await createCategoryAPI(newItem);
       setInputCategory('');
-      setIsCreateMode(false);
+      setModeState({ mode: DEFAULT, selectedId: '' });
     },
     [dispatch, categories, inputCategory],
   );
 
   const updateCategoryHandler = useCallback(
     async (updatedItem) => {
-      dispatch(updateCategory(updatedItem));
-      dispatch(updatePostCategory(updatedItem));
-      dispatch(changeCategory(updatedItem.newName));
-      await updateCategoryAPI();
+      const { id, name, count, updatedName } = updatedItem;
+
+      dispatch(updateCategory({ id, name: updatedName, count }));
+      dispatch(updatePostCategory({ name, updatedName }));
+      dispatch(changeCategory(updatedName));
+      await updateCategoryAPI({ id, name: updatedName, count });
     },
     [dispatch],
   );
@@ -92,8 +102,8 @@ const Category = () => {
 
       if (isDelete) {
         dispatch(deleteCategory(id));
-        setIsSettingMode(false);
-        await deleteCategoryAPI();
+        setModeState({ mode: DEFAULT, selectedId: '' });
+        await deleteCategoryAPI(id);
       }
     },
     [dispatch],
@@ -165,19 +175,20 @@ const Category = () => {
       {/* Category List */}
       <div className='items'>
         {isShowCategory &&
-          categories.map((category) => (
+          categories.map((category, index) => (
             <CategoryItem
               key={category.id}
               id={category.id}
               name={category.name}
               count={category.count}
               clicked={clickedCategory === category.name}
-              isSetting={category.id !== 'category1' && isSettingMode}
+              modeState={index !== 0 && modeState}
+              setUpdateMode={setModeState}
               updateCategory={updateCategoryHandler}
               deleteCategory={deleteCategoryHandler}
             />
           ))}
-        {isCreateMode && (
+        {mode === CREATE && (
           <form className='category-form' onSubmit={createCategoryHandler}>
             <input
               className='category-input'
@@ -186,16 +197,19 @@ const Category = () => {
               placeholder='카테고리를 입력해주세요.'
             />
             <button type='submit'>추가</button>
-            <button type='button' onClick={() => setIsCreateMode(false)}>
+            <button
+              type='button'
+              onClick={() => setModeState({ mode: DEFAULT, selectedId: '' })}
+            >
               취소
             </button>
           </form>
         )}
-        {!isCreateMode && (
+        {mode !== CREATE && (
           <button
             type='button'
             className='item-create'
-            onClick={() => setIsCreateMode(true)}
+            onClick={() => setModeState({ mode: CREATE, selectedId: '' })}
           >
             카테고리 추가하기
           </button>
