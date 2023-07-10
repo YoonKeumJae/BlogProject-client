@@ -93,3 +93,17 @@ export const createPostAPI = async (post) => {
 };
 
 export const updatePostAPI = async () => {};
+
+/**
+ * Post 삭제 API
+ * @param {Integer} id Post Id
+ * @returns 성공 여부
+ */
+export const deletePostAPI = async (id) => {
+  const response = await axios
+    .delete(`${FIREBASE_URL}/posts/${id}.json`)
+    // eslint-disable-next-line no-console
+    .catch((error) => console.log(error));
+
+  return response;
+};

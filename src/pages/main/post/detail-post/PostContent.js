@@ -1,9 +1,27 @@
-import DefaultProfileImage from '@assets/default-profile-image.png';
+import { useCallback } from 'react';
+import { useNavigate } from 'react-router';
+import { useDispatch } from 'react-redux';
 
+import { deletePostAPI } from '@services/post-api';
+import { deletePost } from '@store/post-store';
+import DefaultProfileImage from '@assets/default-profile-image.png';
 import StyledPostContent from '@styles/main/post/detail-post/PostContent';
 
 const PostContent = ({ post }) => {
-  const { category, title, username, date, tagList, article, like } = post;
+  const { id, category, title, username, date, tagList, content, like } = post;
+  const navigation = useNavigate();
+  const dispatch = useDispatch();
+
+  const onClickDeleteHandler = useCallback(async () => {
+    // eslint-disable-next-line no-restricted-globals
+    const isCheck = confirm('정말 삭제하시겠습니까?');
+
+    if (isCheck) {
+      dispatch(deletePost(id));
+      await deletePostAPI(id);
+      navigation('/');
+    }
+  }, [dispatch, navigation, id]);
 
   return (
     <StyledPostContent>
@@ -25,7 +43,7 @@ const PostContent = ({ post }) => {
       {/* Post Content */}
       <div className='post-content'>
         <div className='post-content-box'>
-          {article.split('\\r\\n').map((line, index) => {
+          {content.split('\\r\\n').map((line, index) => {
             if (line === '') return null;
 
             return (
@@ -41,9 +59,7 @@ const PostContent = ({ post }) => {
       {/* Post Footer */}
       <div className='post-footer'>
         <div className='tag-box'>
-          {tagList.map((tag, idx) => (
-            <span key={idx}>#{tag}</span>
-          ))}
+          {tagList && tagList.map((tag, idx) => <span key={idx}>#{tag}</span>)}
         </div>
         <div className='post-button-list'>
           <button className='like-box'>
@@ -63,7 +79,7 @@ const PostContent = ({ post }) => {
           </button>
           <div className='update-and-delete'>
             <button>수정</button>
-            <button>삭제</button>
+            <button onClick={onClickDeleteHandler}>삭제</button>
           </div>
         </div>
       </div>
