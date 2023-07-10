@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const StyledContent = styled.section`
+const StyledPost = styled.section`
   margin-top: 120px;
 
   .main-content {
@@ -31,4 +31,4 @@ const StyledContent = styled.section`
   }
 `;
 
-export default StyledContent;
+export default StyledPost;
