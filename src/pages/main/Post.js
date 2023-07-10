@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useLocation } from 'react-router';
 
 import { getPostAPI } from '@services/post-api';
 import { initPost } from '@store/post-store';
@@ -14,6 +15,7 @@ const Post = () => {
   const clickedCategory = useSelector((state) => state.category.current);
   const posts = useSelector((state) => state.post.items);
   const dispatch = useDispatch();
+  const location = useLocation();
 
   useEffect(() => {
     const getPost = async () => {
@@ -22,8 +24,8 @@ const Post = () => {
       dispatch(initPost(data));
     };
 
-    getPost();
-  }, [dispatch]);
+    if (location.search.length === 0) getPost();
+  }, [location, dispatch]);
 
   useEffect(() => {
     const postInCategory = posts.filter(
