@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const StyledPostItem = styled.div`
+const StyledPostCard = styled.div`
   width: 260px;
 
   .image {
@@ -23,11 +23,11 @@ const StyledPostItem = styled.div`
   .title {
     font-size: 18px;
 
-    margin: 12px 0 8px;
+    margin: 12px 0 6px;
     cursor: pointer;
   }
 
-  .description {
+  .content-slice {
     font-size: 14px;
 
     margin-bottom: 4px;
@@ -37,9 +37,10 @@ const StyledPostItem = styled.div`
 
   .date {
     font-size: 12px;
+    padding: 4px 0;
 
     color: #bcbcbc;
   }
 `;
 
-export default StyledPostItem;
+export default StyledPostCard;

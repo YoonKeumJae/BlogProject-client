@@ -4,11 +4,11 @@ import { useLocation } from 'react-router';
 
 import { getPostAPI } from '@services/post-api';
 import { initPost } from '@store/post-store';
-import StyledPost from '@styles/main/Post-styled';
+import StyledPosts from '@styles/main/Posts-styled';
 import Header from './main-content/Header';
-import PostItem from './main-content/PostItem';
+import PostCard from './main-content/PostCard';
 
-const Post = () => {
+const Posts = () => {
   const [curPage, setCurPage] = useState(1);
   const [filteredPost, setFilteredPost] = useState([]);
 
@@ -29,8 +29,8 @@ const Post = () => {
 
   useEffect(() => {
     const postInCategory = posts.filter(
-      (content) =>
-        content.category === clickedCategory || clickedCategory === '전체글',
+      (post) =>
+        post.category === clickedCategory || clickedCategory === '전체글',
     );
 
     setFilteredPost(postInCategory);
@@ -52,14 +52,14 @@ const Post = () => {
   for (let i = 1; i <= totPage; i += 1) pageArray.push(i);
 
   return (
-    <StyledPost>
+    <StyledPosts>
       {/* Main Header */}
       <Header />
 
       {/* Main Content */}
       <div className='main-content'>
         {renderedPost.map((post) => (
-          <PostItem key={post.id} post={post} />
+          <PostCard key={post.id} post={post} />
         ))}
       </div>
 
@@ -75,8 +75,8 @@ const Post = () => {
           </span>
         ))}
       </div>
-    </StyledPost>
+    </StyledPosts>
   );
 };
 
-export default Post;
+export default Posts;

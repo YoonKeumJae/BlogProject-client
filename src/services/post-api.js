@@ -7,7 +7,7 @@ import FIREBASE_URL from '@config/firebase';
  */
 export const getPostAPI = async () => {
   const response = await axios
-    .get(`${FIREBASE_URL}/contents.json`)
+    .get(`${FIREBASE_URL}/posts.json`)
     // eslint-disable-next-line no-console
     .catch((error) => console.log(error));
 
@@ -18,15 +18,14 @@ export const getPostAPI = async () => {
   Object.keys(responseData).forEach((key) => {
     postsData.push({
       id: key,
+      username: responseData[key].username,
       category: responseData[key].category,
       title: responseData[key].title,
-      description: responseData[key].description,
-      date: responseData[key].date,
-      tagList: responseData[key].tagList,
-      username: responseData[key].username,
-      article: responseData[key].article,
-      like: responseData[key].like,
+      content: responseData[key].content,
       comment: responseData[key].comment,
+      tagList: responseData[key].tagList,
+      like: responseData[key].like,
+      date: responseData[key].date,
     });
   });
 
@@ -41,7 +40,7 @@ export const getPostAPI = async () => {
  */
 export const getQueryPostAPI = async (type, query) => {
   const response = await axios
-    .get(`${FIREBASE_URL}/contents.json`)
+    .get(`${FIREBASE_URL}/posts.json`)
     // eslint-disable-next-line no-console
     .catch((error) => console.log(error));
 
@@ -52,15 +51,14 @@ export const getQueryPostAPI = async (type, query) => {
   Object.keys(responseData).forEach((key) => {
     postsData.push({
       id: key,
+      username: responseData[key].username,
       category: responseData[key].category,
       title: responseData[key].title,
-      description: responseData[key].description,
-      date: responseData[key].date,
-      tagList: responseData[key].tagList,
-      username: responseData[key].username,
-      article: responseData[key].article,
-      like: responseData[key].like,
+      content: responseData[key].content,
       comment: responseData[key].comment,
+      tagList: responseData[key].tagList,
+      like: responseData[key].like,
+      date: responseData[key].date,
     });
   });
 
@@ -80,7 +78,44 @@ export const getQueryPostAPI = async (type, query) => {
   return filteredPosts;
 };
 
-export const createPostAPI = async () => {};
-export const createTempPostAPI = async () => {};
-export const updatePostAPI = async () => {};
-export const deletePostAPI = async () => {};
+/**
+ * Post 작성 API
+ * @param {Object} post 작성한 Post
+ * @returns 성공 여부
+ */
+export const createPostAPI = async (post) => {
+  const response = await axios
+    .post(`${FIREBASE_URL}/posts.json`, post)
+    // eslint-disable-next-line no-console
+    .catch((error) => console.log(error));
+
+  return response;
+};
+
+/**
+ * Post 수정 API
+ * @param {Object} post 수정된 Post
+ * @returns 성공 여부
+ */
+export const updatePostAPI = async (post) => {
+  const response = await axios
+    .put(`${FIREBASE_URL}/posts/${post.id}.json`, post)
+    // eslint-disable-next-line no-console
+    .catch((error) => console.log(error));
+
+  return response;
+};
+
+/**
+ * Post 삭제 API
+ * @param {Integer} id Post Id
+ * @returns 성공 여부
+ */
+export const deletePostAPI = async (id) => {
+  const response = await axios
+    .delete(`${FIREBASE_URL}/posts/${id}.json`)
+    // eslint-disable-next-line no-console
+    .catch((error) => console.log(error));
+
+  return response;
+};

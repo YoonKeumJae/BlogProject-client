@@ -1,23 +1,33 @@
-import { useCallback, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useState, useCallback, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
 
-import { createPostAPI, createTempPostAPI } from '@services/post-api';
-import { createPost } from '@store/post-store';
+import TagBox from '@components/wrapper/TagBox';
+import Header from '@pages/main/Header';
 import StyledIndex from '@styles/main/Index-styled';
 import StyledCreate from '@styles/main/post/Create-styled';
-import Header from '../Header';
-import TagBox from './create-post/TagBox';
 
-const Create = () => {
+const PostForm = ({ post, onSubmit }) => {
   const [enteredCategory, setEnteredCategory] = useState('');
   const [enteredTitle, setEnteredTitle] = useState('');
   const [enteredContent, setEnteredContent] = useState('');
-  const [tagList, setTagList] = useState([]);
+  const [enteredTagList, setEnteredTagList] = useState([]);
 
   const categories = useSelector((state) => state.category.items);
-  const dispatch = useDispatch();
   const navigation = useNavigate();
+
+  useEffect(() => {
+    if (post) {
+      const { category, title, content, tagList } = post;
+
+      const formattedContent = content.replace(/\\r\\n/g, '\r\n');
+
+      setEnteredCategory(category);
+      setEnteredTitle(title);
+      setEnteredContent(formattedContent);
+      setEnteredTagList(tagList);
+    }
+  }, [post]);
 
   const onInputCategoryHandler = useCallback(
     (e) => setEnteredCategory(e.target.value),
@@ -32,53 +42,31 @@ const Create = () => {
     [],
   );
 
+  const submitPostHandler = useCallback(() => {
+    const { id } = post;
+
+    onSubmit({
+      id,
+      enteredCategory,
+      enteredTitle,
+      enteredContent,
+      enteredTagList,
+    });
+  }, [
+    onSubmit,
+    post,
+    enteredCategory,
+    enteredTitle,
+    enteredContent,
+    enteredTagList,
+  ]);
+
   const cancelPostHandler = useCallback(() => {
     setEnteredCategory('');
     setEnteredTitle('');
     setEnteredContent('');
     navigation('/');
   }, [navigation]);
-
-  const createTempPostHandler = useCallback(async () => {
-    const postForm = {
-      category: enteredCategory,
-      title: enteredTitle,
-      content: enteredContent,
-      tag: tagList,
-      date: new Date(),
-    };
-
-    // eslint-disable-next-line no-console
-    console.log(postForm);
-    // createPost(postForm);
-    await createTempPostAPI();
-    navigation('/');
-  }, [navigation, enteredCategory, enteredTitle, enteredContent, tagList]);
-
-  const createPostHandler = useCallback(async () => {
-    if (enteredCategory.trim().length === 0) return;
-    if (enteredTitle.trim().length === 0) return;
-    if (enteredContent.trim().length === 0) return;
-
-    const postForm = {
-      category: enteredCategory,
-      title: enteredTitle,
-      content: enteredContent,
-      tag: tagList,
-      date: new Date(),
-    };
-
-    dispatch(createPost(postForm));
-    await createPostAPI();
-    navigation('/');
-  }, [
-    navigation,
-    dispatch,
-    enteredCategory,
-    enteredTitle,
-    enteredContent,
-    tagList,
-  ]);
 
   return (
     <StyledIndex>
@@ -92,15 +80,20 @@ const Create = () => {
             <select
               className='select-category'
               onChange={onInputCategoryHandler}
+              value={enteredCategory}
             >
               <option value='' defaultValue>
                 카테고리
               </option>
-              {categories.map((category) => (
-                <option key={category.id} value={category.name}>
-                  {category.name}
-                </option>
-              ))}
+              {categories.map((c, idx) => {
+                if (idx === 0) return null;
+
+                return (
+                  <option key={c.id} value={c.name}>
+                    {c.name}
+                  </option>
+                );
+              })}
             </select>
 
             <div className='post-title'>
@@ -201,7 +194,7 @@ const Create = () => {
             </div>
           </div>
           <div className='footer'>
-            <TagBox tagList={tagList} setTagList={setTagList} />
+            <TagBox tagList={enteredTagList} setTagList={setEnteredTagList} />
             <div className='post-button-container'>
               <button
                 type='button'
@@ -211,15 +204,11 @@ const Create = () => {
                 취소
               </button>
               <div className='create-box'>
-                <button
-                  type='button'
-                  className='temp-create'
-                  onClick={createTempPostHandler}
-                >
+                <button type='button' className='temp-create'>
                   <span>임시 저장</span>
                   <span className='count'>0</span>
                 </button>
-                <button className='create' onClick={createPostHandler}>
+                <button className='create' onClick={submitPostHandler}>
                   등록
                 </button>
               </div>
@@ -231,4 +220,4 @@ const Create = () => {
   );
 };
 
-export default Create;
+export default PostForm;
