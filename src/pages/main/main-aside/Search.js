@@ -1,5 +1,6 @@
 import { useCallback, useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router';
 
 import { getQueryPostAPI } from '@services/post-api';
 import { replacePost } from '@store/post-store';
@@ -10,6 +11,7 @@ const Search = () => {
   const [inputQuery, setInputQuery] = useState('');
 
   const dispatch = useDispatch();
+  const navigation = useNavigate();
 
   const onInputQueryType = useCallback(
     (e) => setInputQueryType(e.target.value),
@@ -33,8 +35,9 @@ const Search = () => {
       );
 
       dispatch(replacePost({ postsData, mode: 'search' }));
+      navigation(`/search?${inputQueryType}=${inputQuery}`);
     },
-    [dispatch, inputQueryType, inputQuery],
+    [navigation, dispatch, inputQueryType, inputQuery],
   );
 
   return (
