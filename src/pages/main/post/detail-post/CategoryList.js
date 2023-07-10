@@ -36,21 +36,28 @@ const CategoryList = ({ category }) => {
 
       {/* Post Item List */}
       <div className='category-item-list'>
-        {renderedPost.map((item) => (
-          <div
-            key={item.id}
-            className={`category-item ${item.id === postId ? 'selected' : ''}`}
-          >
+        {renderedPost.map((item) => {
+          let commentCount = '';
+          if (item.comment) commentCount = `(${item.comment.length})`;
+
+          return (
             <div
-              className='item-left'
-              onClick={() => onClickPostHandler(item.id)}
+              key={item.id}
+              className={`category-item ${
+                item.id === postId ? 'selected' : ''
+              }`}
             >
-              <span className='item-title'>{item.title}</span>
-              <span>{`(${item.comment.length})`}</span>
+              <div
+                className='item-left'
+                onClick={() => onClickPostHandler(item.id)}
+              >
+                <span className='item-title'>{item.title}</span>
+                <span>{commentCount}</span>
+              </div>
+              <div className='item-right'>{item.date}</div>
             </div>
-            <div className='item-right'>{item.date}</div>
-          </div>
-        ))}
+          );
+        })}
 
         {/* Category paging */}
         <div className='category-page-container'>
