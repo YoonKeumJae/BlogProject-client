@@ -12,6 +12,12 @@ const PostContent = ({ post }) => {
   const navigation = useNavigate();
   const dispatch = useDispatch();
 
+  const onClickUpdateHandler = useCallback(() => {
+    navigation(`/update/${id}`, {
+      state: post,
+    });
+  }, [navigation, post, id]);
+
   const onClickDeleteHandler = useCallback(async () => {
     // eslint-disable-next-line no-restricted-globals
     const isCheck = confirm('정말 삭제하시겠습니까?');
@@ -78,7 +84,7 @@ const PostContent = ({ post }) => {
             <span>{like}</span>
           </button>
           <div className='update-and-delete'>
-            <button>수정</button>
+            <button onClick={onClickUpdateHandler}>수정</button>
             <button onClick={onClickDeleteHandler}>삭제</button>
           </div>
         </div>

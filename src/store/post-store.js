@@ -43,7 +43,12 @@ const contentReducer = handleActions(
         ),
       };
     },
-    [UPDATE_POST]: () => ({}),
+    [UPDATE_POST]: (state, action) => ({
+      ...state,
+      items: state.items.map((item) =>
+        item.id === action.payload.id ? action.payload : item,
+      ),
+    }),
     [DELETE_POST]: (state, action) => ({
       ...state,
       items: state.items.filter((item) => item.id !== action.payload),

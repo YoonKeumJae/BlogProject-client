@@ -80,7 +80,7 @@ export const getQueryPostAPI = async (type, query) => {
 
 /**
  * Post 작성 API
- * @param {Object} post Post 폼
+ * @param {Object} post 작성한 Post
  * @returns 성공 여부
  */
 export const createPostAPI = async (post) => {
@@ -92,7 +92,19 @@ export const createPostAPI = async (post) => {
   return response;
 };
 
-export const updatePostAPI = async () => {};
+/**
+ * Post 수정 API
+ * @param {Object} post 수정된 Post
+ * @returns 성공 여부
+ */
+export const updatePostAPI = async (post) => {
+  const response = await axios
+    .put(`${FIREBASE_URL}/posts/${post.id}.json`, post)
+    // eslint-disable-next-line no-console
+    .catch((error) => console.log(error));
+
+  return response;
+};
 
 /**
  * Post 삭제 API
