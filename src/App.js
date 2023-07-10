@@ -2,8 +2,8 @@ import { Routes, Route } from 'react-router';
 
 import StyledApp from './styles/App-styled';
 import Main from './pages/main/Index';
-import Create from './pages/main/post/Create';
-import Update from './pages/main/post/Update';
+import Create from './pages/create/Create';
+import Update from './pages/update/Update';
 import Detail from './pages/main/post/Detail';
 
 const App = () => {

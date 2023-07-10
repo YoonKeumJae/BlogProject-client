@@ -5,7 +5,7 @@ import PostContent from './PostContent';
 import CategoryList from './CategoryList';
 import PostComment from './PostComment';
 
-const Post = () => {
+const PostDetail = () => {
   const { postId } = useParams();
   const posts = useSelector((state) => state.post.items);
   const renderPost = posts.filter((post) => post.id === postId);
@@ -28,4 +28,4 @@ const Post = () => {
   );
 };
 
-export default Post;
+export default PostDetail;

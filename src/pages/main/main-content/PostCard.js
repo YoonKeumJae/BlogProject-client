@@ -2,9 +2,9 @@ import { useCallback } from 'react';
 import { useNavigate } from 'react-router';
 
 import DefaultPostImage from '@assets/default-post-image.png';
-import StyledPostItem from '@styles/main/main-content/PostItem-styled';
+import StyledPostCard from '@styles/main/main-content/PostCard-styled';
 
-const ContentItem = ({ post }) => {
+const PostCard = ({ post }) => {
   const { id, title, content, date } = post;
 
   const navigation = useNavigate();
@@ -14,7 +14,7 @@ const ContentItem = ({ post }) => {
   }, [navigation, id]);
 
   return (
-    <StyledPostItem>
+    <StyledPostCard>
       <div className='image' onClick={onClickPost}>
         <img src={DefaultPostImage} alt='default post image' />
       </div>
@@ -26,8 +26,8 @@ const ContentItem = ({ post }) => {
         {content.length >= 90 && '...'}
       </p>
       <p className='date'>{date}</p>
-    </StyledPostItem>
+    </StyledPostCard>
   );
 };
 
-export default ContentItem;
+export default PostCard;

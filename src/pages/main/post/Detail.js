@@ -1,7 +1,7 @@
 import StyledIndex from '@styles/main/Index-styled';
 import Aside from '../Aside';
 import Header from '../Header';
-import Post from './detail-post/Post';
+import PostDetail from './detail-post/PostDetail';
 
 const Detail = () => (
   <StyledIndex>
@@ -12,7 +12,7 @@ const Detail = () => (
     <Aside />
 
     {/* Post Section */}
-    <Post />
+    <PostDetail />
   </StyledIndex>
 );
 

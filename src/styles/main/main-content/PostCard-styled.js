@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const StyledPostItem = styled.div`
+const StyledPostCard = styled.div`
   width: 260px;
 
   .image {
@@ -43,4 +43,4 @@ const StyledPostItem = styled.div`
   }
 `;
 
-export default StyledPostItem;
+export default StyledPostCard;
