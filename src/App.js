@@ -1,9 +1,6 @@
-import Signup from './pages/auth/SignUp';
+import StyledApp from './styles/App-styled';
 
-const App = () => (
-  <div>
-    <Signup/>
-  </div>
-);
+const App = () => <StyledApp></StyledApp>;
+>>>>>>> develop
 
 export default App;
