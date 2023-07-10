@@ -2,7 +2,8 @@ import { useCallback, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
 
-import { createPostAPI, createTempPostAPI } from '@services/post-api';
+import { regLineBreak } from '@constants/regExp';
+import { createPostAPI } from '@services/post-api';
 import { createPost } from '@store/post-store';
 import StyledIndex from '@styles/main/Index-styled';
 import StyledCreate from '@styles/main/post/Create-styled';
@@ -39,37 +40,30 @@ const Create = () => {
     navigation('/');
   }, [navigation]);
 
-  const createTempPostHandler = useCallback(async () => {
-    const postForm = {
-      category: enteredCategory,
-      title: enteredTitle,
-      content: enteredContent,
-      tag: tagList,
-      date: new Date(),
-    };
-
-    // eslint-disable-next-line no-console
-    console.log(postForm);
-    // createPost(postForm);
-    await createTempPostAPI();
-    navigation('/');
-  }, [navigation, enteredCategory, enteredTitle, enteredContent, tagList]);
-
   const createPostHandler = useCallback(async () => {
     if (enteredCategory.trim().length === 0) return;
     if (enteredTitle.trim().length === 0) return;
     if (enteredContent.trim().length === 0) return;
 
+    const date = new Date();
+    const enteredDate = `${date.getFullYear()}.${date.getMonth()}.${date.getDate()} ${date.getHours()}.${date.getMinutes()}.${date.getSeconds()}`;
+
+    const formattedContent = enteredContent.replace(regLineBreak, '\\r\\n');
+
     const postForm = {
+      content: formattedContent,
       category: enteredCategory,
+      comment: [],
+      date: enteredDate,
+      id: `content-${Math.floor(Math.random() * 65565)}`, // 수정 필요,
+      like: 0,
+      tagList,
       title: enteredTitle,
-      content: enteredContent,
-      tag: tagList,
-      date: new Date(),
+      username: '걍하지', // 수정 필요
     };
 
     dispatch(createPost(postForm));
-    await createPostAPI();
+    await createPostAPI(postForm);
     navigation('/');
   }, [
     navigation,
@@ -96,11 +90,15 @@ const Create = () => {
               <option value='' defaultValue>
                 카테고리
               </option>
-              {categories.map((category) => (
-                <option key={category.id} value={category.name}>
-                  {category.name}
-                </option>
-              ))}
+              {categories.map((category, idx) => {
+                if (idx === 0) return null;
+
+                return (
+                  <option key={category.id} value={category.name}>
+                    {category.name}
+                  </option>
+                );
+              })}
             </select>
 
             <div className='post-title'>
@@ -211,11 +209,7 @@ const Create = () => {
                 취소
               </button>
               <div className='create-box'>
-                <button
-                  type='button'
-                  className='temp-create'
-                  onClick={createTempPostHandler}
-                >
+                <button type='button' className='temp-create'>
                   <span>임시 저장</span>
                   <span className='count'>0</span>
                 </button>

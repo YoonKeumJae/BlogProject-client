@@ -91,14 +91,5 @@ export const createPostAPI = async (post) => {
 
   return response;
 };
-export const createTempPostAPI = async () => {};
+
 export const updatePostAPI = async () => {};
-
-export const deletePostAPI = async (id) => {
-  const response = await axios
-    .delete(`${FIREBASE_URL}/posts/${id}.json`)
-    // eslint-disable-next-line no-console
-    .catch((error) => console.log(error));
-
-  return response;
-};

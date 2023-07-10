@@ -29,14 +29,10 @@ const contentReducer = handleActions(
       items: action.payload.postsData,
       filterMode: action.payload.mode,
     }),
-    [CREATE_POST]: (state, action) => {
-      const item = { ...action.payload, id: `content${state.items.length}` };
-
-      return {
-        ...state,
-        items: state.items.concat(item),
-      };
-    },
+    [CREATE_POST]: (state, action) => ({
+      ...state,
+      items: state.items.concat(action.payload),
+    }),
     [UPDATE_POST_CATEGORY]: (state, action) => {
       const { name, updatedName } = action.payload;
 
@@ -48,7 +44,10 @@ const contentReducer = handleActions(
       };
     },
     [UPDATE_POST]: () => ({}),
-    [DELETE_POST]: () => ({}),
+    [DELETE_POST]: (state, action) => ({
+      ...state,
+      items: state.items.filter((item) => item.id !== action.payload),
+    }),
   },
   initialPost,
 );

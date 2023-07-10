@@ -10,6 +10,11 @@ const Post = () => {
   const posts = useSelector((state) => state.post.items);
   const renderPost = posts.filter((post) => post.id === postId);
 
+  if (renderPost.length === 0) {
+    alert('존재하지 않는 게시글입니다.');
+    return null;
+  }
+
   return (
     <section>
       <PostContent post={renderPost[0]} />
