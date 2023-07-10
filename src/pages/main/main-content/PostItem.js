@@ -22,7 +22,8 @@ const ContentItem = ({ post }) => {
         {title}
       </h3>
       <p className='content-slice' onClick={onClickPost}>
-        {content.replace(/\\r\\n/g, ' ').slice(0, 90)} ...
+        {content.replace(/\\r\\n/g, ' ').slice(0, 90)}
+        {content.length >= 90 && '...'}
       </p>
       <p className='date'>{date}</p>
     </StyledPostItem>

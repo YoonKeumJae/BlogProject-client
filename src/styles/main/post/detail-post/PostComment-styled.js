@@ -6,6 +6,7 @@ const StyledPostComment = styled.div`
 
     .comment-title {
       display: inline-flex;
+      align-items: center;
 
       gap: 8px;
     }
