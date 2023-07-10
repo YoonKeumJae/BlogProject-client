@@ -1,0 +1,6 @@
+const DEFAULT = 'DEFAULT';
+const SETTING = 'SETTING';
+const CREATE = 'CREATE';
+const UPDATE = 'UPDATE';
+
+export { DEFAULT, SETTING, CREATE, UPDATE };

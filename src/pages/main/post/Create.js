@@ -1,24 +1,85 @@
-import StyledIndex from '../../../styles/main/Index-styled';
-import StyledCreate from '../../../styles/main/post/Create-styled';
-import Header from '../Header';
+import { useCallback, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router';
 
-const DUMMY_CATEGORYS = [
-  {
-    id: 'category1',
-    name: '전체 글',
-    value: '전체 글',
-  },
-  {
-    id: 'category2',
-    name: '맛그당어',
-  },
-  {
-    id: 'category3',
-    name: '노래',
-  },
-];
+import { createPostAPI, createTempPostAPI } from '@services/post-api';
+import { createPost } from '@store/post-store';
+import StyledIndex from '@styles/main/Index-styled';
+import StyledCreate from '@styles/main/post/Create-styled';
+import Header from '../Header';
+import TagBox from './create-post/TagBox';
 
 const Create = () => {
+  const [enteredCategory, setEnteredCategory] = useState('');
+  const [enteredTitle, setEnteredTitle] = useState('');
+  const [enteredContent, setEnteredContent] = useState('');
+  const [tagList, setTagList] = useState([]);
+
+  const categories = useSelector((state) => state.category.items);
+  const dispatch = useDispatch();
+  const navigation = useNavigate();
+
+  const onInputCategoryHandler = useCallback(
+    (e) => setEnteredCategory(e.target.value),
+    [],
+  );
+  const onInputTitleHandler = useCallback(
+    (e) => setEnteredTitle(e.target.value),
+    [],
+  );
+  const onInputContentHandler = useCallback(
+    (e) => setEnteredContent(e.target.value),
+    [],
+  );
+
+  const cancelPostHandler = useCallback(() => {
+    setEnteredCategory('');
+    setEnteredTitle('');
+    setEnteredContent('');
+    navigation('/');
+  }, [navigation]);
+
+  const createTempPostHandler = useCallback(async () => {
+    const postForm = {
+      category: enteredCategory,
+      title: enteredTitle,
+      content: enteredContent,
+      tag: tagList,
+      date: new Date(),
+    };
+
+    // eslint-disable-next-line no-console
+    console.log(postForm);
+    // createPost(postForm);
+    await createTempPostAPI();
+    navigation('/');
+  }, [navigation, enteredCategory, enteredTitle, enteredContent, tagList]);
+
+  const createPostHandler = useCallback(async () => {
+    if (enteredCategory.trim().length === 0) return;
+    if (enteredTitle.trim().length === 0) return;
+    if (enteredContent.trim().length === 0) return;
+
+    const postForm = {
+      category: enteredCategory,
+      title: enteredTitle,
+      content: enteredContent,
+      tag: tagList,
+      date: new Date(),
+    };
+
+    dispatch(createPost(postForm));
+    await createPostAPI();
+    navigation('/');
+  }, [
+    navigation,
+    dispatch,
+    enteredCategory,
+    enteredTitle,
+    enteredContent,
+    tagList,
+  ]);
+
   return (
     <StyledIndex>
       {/* Header */}
@@ -26,13 +87,16 @@ const Create = () => {
 
       {/* Create Post Section */}
       <StyledCreate>
-        <form className='post-form'>
+        <div className='post-form'>
           <div className='header'>
-            <select className='select-category'>
-              <option value='' selected>
+            <select
+              className='select-category'
+              onChange={onInputCategoryHandler}
+            >
+              <option value='' defaultValue>
                 카테고리
               </option>
-              {DUMMY_CATEGORYS.map((category) => (
+              {categories.map((category) => (
                 <option key={category.id} value={category.name}>
                   {category.name}
                 </option>
@@ -40,12 +104,17 @@ const Create = () => {
             </select>
 
             <div className='post-title'>
-              <input type='text' placeholder='제목을 입력하세요.' />
+              <input
+                type='text'
+                placeholder='제목을 입력하세요.'
+                value={enteredTitle}
+                onChange={onInputTitleHandler}
+              />
             </div>
           </div>
           <div className='body'>
             <div className='post-toolbar'>
-              <button>
+              <button type='button'>
                 <svg
                   width='24'
                   height='24'
@@ -60,7 +129,7 @@ const Create = () => {
                 </svg>
                 <span>사진</span>
               </button>
-              <button>
+              <button type='button'>
                 <svg
                   width='24'
                   height='24'
@@ -84,7 +153,7 @@ const Create = () => {
                 </svg>
                 <span>동영상</span>
               </button>
-              <button>
+              <button type='button'>
                 <svg
                   width='24'
                   height='24'
@@ -106,7 +175,7 @@ const Create = () => {
                 </svg>
                 <span>파일</span>
               </button>
-              <button>
+              <button type='button'>
                 <svg
                   width='24'
                   height='24'
@@ -126,28 +195,37 @@ const Create = () => {
               <textarea
                 className='content-box'
                 placeholder='내용을 입력하세요.'
+                value={enteredContent}
+                onChange={onInputContentHandler}
               />
             </div>
           </div>
           <div className='footer'>
-            <div className='tag-box'>
-              <span>태그</span>
-              <input type='text' placeholder='#태그 입력' />
-            </div>
+            <TagBox tagList={tagList} setTagList={setTagList} />
             <div className='post-button-container'>
-              <button type='button' className='cancel'>
+              <button
+                type='button'
+                className='cancel'
+                onClick={cancelPostHandler}
+              >
                 취소
               </button>
               <div className='create-box'>
-                <button type='button' className='temp-create'>
+                <button
+                  type='button'
+                  className='temp-create'
+                  onClick={createTempPostHandler}
+                >
                   <span>임시 저장</span>
                   <span className='count'>0</span>
                 </button>
-                <button className='create'>등록</button>
+                <button className='create' onClick={createPostHandler}>
+                  등록
+                </button>
               </div>
             </div>
           </div>
-        </form>
+        </div>
       </StyledCreate>
     </StyledIndex>
   );

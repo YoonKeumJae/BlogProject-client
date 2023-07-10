@@ -8,9 +8,10 @@ const StyledContent = styled.section`
 
     display: flex;
     flex-direction: row;
-    justify-content: space-evenly;
+    justify-content: start;
     flex-wrap: wrap;
 
+    column-gap: 12px;
     row-gap: 24px;
   }
 
@@ -19,12 +20,13 @@ const StyledContent = styled.section`
 
     .clicked-page {
       font-size: 16px;
-      padding: 12px;
+      font-weight: 700;
+    }
 
-      border: 1px solid #909090;
-      border-radius: 10px;
-      box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1),
-        0 2px 4px -2px rgb(0 0 0 / 0.1);
+    span {
+      margin: 0 8px;
+
+      cursor: pointer;
     }
   }
 `;

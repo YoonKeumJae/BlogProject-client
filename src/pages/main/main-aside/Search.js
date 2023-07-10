@@ -1,13 +1,58 @@
-import StyledSearch from '../../../styles/main/main-aside/Search-styled';
+import { useCallback, useState } from 'react';
+import { useDispatch } from 'react-redux';
+
+import { getQueryPostAPI } from '@services/post-api';
+import { replacePost } from '@store/post-store';
+import StyledSearch from '@styles/main/main-aside/Search-styled';
 
 const Search = () => {
+  const [inputQueryType, setInputQueryType] = useState('');
+  const [inputQuery, setInputQuery] = useState('');
+
+  const dispatch = useDispatch();
+
+  const onInputQueryType = useCallback(
+    (e) => setInputQueryType(e.target.value),
+    [],
+  );
+  const onInputQuery = useCallback((e) => setInputQuery(e.target.value), []);
+
+  const searchHandler = useCallback(
+    async (e) => {
+      e.preventDefault();
+
+      if (inputQueryType.trim().length === 0) {
+        alert('검색 타입을 지정해주세요.');
+        return;
+      }
+
+      // Query 검색
+      const postsData = await getQueryPostAPI(
+        inputQueryType,
+        inputQuery.toLowerCase(),
+      );
+
+      dispatch(replacePost({ postsData, mode: 'search' }));
+    },
+    [dispatch, inputQueryType, inputQuery],
+  );
+
   return (
-    <StyledSearch>
+    <StyledSearch onSubmit={searchHandler}>
       <div className='search-box'>
+        <select className='search-type' onChange={onInputQueryType}>
+          <option value='' defaultValue>
+            선택
+          </option>
+          <option value='title'>제목</option>
+          <option value='content'>내용</option>
+        </select>
         <input
           className='input-query'
           type='text'
           placeholder='input search query ...'
+          value={inputQuery}
+          onChange={onInputQuery}
         />
         <button className='search-button'>
           <svg

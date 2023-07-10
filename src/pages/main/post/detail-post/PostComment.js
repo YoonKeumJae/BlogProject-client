@@ -1,5 +1,5 @@
-import DefaultProfileImage from '../../../../assets/default-profile-image.png';
-import StyledPostComment from '../../../../styles/main/post/detail-post/PostComment-styled';
+import DefaultProfileImage from '@assets/default-profile-image.png';
+import StyledPostComment from '@styles/main/post/detail-post/PostComment-styled';
 
 const DUMMY_COMMENTS = [
   {
