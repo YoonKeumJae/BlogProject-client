@@ -29,8 +29,8 @@ const Post = () => {
 
   useEffect(() => {
     const postInCategory = posts.filter(
-      (content) =>
-        content.category === clickedCategory || clickedCategory === '전체글',
+      (post) =>
+        post.category === clickedCategory || clickedCategory === '전체글',
     );
 
     setFilteredPost(postInCategory);
