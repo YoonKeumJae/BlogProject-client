@@ -1,6 +1,9 @@
 import { useCallback, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
+import { DEFAULT, SETTING, UPDATE } from '@constants/category-mode';
+import { getPostAPI } from '@services/post-api';
+import { replacePost } from '@store/post-store';
 import { changeCategory } from '@store/category-store';
 
 const CategoryItem = ({
@@ -8,35 +11,43 @@ const CategoryItem = ({
   name,
   count,
   clicked,
-  isSetting,
+  modeState,
+  setUpdateMode,
   updateCategory,
   deleteCategory,
 }) => {
   const [inputItem, setInputItem] = useState(name);
-  const [isUpdateMode, setIsUpdateMode] = useState(false);
 
+  const filterMode = useSelector((state) => state.post.filterMode);
   const dispatch = useDispatch();
 
-  const clickCategoryHandler = useCallback(() => {
-    if (isUpdateMode) return;
+  const { mode, selectedId } = modeState;
+
+  const clickCategoryHandler = useCallback(async () => {
+    if (mode === UPDATE) return;
+    if (filterMode === 'search') {
+      const postsData = await getPostAPI();
+
+      await dispatch(replacePost({ postsData, mode: 'category' }));
+    }
 
     dispatch(changeCategory(name));
-  }, [dispatch, name, isUpdateMode]);
+  }, [dispatch, name, mode, filterMode]);
 
   const changeItemHandler = useCallback((e) => {
     setInputItem(e.target.value);
   }, []);
 
   const clickUpdateModeHandler = useCallback(() => {
-    setIsUpdateMode((prevMode) => !prevMode);
-  }, []);
+    setUpdateMode({ mode: UPDATE, selectedId: id });
+  }, [setUpdateMode, id]);
 
   const submitCategoryHandler = useCallback(
     (e) => {
       e.preventDefault();
 
       if (inputItem.trim().length === 0) {
-        setIsUpdateMode(false);
+        setUpdateMode({ mode: DEFAULT, selectedId: '' });
         return;
       }
 
@@ -45,10 +56,10 @@ const CategoryItem = ({
         return;
       }
 
+      setUpdateMode({ mode: DEFAULT, selectedId: '' });
       updateCategory({ id, name, count, updatedName: inputItem });
-      setIsUpdateMode(false);
     },
-    [updateCategory, id, name, count, inputItem],
+    [setUpdateMode, updateCategory, id, name, count, inputItem],
   );
 
   return (
@@ -76,13 +87,13 @@ const CategoryItem = ({
               strokeLinejoin='round'
             />
           </svg>
-          {!isUpdateMode && (
+          {id !== selectedId && (
             <>
               <span className='item-name'>{name}</span>
               <span className='item-count'>({count})</span>
             </>
           )}
-          {isUpdateMode && (
+          {mode === UPDATE && id === selectedId && (
             <form className='item-form' onSubmit={submitCategoryHandler}>
               <input
                 value={inputItem}
@@ -94,9 +105,11 @@ const CategoryItem = ({
           )}
         </div>
 
-        {clicked && !isUpdateMode && <div className='underline' />}
+        {clicked && mode !== UPDATE && filterMode === 'category' && (
+          <div className='underline' />
+        )}
       </div>
-      {isSetting && !isUpdateMode && (
+      {mode === SETTING && (
         <div className='setting-option'>
           <button
             type='button'
