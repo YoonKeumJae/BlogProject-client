@@ -13,12 +13,14 @@ const Posts = () => {
   const posts = useSelector((state) => state.post.items);
 
   useEffect(() => {
-    const postInCategory = posts.filter(
-      (post) =>
-        post.category === clickedCategory || clickedCategory === '전체글',
-    );
+    const postInCategory = posts
+      .filter(
+        (post) =>
+          post.category === clickedCategory || clickedCategory === '전체글',
+      )
+      .reverse();
 
-    setFilteredPost(postInCategory.reverse());
+    setFilteredPost(postInCategory);
     setCurPage(1);
   }, [posts, clickedCategory]);
 
