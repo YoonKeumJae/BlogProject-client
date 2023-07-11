@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Routes, Route, useLocation } from 'react-router';
+import { Routes, Route } from 'react-router';
 import { useDispatch } from 'react-redux';
 
 import { getPostAPI } from '@services/post-api';
@@ -14,8 +14,8 @@ import Detail from './pages/main/post/Detail';
 
 const App = () => {
   const dispatch = useDispatch();
-  const location = useLocation();
 
+  // Post 불러오기
   useEffect(() => {
     const getPost = async () => {
       const data = await getPostAPI();
@@ -23,9 +23,10 @@ const App = () => {
       dispatch(initPost(data));
     };
 
-    if (location.search.length === 0) getPost();
-  }, [location, dispatch]);
+    getPost();
+  }, [dispatch]);
 
+  // Categories 불러오기
   useEffect(() => {
     const getCategories = async () => {
       const categoriesData = await getCategoriesAPI();
