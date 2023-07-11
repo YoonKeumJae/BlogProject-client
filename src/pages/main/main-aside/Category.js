@@ -1,15 +1,13 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { DEFAULT, SETTING, CREATE } from '@constants/category-mode';
 import {
-  getCategoriesAPI,
   createCategoryAPI,
   updateCategoryAPI,
   deleteCategoryAPI,
 } from '@services/category-api';
 import {
-  initCategories,
   changeCategory,
   createCategory,
   updateCategory,
@@ -33,24 +31,12 @@ const Category = () => {
 
   const { mode } = modeState;
 
-  useEffect(() => {
-    const getCategories = async () => {
-      const categoriesData = await getCategoriesAPI();
-
-      dispatch(initCategories(categoriesData));
-    };
-
-    getCategories();
-  }, [dispatch]);
-
   const onChangeCategory = useCallback(
     (e) => setInputCategory(e.target.value),
     [],
   );
 
   const clickSettingHandler = useCallback(() => {
-    // eslint-disable-next-line no-console
-    console.log(mode);
     if (mode === SETTING) setModeState({ mode: DEFAULT, selectedId: '' });
     else setModeState({ mode: SETTING, selectedId: '' });
   }, [mode]);
