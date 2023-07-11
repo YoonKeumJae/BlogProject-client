@@ -26,9 +26,13 @@ const TagBox = ({ tagList, setTagList }) => {
         return;
       }
 
-      const newTagList = tagList;
-      newTagList.push(enteredTag);
-      setTagList(newTagList);
+      const formattedTag = enteredTag.replace(/#/g, '');
+
+      if (formattedTag.length === 0) {
+        alert('태그를 입력해주세요.');
+        return;
+      }
+      setTagList(tagList.concat(formattedTag));
       setEnteredTag('');
     },
     [enteredTag, tagList, setTagList],

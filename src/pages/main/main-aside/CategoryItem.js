@@ -1,5 +1,6 @@
 import { useCallback, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router';
 
 import { DEFAULT, SETTING, UPDATE } from '@constants/category-mode';
 import { getPostAPI } from '@services/post-api';
@@ -20,6 +21,7 @@ const CategoryItem = ({
 
   const filterMode = useSelector((state) => state.post.filterMode);
   const dispatch = useDispatch();
+  const navigation = useNavigate();
 
   const { mode, selectedId } = modeState;
 
@@ -32,7 +34,8 @@ const CategoryItem = ({
     }
 
     dispatch(changeCategory(name));
-  }, [dispatch, name, mode, filterMode]);
+    navigation(`/search?category=${name}`);
+  }, [navigation, dispatch, name, mode, filterMode]);
 
   const changeItemHandler = useCallback((e) => {
     setInputItem(e.target.value);

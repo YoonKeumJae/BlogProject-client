@@ -1,21 +1,19 @@
 import StyledIndex from '@styles/main/Index-styled';
 import Aside from '../Aside';
 import Header from '../Header';
-import Post from './detail-post/Post';
+import PostDetail from './detail-post/PostDetail';
 
-const Detail = () => {
-  return (
-    <StyledIndex>
-      {/* Header */}
-      <Header />
+const Detail = () => (
+  <StyledIndex>
+    {/* Header */}
+    <Header />
 
-      {/* Aside Section */}
-      <Aside />
+    {/* Aside Section */}
+    <Aside />
 
-      {/* Post Section */}
-      <Post />
-    </StyledIndex>
-  );
-};
+    {/* Post Section */}
+    <PostDetail />
+  </StyledIndex>
+);
 
 export default Detail;

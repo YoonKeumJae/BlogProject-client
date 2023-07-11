@@ -2,7 +2,7 @@ import StyledIndex from '@styles/main/Index-styled';
 
 import Header from './Header';
 import Aside from './Aside';
-import Content from './Content';
+import Posts from './Posts';
 
 const Index = () => (
   <StyledIndex>
@@ -13,7 +13,7 @@ const Index = () => (
     <Aside />
 
     {/* Main Section */}
-    <Content />
+    <Posts />
   </StyledIndex>
 );
 

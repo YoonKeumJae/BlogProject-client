@@ -76,7 +76,11 @@ const StyledPostContent = styled.div`
       font-size: 16px;
       color: #8d8d8d;
 
-      margin-bottom: 16px;
+      margin-bottom: 12px;
+
+      span {
+        margin: 0 4px;
+      }
     }
 
     .post-button-list {

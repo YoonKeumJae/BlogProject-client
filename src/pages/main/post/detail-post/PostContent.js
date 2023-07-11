@@ -1,53 +1,72 @@
-import DefaultProfileImage from '@assets/default-profile-image.png';
-import TestPostImage from '@assets/test-post-image.png';
+import { useCallback } from 'react';
+import { useNavigate } from 'react-router';
+import { useDispatch } from 'react-redux';
 
+import { deletePostAPI } from '@services/post-api';
+import { deletePost } from '@store/post-store';
+import DefaultProfileImage from '@assets/default-profile-image.png';
 import StyledPostContent from '@styles/main/post/detail-post/PostContent';
 
-const PostContent = () => {
+const PostContent = ({ post }) => {
+  const { id, category, title, username, date, tagList, content, like } = post;
+  const navigation = useNavigate();
+  const dispatch = useDispatch();
+
+  const onClickUpdateHandler = useCallback(() => {
+    navigation(`/update/${id}`, {
+      state: post,
+    });
+  }, [navigation, post, id]);
+
+  const onClickDeleteHandler = useCallback(async () => {
+    // eslint-disable-next-line no-restricted-globals
+    const isCheck = confirm('정말 삭제하시겠습니까?');
+
+    if (isCheck) {
+      dispatch(deletePost(id));
+      await deletePostAPI(id);
+      navigation('/');
+    }
+  }, [dispatch, navigation, id]);
+
   return (
     <StyledPostContent>
       {/* Post Title */}
       <div className='post-header'>
         <div className='category-box'>
-          <span>맛그당어</span>
+          <span>{category}</span>
         </div>
-        <h3 className='post-title'>RESONANCE</h3>
+        <h3 className='post-title'>{title}</h3>
         <div className='post-others'>
           <div className='post-user'>
             <img src={DefaultProfileImage} alt='default user profile image' />
-            <span>유저명</span>
+            <span>{username}</span>
           </div>
-          <div className='post-date'>2023.06.06</div>
+          <div className='post-date'>{date}</div>
         </div>
       </div>
 
       {/* Post Content */}
       <div className='post-content'>
         <div className='post-content-box'>
-          <img src={TestPostImage} alt='Test Image' />
-          <p>
-            {`공명카페에 갔다. I'm about to raise the roof 공명 그 안의
-            moves 퍼져가가네 like the news 잠들었던 널 깨워 힘은 더 커져 가 When
-            we raise the roof We're not in control 함께 있는 너 So we just get
-            bigger 힘은 더 커져 가 When we raise the roof Imma wake you up (They
-            sleeping) Imma wake you up (Sleeping) 난 가고 있어 우린 더 커져 가
-            When we raise the roof`}
-          </p>
-          <p>
-            {`Imma wake you up (They sleeping) Let me shake things up (Shake
-            shake) We can take it off 우린 더 커져 가 길을 쓸고 다닌 스트릿 이젠
-            그냥 클래식 (Blow that) 주머니는 헐렁했지 (I show that) 자 찍어
-            Cheese (Clack) 필름 속의 친구 다들 make V (You know that) Let's go
-            mob 너의 움직임이 그대로 여기로 Yeah Fresh off 다시 뜨거워진 New
-            decades 내 친구 같은 'friends' 보며 밤 새 (밤 새) 어쩌면 우린 같은
-            평행선 위에 들어 봐 DJ drops it (Drop)`}
-          </p>
+          {content.split('\\r\\n').map((line, index) => {
+            if (line === '') return null;
+
+            return (
+              <p key={index}>
+                {line}
+                <br />
+              </p>
+            );
+          })}
         </div>
       </div>
 
       {/* Post Footer */}
       <div className='post-footer'>
-        <div className='tag-box'>#공명 #레조넌스 #합정 #카페</div>
+        <div className='tag-box'>
+          {tagList && tagList.map((tag, idx) => <span key={idx}>#{tag}</span>)}
+        </div>
         <div className='post-button-list'>
           <button className='like-box'>
             <svg
@@ -62,11 +81,11 @@ const PostContent = () => {
                 fill='#8D8D8D'
               />
             </svg>
-            <span>21</span>
+            <span>{like}</span>
           </button>
           <div className='update-and-delete'>
-            <button>수정</button>
-            <button>삭제</button>
+            <button onClick={onClickUpdateHandler}>수정</button>
+            <button onClick={onClickDeleteHandler}>삭제</button>
           </div>
         </div>
       </div>
