@@ -16,13 +16,21 @@ export const getPostAPI = async () => {
   const postsData = [];
 
   Object.keys(responseData).forEach((key) => {
+    const commentArray = [];
+
+    if (responseData[key].comment !== undefined) {
+      Object.values(responseData[key].comment).forEach((c) =>
+        commentArray.push(c),
+      );
+    }
+
     postsData.push({
       id: key,
       username: responseData[key].username,
       category: responseData[key].category,
       title: responseData[key].title,
       content: responseData[key].content,
-      comment: responseData[key].comment,
+      comment: commentArray,
       tagList: responseData[key].tagList,
       like: responseData[key].like,
       date: responseData[key].date,
@@ -49,13 +57,21 @@ export const getQueryPostAPI = async (type, query) => {
   const postsData = [];
 
   Object.keys(responseData).forEach((key) => {
+    const commentArray = [];
+
+    if (responseData[key].comment !== undefined) {
+      Object.values(responseData[key].comment).forEach((c) =>
+        commentArray.push(c),
+      );
+    }
+
     postsData.push({
       id: key,
       username: responseData[key].username,
       category: responseData[key].category,
       title: responseData[key].title,
       content: responseData[key].content,
-      comment: responseData[key].comment,
+      comment: commentArray,
       tagList: responseData[key].tagList,
       like: responseData[key].like,
       date: responseData[key].date,
