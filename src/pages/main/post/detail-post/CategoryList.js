@@ -11,10 +11,15 @@ const CategoryList = ({ category }) => {
   const navigation = useNavigate();
   const { postId } = useParams();
 
-  const filterPost = posts.filter((post) => post.category === category);
+  const filterPost = posts
+    .filter((post) => post.category === category)
+    .reverse();
 
-  const renderedPost = filterPost.slice(8 * curPage - 8, 8 * curPage);
-  const totPage = filterPost.length / 8 + 1;
+  const renderedPost = filterPost.slice(4 * curPage - 4, 4 * curPage);
+  const totPage =
+    filterPost.length % 4 === 0
+      ? filterPost.length / 4
+      : filterPost.length / 4 + 1;
   const pageArray = [];
   for (let i = 1; i <= totPage; i += 1) pageArray.push(i);
 
