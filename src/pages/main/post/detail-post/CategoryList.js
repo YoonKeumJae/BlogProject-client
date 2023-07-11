@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router';
 
@@ -11,10 +11,30 @@ const CategoryList = ({ category }) => {
   const navigation = useNavigate();
   const { postId } = useParams();
 
-  const filterPost = posts.filter((post) => post.category === category);
+  useEffect(() => {
+    const selectedPostPage =
+      posts
+        .filter((post) => post.category === category)
+        .reverse()
+        .findIndex((post) => post.id === postId) + 1;
 
-  const renderedPost = filterPost.slice(8 * curPage - 8, 8 * curPage);
-  const totPage = filterPost.length / 8 + 1;
+    const calculatedPostPage =
+      selectedPostPage % 4 === 0
+        ? selectedPostPage / 4
+        : selectedPostPage / 4 + 1;
+
+    setCurPage(Math.round(calculatedPostPage));
+  }, [category, posts, postId]);
+
+  const filterPost = posts
+    .filter((post) => post.category === category)
+    .reverse();
+
+  const renderedPost = filterPost.slice(4 * curPage - 4, 4 * curPage);
+  const totPage =
+    filterPost.length % 4 === 0
+      ? filterPost.length / 4
+      : filterPost.length / 4 + 1;
   const pageArray = [];
   for (let i = 1; i <= totPage; i += 1) pageArray.push(i);
 

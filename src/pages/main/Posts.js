@@ -13,10 +13,12 @@ const Posts = () => {
   const posts = useSelector((state) => state.post.items);
 
   useEffect(() => {
-    const postInCategory = posts.filter(
-      (post) =>
-        post.category === clickedCategory || clickedCategory === '전체글',
-    );
+    const postInCategory = posts
+      .filter(
+        (post) =>
+          post.category === clickedCategory || clickedCategory === '전체글',
+      )
+      .reverse();
 
     setFilteredPost(postInCategory);
     setCurPage(1);
@@ -32,7 +34,10 @@ const Posts = () => {
   );
 
   const renderedPost = filteredPost.slice(8 * curPage - 8, 8 * curPage);
-  const totPage = filteredPost.length / 8 + 1;
+  const totPage =
+    filteredPost.length % 8 === 0
+      ? filteredPost.length / 8
+      : filteredPost.length / 8 + 1;
   const pageArray = [];
   for (let i = 1; i <= totPage; i += 1) pageArray.push(i);
 
