@@ -1,48 +1,65 @@
+import { useCallback, useState } from 'react';
+import { useDispatch } from 'react-redux';
+
 import DefaultProfileImage from '@assets/default-profile-image.png';
+import { createCommentAPI } from '@services/comment-api';
+import { createComment } from '@store/post-store';
 import StyledPostComment from '@styles/main/post/detail-post/PostComment-styled';
 
-const DUMMY_COMMENTS = [
-  {
-    id: 'comment1',
-    type: 'comment',
-    profile: '',
-    username: '유저명',
-    comment: '댓글 내용입니다.',
-    date: '2023.06.06 09:13',
-  },
-  {
-    id: 'comment2',
-    type: 'coc',
-    profile: '',
-    username: '유저명',
-    comment: '댓글 내용입니다.',
-    date: '2023.06.06 09:13',
-  },
-  {
-    id: 'comment3',
-    type: 'comment',
-    profile: '',
-    username: '유저명',
-    comment: '댓글 내용입니다.',
-    date: '2023.06.06 09:13',
-  },
-];
+const PostComment = ({ postId, username, comments }) => {
+  const [enteredContent, setEnteredContent] = useState('');
+  // const [isReply, setIsReply] = useState(false);
 
-const PostComment = () => {
+  const dispatch = useDispatch();
+
+  const onInputCommentHandler = useCallback(
+    (e) => setEnteredContent(e.target.value),
+    [],
+  );
+
+  const createCommentHandler = useCallback(
+    async (e) => {
+      e.preventDefault();
+
+      if (enteredContent.trim().length === 0) return;
+
+      const date = new Date();
+      const enteredDate = `${date.getFullYear()}.${
+        date.getMonth() + 1
+      }.${date.getDate()} ${date.getHours()}.${date.getMinutes()}.${date.getSeconds()}`;
+
+      const commentForm = {
+        id: `comment-${Math.floor(Math.random() * 65565)}`,
+        type: 'comment',
+        profile: '',
+        username,
+        content: enteredContent,
+        date: enteredDate,
+      };
+
+      dispatch(createComment({ postId, commentForm }));
+      await createCommentAPI(postId, commentForm);
+      setEnteredContent('');
+    },
+    [enteredContent, postId, username, dispatch],
+  );
+
   return (
     <StyledPostComment>
       <div className='post-comment'>
         <div className='comment-title'>
           <h3>댓글</h3>
-          <span>{DUMMY_COMMENTS.length}</span>
+          <span>{comments.length}</span>
         </div>
         <div className='comment-list'>
-          {DUMMY_COMMENTS.map((comment) => (
+          {comments.map((comment) => (
             <div
               key={comment.id}
-              className={`user-comment ${comment.type === 'coc' && 'user-coc'}`}
+              className={`user-comment ${
+                comment.type === 'reply' && 'user-coc'
+              }`}
             >
-              {comment.type === 'coc' && (
+              {comment.type === 'reply' && (
                 <svg
                   className='coc-svg'
                   width='18'
@@ -78,7 +95,7 @@ const PostComment = () => {
                 <span>{comment.username}</span>
               </div>
               <div className='comment-main'>
-                <p>{comment.comment}</p>
+                <p>{comment.content}</p>
                 <div className='comment-date'>{comment.date}</div>
               </div>
               <div className='comment-button'>
@@ -104,8 +121,13 @@ const PostComment = () => {
       </div>
 
       {/* Post Comment Form */}
-      <form className='post-comment-form'>
-        <textarea className='input-form' placeholder='댓글을 입력하세요.' />
+      <form className='post-comment-form' onSubmit={createCommentHandler}>
+        <textarea
+          className='input-form'
+          placeholder='댓글을 입력하세요.'
+          value={enteredContent}
+          onChange={onInputCommentHandler}
+        />
         <button className='submit-button'>등록</button>
       </form>
     </StyledPostComment>

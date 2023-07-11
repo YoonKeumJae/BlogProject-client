@@ -19,7 +19,11 @@ const PostDetail = () => {
       <PostContent post={renderPost[0]} />
 
       {/* Post Comment */}
-      <PostComment />
+      <PostComment
+        postId={renderPost[0].id}
+        username={renderPost[0].username}
+        comments={renderPost[0].comment}
+      />
 
       {/* Category List */}
       <CategoryList category={renderPost[0].category} />
