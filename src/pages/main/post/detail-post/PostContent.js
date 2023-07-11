@@ -1,16 +1,28 @@
 import { useCallback } from 'react';
 import { useNavigate } from 'react-router';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { deletePostAPI } from '@services/post-api';
 import { deletePost } from '@store/post-store';
 import DefaultProfileImage from '@assets/default-profile-image.png';
 import StyledPostContent from '@styles/main/post/detail-post/PostContent';
+import { replaceCategory } from '../../../../store/category-store';
+import { removeAssignCategoryAPI } from '../../../../services/category-api';
 
 const PostContent = ({ post }) => {
   const { id, category, title, username, date, tagList, content, like } = post;
+
+  const categories = useSelector((state) => state.category.items);
   const navigation = useNavigate();
   const dispatch = useDispatch();
+
+  const removeAssignCategoryHandler = useCallback(() => {
+    const updatedCategory = categories.map((c) =>
+      c.name === category || c.id === '0' ? { ...c, count: c.count - 1 } : c,
+    );
+
+    return updatedCategory;
+  }, [category, categories]);
 
   const onClickUpdateHandler = useCallback(() => {
     navigation(`/update/${id}`, {
@@ -22,12 +34,16 @@ const PostContent = ({ post }) => {
     // eslint-disable-next-line no-restricted-globals
     const isCheck = confirm('정말 삭제하시겠습니까?');
 
+    const updatedCategory = removeAssignCategoryHandler();
+
     if (isCheck) {
       dispatch(deletePost(id));
+      dispatch(replaceCategory(updatedCategory));
       await deletePostAPI(id);
+      await removeAssignCategoryAPI(updatedCategory);
       navigation('/');
     }
-  }, [dispatch, navigation, id]);
+  }, [removeAssignCategoryHandler, dispatch, navigation, id]);
 
   return (
     <StyledPostContent>

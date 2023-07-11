@@ -5,12 +5,14 @@ const CHANGE_CATEGORY = 'category/CHANGE';
 const CREATE_CATEGORY = 'category/CREATE';
 const UPDATE_CATEGORY = 'category/UPDATE';
 const DELETE_CATEGORY = 'category/DELETE';
+const REPLACE_CATEGORY = 'category/ASSIGN';
 
 export const initCategories = createAction(INIT_CATEGORIES);
 export const changeCategory = createAction(CHANGE_CATEGORY);
 export const createCategory = createAction(CREATE_CATEGORY);
 export const updateCategory = createAction(UPDATE_CATEGORY);
 export const deleteCategory = createAction(DELETE_CATEGORY);
+export const replaceCategory = createAction(REPLACE_CATEGORY);
 
 const initialCategory = {
   current: '전체글',
@@ -40,6 +42,10 @@ const categoryReducer = handleActions(
     [DELETE_CATEGORY]: (state, action) => ({
       ...state,
       items: state.items.filter((category) => category.id !== action.payload),
+    }),
+    [REPLACE_CATEGORY]: (state, action) => ({
+      ...state,
+      items: action.payload,
     }),
   },
   initialCategory,
