@@ -18,9 +18,18 @@ export const getPostAPI = async () => {
   Object.keys(responseData).forEach((key) => {
     const commentArray = [];
 
-    if (responseData[key].comment !== undefined) {
-      Object.values(responseData[key].comment).forEach((c) =>
-        commentArray.push(c),
+    const responseComment = responseData[key].comment;
+
+    if (responseComment !== undefined) {
+      Object.keys(responseComment).forEach((key2) =>
+        commentArray.push({
+          id: key2,
+          type: responseComment[key2].type,
+          profile: responseComment[key2].profile,
+          username: responseComment[key2].username,
+          content: responseComment[key2].content,
+          date: responseComment[key2].date,
+        }),
       );
     }
 
@@ -59,9 +68,18 @@ export const getQueryPostAPI = async (type, query) => {
   Object.keys(responseData).forEach((key) => {
     const commentArray = [];
 
-    if (responseData[key].comment !== undefined) {
-      Object.values(responseData[key].comment).forEach((c) =>
-        commentArray.push(c),
+    const responseComment = responseData[key].comment;
+
+    if (responseComment !== undefined) {
+      Object.keys(responseComment).forEach((key2) =>
+        commentArray.push({
+          id: key2,
+          type: responseComment[key2].type,
+          profile: responseComment[key2].profile,
+          username: responseComment[key2].username,
+          content: responseComment[key2].content,
+          date: responseComment[key2].date,
+        }),
       );
     }
 
