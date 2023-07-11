@@ -37,8 +37,8 @@ const CategoryList = ({ category }) => {
       {/* Post Item List */}
       <div className='category-item-list'>
         {renderedPost.map((item) => {
-          let commentCount = '';
-          if (item.comment) commentCount = `(${item.comment.length})`;
+          const commentCount =
+            item.comment.length !== 0 ? `(${item.comment.length})` : '';
 
           return (
             <div

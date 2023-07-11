@@ -2,12 +2,12 @@ import { useCallback } from 'react';
 import { useNavigate } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { deletePostAPI } from '@services/post-api';
-import { deletePost } from '@store/post-store';
 import DefaultProfileImage from '@assets/default-profile-image.png';
+import { removeAssignCategoryAPI } from '@services/category-api';
+import { deletePostAPI } from '@services/post-api';
+import { replaceCategory } from '@store/category-store';
+import { deletePost } from '@store/post-store';
 import StyledPostContent from '@styles/main/post/detail-post/PostContent';
-import { replaceCategory } from '../../../../store/category-store';
-import { removeAssignCategoryAPI } from '../../../../services/category-api';
 
 const PostContent = ({ post }) => {
   const { id, category, title, username, date, tagList, content, like } = post;
