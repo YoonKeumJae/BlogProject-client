@@ -16,13 +16,30 @@ export const getPostAPI = async () => {
   const postsData = [];
 
   Object.keys(responseData).forEach((key) => {
+    const commentArray = [];
+
+    const responseComment = responseData[key].comment;
+
+    if (responseComment !== undefined) {
+      Object.keys(responseComment).forEach((key2) =>
+        commentArray.push({
+          id: key2,
+          type: responseComment[key2].type,
+          profile: responseComment[key2].profile,
+          username: responseComment[key2].username,
+          content: responseComment[key2].content,
+          date: responseComment[key2].date,
+        }),
+      );
+    }
+
     postsData.push({
       id: key,
       username: responseData[key].username,
       category: responseData[key].category,
       title: responseData[key].title,
       content: responseData[key].content,
-      comment: responseData[key].comment,
+      comment: commentArray,
       tagList: responseData[key].tagList,
       like: responseData[key].like,
       date: responseData[key].date,
@@ -49,13 +66,30 @@ export const getQueryPostAPI = async (type, query) => {
   const postsData = [];
 
   Object.keys(responseData).forEach((key) => {
+    const commentArray = [];
+
+    const responseComment = responseData[key].comment;
+
+    if (responseComment !== undefined) {
+      Object.keys(responseComment).forEach((key2) =>
+        commentArray.push({
+          id: key2,
+          type: responseComment[key2].type,
+          profile: responseComment[key2].profile,
+          username: responseComment[key2].username,
+          content: responseComment[key2].content,
+          date: responseComment[key2].date,
+        }),
+      );
+    }
+
     postsData.push({
       id: key,
       username: responseData[key].username,
       category: responseData[key].category,
       title: responseData[key].title,
       content: responseData[key].content,
-      comment: responseData[key].comment,
+      comment: commentArray,
       tagList: responseData[key].tagList,
       like: responseData[key].like,
       date: responseData[key].date,

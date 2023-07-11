@@ -11,7 +11,6 @@ const PostDetail = () => {
   const renderPost = posts.filter((post) => post.id === postId);
 
   if (renderPost.length === 0) {
-    alert('존재하지 않는 게시글입니다.');
     return null;
   }
 
@@ -20,7 +19,11 @@ const PostDetail = () => {
       <PostContent post={renderPost[0]} />
 
       {/* Post Comment */}
-      <PostComment />
+      <PostComment
+        postId={renderPost[0].id}
+        username={renderPost[0].username}
+        comments={renderPost[0].comment}
+      />
 
       {/* Category List */}
       <CategoryList category={renderPost[0].category} />

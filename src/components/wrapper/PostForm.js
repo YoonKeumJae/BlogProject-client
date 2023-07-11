@@ -43,7 +43,7 @@ const PostForm = ({ post, onSubmit }) => {
   );
 
   const submitPostHandler = useCallback(() => {
-    const { id } = post;
+    const id = post ? post.id : `content-${Math.floor(Math.random() * 65565)}`;
 
     onSubmit({
       id,

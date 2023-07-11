@@ -48,6 +48,41 @@ const StyledPostComment = styled.div`
           padding-left: 32px;
           margin: 2px 0;
 
+          .comment-update-form {
+            position: relative;
+
+            padding-left: 12px;
+            border: 1px solid #ccc;
+
+            input {
+              width: 100%;
+              height: 54px;
+
+              padding: 0;
+              border: none;
+
+              &:focus {
+                outline: none;
+              }
+            }
+
+            .button-box {
+              position: absolute;
+              right: 15px;
+              bottom: 5px;
+
+              button {
+                padding: 4px 8px;
+                color: #ccc;
+
+                &:hover {
+                  font-weight: 700;
+                  color: #000000;
+                }
+              }
+            }
+          }
+
           .comment-date {
             margin: 8px 0;
 
@@ -64,6 +99,33 @@ const StyledPostComment = styled.div`
           top: 50%;
           right: 0;
           transform: translate(0, -50%);
+
+          .setting-button {
+            display: flex;
+            flex-direction: column;
+
+            position: absolute;
+            top: -50px;
+            right: -10px;
+
+            text-align: right;
+
+            border: 1px solid #000000;
+
+            background-color: #ccc;
+
+            button {
+              padding: 2px 4px;
+
+              &:first-child {
+                border-bottom: 1px solid #000000;
+              }
+
+              &:hover {
+                background-color: #575757;
+              }
+            }
+          }
         }
       }
 

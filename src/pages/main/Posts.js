@@ -1,9 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useLocation } from 'react-router';
+import { useSelector } from 'react-redux';
 
-import { getPostAPI } from '@services/post-api';
-import { initPost } from '@store/post-store';
 import StyledPosts from '@styles/main/Posts-styled';
 import Header from './main-content/Header';
 import PostCard from './main-content/PostCard';
@@ -14,18 +11,6 @@ const Posts = () => {
 
   const clickedCategory = useSelector((state) => state.category.current);
   const posts = useSelector((state) => state.post.items);
-  const dispatch = useDispatch();
-  const location = useLocation();
-
-  useEffect(() => {
-    const getPost = async () => {
-      const data = await getPostAPI();
-
-      dispatch(initPost(data));
-    };
-
-    if (location.search.length === 0) getPost();
-  }, [location, dispatch]);
 
   useEffect(() => {
     const postInCategory = posts.filter(

@@ -26,7 +26,7 @@ const Update = () => {
       if (enteredContent.trim().length === 0) return;
 
       const date = new Date();
-      const enteredDate = `${date.getFullYear()}.${date.getMonth()}.${date.getDate()} ${date.getHours()}.${date.getMinutes()}.${date.getSeconds()}`;
+      const enteredDate = `${date.getFullYear()}.${date.getMonth()}.${date.getDate()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
 
       const formattedContent = enteredContent.replace(regLineBreak, '\\r\\n');
 
