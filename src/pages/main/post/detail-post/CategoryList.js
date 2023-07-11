@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router';
 
@@ -10,6 +10,21 @@ const CategoryList = ({ category }) => {
 
   const navigation = useNavigate();
   const { postId } = useParams();
+
+  useEffect(() => {
+    const selectedPostPage =
+      posts
+        .filter((post) => post.category === category)
+        .reverse()
+        .findIndex((post) => post.id === postId) + 1;
+
+    const calculatedPostPage =
+      selectedPostPage % 4 === 0
+        ? selectedPostPage / 4
+        : selectedPostPage / 4 + 1;
+
+    setCurPage(Math.round(calculatedPostPage));
+  }, [category, posts, postId]);
 
   const filterPost = posts
     .filter((post) => post.category === category)
