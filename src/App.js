@@ -1,6 +1,6 @@
 import StyledApp from './styles/App-styled';
+import Signin from './pages/Auth/Index';
 
 const App = () => <StyledApp></StyledApp>;
->>>>>>> develop
 
 export default App;
