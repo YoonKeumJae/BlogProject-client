@@ -1,11 +1,25 @@
 import styled from 'styled-components';
 
-const StyledSearch = styled.div`
+const StyledSearch = styled.form`
   .search-box {
     position: relative;
 
     width: 236px;
     border-bottom: 1px solid #000000;
+
+    .search-type {
+      position: absolute;
+      left: -62px;
+
+      border: none;
+      border-bottom: 1px solid #000000;
+
+      padding: 5px;
+
+      &:focus {
+        outline: none;
+      }
+    }
 
     .input-query {
       width: inherit;

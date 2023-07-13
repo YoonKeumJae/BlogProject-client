@@ -1,24 +1,73 @@
+import { useState, useCallback, useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router';
+
+import TagBox from '@components/wrapper/TagBox';
+import Header from '@pages/main/Header';
 import StyledIndex from '@styles/main/Index-styled';
 import StyledCreate from '@styles/main/post/Create-styled';
-import Header from '../Header';
 
-const DUMMY_CATEGORYS = [
-  {
-    id: 'category1',
-    name: '전체 글',
-    value: '전체 글',
-  },
-  {
-    id: 'category2',
-    name: '맛그당어',
-  },
-  {
-    id: 'category3',
-    name: '노래',
-  },
-];
+const PostForm = ({ post, onSubmit }) => {
+  const [enteredCategory, setEnteredCategory] = useState('');
+  const [enteredTitle, setEnteredTitle] = useState('');
+  const [enteredContent, setEnteredContent] = useState('');
+  const [enteredTagList, setEnteredTagList] = useState([]);
 
-const Create = () => {
+  const categories = useSelector((state) => state.category.items);
+  const navigation = useNavigate();
+
+  useEffect(() => {
+    if (post) {
+      const { category, title, content, tagList } = post;
+
+      const formattedContent = content.replace(/\\r\\n/g, '\r\n');
+
+      setEnteredCategory(category);
+      setEnteredTitle(title);
+      setEnteredContent(formattedContent);
+      setEnteredTagList(tagList);
+    }
+  }, [post]);
+
+  const onInputCategoryHandler = useCallback(
+    (e) => setEnteredCategory(e.target.value),
+    [],
+  );
+  const onInputTitleHandler = useCallback(
+    (e) => setEnteredTitle(e.target.value),
+    [],
+  );
+  const onInputContentHandler = useCallback(
+    (e) => setEnteredContent(e.target.value),
+    [],
+  );
+
+  const submitPostHandler = useCallback(() => {
+    const id = post ? post.id : `content-${Math.floor(Math.random() * 65565)}`;
+
+    onSubmit({
+      id,
+      enteredCategory,
+      enteredTitle,
+      enteredContent,
+      enteredTagList,
+    });
+  }, [
+    onSubmit,
+    post,
+    enteredCategory,
+    enteredTitle,
+    enteredContent,
+    enteredTagList,
+  ]);
+
+  const cancelPostHandler = useCallback(() => {
+    setEnteredCategory('');
+    setEnteredTitle('');
+    setEnteredContent('');
+    navigation('/');
+  }, [navigation]);
+
   return (
     <StyledIndex>
       {/* Header */}
@@ -26,26 +75,39 @@ const Create = () => {
 
       {/* Create Post Section */}
       <StyledCreate>
-        <form className='post-form'>
+        <div className='post-form'>
           <div className='header'>
-            <select className='select-category'>
-              <option value='' selected>
+            <select
+              className='select-category'
+              onChange={onInputCategoryHandler}
+              value={enteredCategory}
+            >
+              <option value='' defaultValue>
                 카테고리
               </option>
-              {DUMMY_CATEGORYS.map((category) => (
-                <option key={category.id} value={category.name}>
-                  {category.name}
-                </option>
-              ))}
+              {categories.map((c, idx) => {
+                if (idx === 0) return null;
+
+                return (
+                  <option key={c.id} value={c.name}>
+                    {c.name}
+                  </option>
+                );
+              })}
             </select>
 
             <div className='post-title'>
-              <input type='text' placeholder='제목을 입력하세요.' />
+              <input
+                type='text'
+                placeholder='제목을 입력하세요.'
+                value={enteredTitle}
+                onChange={onInputTitleHandler}
+              />
             </div>
           </div>
           <div className='body'>
             <div className='post-toolbar'>
-              <button>
+              <button type='button'>
                 <svg
                   width='24'
                   height='24'
@@ -60,7 +122,7 @@ const Create = () => {
                 </svg>
                 <span>사진</span>
               </button>
-              <button>
+              <button type='button'>
                 <svg
                   width='24'
                   height='24'
@@ -84,7 +146,7 @@ const Create = () => {
                 </svg>
                 <span>동영상</span>
               </button>
-              <button>
+              <button type='button'>
                 <svg
                   width='24'
                   height='24'
@@ -106,7 +168,7 @@ const Create = () => {
                 </svg>
                 <span>파일</span>
               </button>
-              <button>
+              <button type='button'>
                 <svg
                   width='24'
                   height='24'
@@ -126,16 +188,19 @@ const Create = () => {
               <textarea
                 className='content-box'
                 placeholder='내용을 입력하세요.'
+                value={enteredContent}
+                onChange={onInputContentHandler}
               />
             </div>
           </div>
           <div className='footer'>
-            <div className='tag-box'>
-              <span>태그</span>
-              <input type='text' placeholder='#태그 입력' />
-            </div>
+            <TagBox tagList={enteredTagList} setTagList={setEnteredTagList} />
             <div className='post-button-container'>
-              <button type='button' className='cancel'>
+              <button
+                type='button'
+                className='cancel'
+                onClick={cancelPostHandler}
+              >
                 취소
               </button>
               <div className='create-box'>
@@ -143,14 +208,16 @@ const Create = () => {
                   <span>임시 저장</span>
                   <span className='count'>0</span>
                 </button>
-                <button className='create'>등록</button>
+                <button className='create' onClick={submitPostHandler}>
+                  등록
+                </button>
               </div>
             </div>
           </div>
-        </form>
+        </div>
       </StyledCreate>
     </StyledIndex>
   );
 };
 
-export default Create;
+export default PostForm;

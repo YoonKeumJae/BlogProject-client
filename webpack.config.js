@@ -1,10 +1,16 @@
 const path = require('path');
+const dotenv = require('dotenv');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 const ESLintPlugin = require('eslint-webpack-plugin');
 const ImageMinimizerPlugin = require('image-minimizer-webpack-plugin');
+
+// 환경변수 가져오기
+const env = JSON.stringify(
+  dotenv.config({ path: path.resolve(__dirname, '.env') }).parsed,
+);
 
 // 번들링 모드 설정
 const isProduction = process.env.NODE_ENV === 'production';
@@ -100,6 +106,9 @@ const config = {
       process: 'process/browser',
     }),
     new webpack.ProgressPlugin(),
+    new webpack.DefinePlugin({
+      'process.env': env,
+    }),
     // 최소 번들 크기 설정
     new webpack.optimize.MinChunkSizePlugin({
       minChunkSize: 20000,
