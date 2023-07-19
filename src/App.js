@@ -8,17 +8,17 @@ import { getCategoriesAPI } from './services/category-api';
 import { initCategories } from './store/category-store';
 import StyledApp from './styles/App-styled';
 
-import RootLayout from './pages/RootLayout';
+import RootLayout from './layouts/RootLayout';
 import ErrorPage from './pages/Error';
 import HomePage from './pages/Home';
 import CreatePage from './pages/Create';
 import UpdatePage from './pages/Update';
 import DetailPage from './pages/Detail';
+import FilterPostsPage from './pages/FilterPosts';
 
-import AuthLayout from './pages/AuthLayout';
+import AuthLayout from './layouts/AuthLayout';
 import SignInPage from './pages/SignIn';
 import SignUpPage from './pages/SignUp';
-import FilterPostsPage from './pages/FilterPosts';
 
 const router = createBrowserRouter([
   {
