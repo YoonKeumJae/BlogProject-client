@@ -1,11 +1,11 @@
 import { Link } from 'react-router-dom';
 
 import DefaultProfileImage from '@assets/default-profile-image.png';
-import StyledHeader from '@styles/main/Header-styled';
+import StyledMainHeader from '@styles/components/root/MainHeader-styled';
 
 const MainHeader = () => {
   return (
-    <StyledHeader>
+    <StyledMainHeader>
       {/* Global Navigation */}
       <nav className='gnb'>
         <Link to='/'>
@@ -31,7 +31,7 @@ const MainHeader = () => {
 
       {/* Blog Title */}
       <h2 className='blog-title'>블로그 명</h2>
-    </StyledHeader>
+    </StyledMainHeader>
   );
 };
 

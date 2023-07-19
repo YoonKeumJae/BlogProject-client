@@ -1,10 +1,10 @@
+import DefaultProfileImage from '@assets/default-profile-image.png';
 import Category from '@components/home/Category';
 import Search from '@components/home/Search';
-import DefaultProfileImage from '@assets/default-profile-image.png';
-import StyledAside from '@styles/main/Aside-styled';
+import StyledMainAside from '@styles/components/root/MainAside-styled';
 
 const MainAside = () => (
-  <StyledAside>
+  <StyledMainAside>
     {/* User Profile */}
     <div className='user-profile'>
       <img
@@ -24,7 +24,7 @@ const MainAside = () => (
       {/* Search */}
       <Search />
     </div>
-  </StyledAside>
+  </StyledMainAside>
 );
 
 export default MainAside;

@@ -20,14 +20,15 @@ const StyledPosts = styled.section`
 
     .clicked-page {
       font-size: 16px;
-      font-weight: 700;
+      font-weight: 600;
+      color: #000000;
     }
 
-    a {
+    span {
       margin: 0 8px;
 
       cursor: pointer;
-      color: #ccc;
+      color: #cdcdcd;
     }
   }
 `;

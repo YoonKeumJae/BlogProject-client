@@ -1,9 +1,10 @@
 import { useCallback, useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 
 import DefaultProfileImage from '@assets/default-profile-image.png';
 import { updateCommentAPI, deleteCommentAPI } from '@services/comment-api';
 import { updateComment, deleteComment } from '@store/post-store';
-import { useDispatch } from 'react-redux';
+import StyledCommentItem from '@styles/components/detail/CommentItem-styled';
 
 const CommentItem = ({ postId, comment, isUpdate, onUpdateMode }) => {
   const [enteredContent, setEnteredContent] = useState('');
@@ -50,10 +51,10 @@ const CommentItem = ({ postId, comment, isUpdate, onUpdateMode }) => {
   }, [dispatch, postId, commentId]);
 
   return (
-    <div className={`user-comment ${type === 'reply' && 'user-coc'}`}>
+    <StyledCommentItem type={type}>
       {type === 'reply' && (
         <svg
-          className='coc-svg'
+          className='reply-svg'
           width='18'
           height='12'
           viewBox='0 0 32 30'
@@ -142,7 +143,7 @@ const CommentItem = ({ postId, comment, isUpdate, onUpdateMode }) => {
           )}
         </div>
       )}
-    </div>
+    </StyledCommentItem>
   );
 };
 

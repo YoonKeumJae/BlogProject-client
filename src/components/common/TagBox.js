@@ -1,5 +1,7 @@
 import { useState, useCallback } from 'react';
 
+import StyledTagBox from '@styles/components/common/TagBox-styled';
+
 const TagBox = ({ tagList, setTagList }) => {
   const [enteredTag, setEnteredTag] = useState('');
 
@@ -40,7 +42,7 @@ const TagBox = ({ tagList, setTagList }) => {
     setTagList(tagList.filter((val, idx) => idx !== index));
 
   return (
-    <>
+    <StyledTagBox>
       <div className='tag-list'>
         {tagList &&
           tagList.map((tag, idx) => (
@@ -62,7 +64,7 @@ const TagBox = ({ tagList, setTagList }) => {
           onChange={onInputTagHandler}
         />
       </form>
-    </>
+    </StyledTagBox>
   );
 };
 

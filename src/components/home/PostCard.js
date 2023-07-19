@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router';
 
 import DefaultPostImage from '@assets/default-post-image.png';
-import StyledPostCard from '@styles/main/main-content/PostCard-styled';
+import StyledPostCard from '@styles/components/home/PostCard-styled';
 
 const PostCard = ({ post }) => {
   const { id, title, content, date } = post;

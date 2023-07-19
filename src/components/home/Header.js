@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import StyledHeader from '@styles/main/main-content/Header-styled';
+import StyledHeader from '@styles/components/home/Header-styled';
 
 const Header = () => {
   const clickedCategory = useSelector((state) => state.category.current);

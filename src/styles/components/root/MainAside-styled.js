@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const StyledAside = styled.section`
+const StyledMainAside = styled.section`
   display: flex;
   flex-direction: row;
 
@@ -32,4 +32,4 @@ const StyledAside = styled.section`
   }
 `;
 
-export default StyledAside;
+export default StyledMainAside;

@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 
 import { createCommentAPI } from '@services/comment-api';
 import { createComment } from '@store/post-store';
-import StyledPostComment from '@styles/main/post/detail-post/PostComment-styled';
+import StyledPostComment from '@styles/components/detail/PostComment-styled';
 import CommentItem from './CommentItem';
 
 const PostComment = ({ postId, username, comments }) => {

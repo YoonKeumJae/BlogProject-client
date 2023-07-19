@@ -14,7 +14,7 @@ import {
   deleteCategory,
 } from '@store/category-store';
 import { updatePostCategory } from '@store/post-store';
-import StyledCategory from '@styles/main/main-aside/Category-styled';
+import StyledCategory from '@styles/components/home/Category-styled';
 import CategoryItem from './CategoryItem';
 
 const Category = () => {

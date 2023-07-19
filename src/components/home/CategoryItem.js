@@ -6,6 +6,7 @@ import { DEFAULT, SETTING, UPDATE } from '@constants/category-mode';
 import { getPostAPI } from '@services/post-api';
 import { replacePost } from '@store/post-store';
 import { changeCategory } from '@store/category-store';
+import StyledCategoryItem from '@styles/components/home/CategoryItem-styled';
 
 const CategoryItem = ({
   id,
@@ -63,7 +64,7 @@ const CategoryItem = ({
   );
 
   return (
-    <div className='category'>
+    <StyledCategoryItem>
       <div className='item'>
         <div className='item-button' onClick={clickCategoryHandler}>
           <svg
@@ -127,7 +128,7 @@ const CategoryItem = ({
           </button>
         </div>
       )}
-    </div>
+    </StyledCategoryItem>
   );
 };
 

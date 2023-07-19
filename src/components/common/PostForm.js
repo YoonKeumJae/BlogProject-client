@@ -4,8 +4,7 @@ import { useNavigate } from 'react-router';
 
 import Divider from '@styles/common/Divider';
 import TagBox from '@components/common/TagBox';
-import StyledIndex from '@styles/main/Index-styled';
-import StyledCreate from '@styles/main/post/Create-styled';
+import StyledPostForm from '@styles/components/common/PostForm-styled';
 
 const PostForm = ({ post, onSubmit }) => {
   const [enteredCategory, setEnteredCategory] = useState('');
@@ -53,11 +52,11 @@ const PostForm = ({ post, onSubmit }) => {
   };
 
   return (
-    <StyledIndex>
+    <>
       <Divider />
 
       {/* Create Post Section */}
-      <StyledCreate>
+      <StyledPostForm>
         <div className='post-form'>
           <div className='header'>
             <select
@@ -198,8 +197,8 @@ const PostForm = ({ post, onSubmit }) => {
             </div>
           </div>
         </div>
-      </StyledCreate>
-    </StyledIndex>
+      </StyledPostForm>
+    </>
   );
 };
 

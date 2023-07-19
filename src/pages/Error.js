@@ -1,6 +1,6 @@
 import MainHeader from '@components/root/MainHeader';
 import Aside from '@components/root/MainAside';
-import StyledError from './Error-styled';
+import StyledError from '@styles/pages/Error-styled';
 
 const ErrorPage = () => {
   return (

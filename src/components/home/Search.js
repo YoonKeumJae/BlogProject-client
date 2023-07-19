@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router';
 
 import { getQueryPostAPI } from '@services/post-api';
 import { replacePost } from '@store/post-store';
-import StyledSearch from '@styles/main/main-aside/Search-styled';
+import StyledSearch from '@styles/components/home/Search-styled';
 
 const Search = () => {
   const [inputQueryType, setInputQueryType] = useState('');

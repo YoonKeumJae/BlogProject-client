@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router';
 
-import StyledCategoryList from '@styles/main/post/detail-post/CategoryList-styled';
+import StyledCategoryList from '@styles/components/detail/CategoryList-styled';
 
 const CategoryList = ({ category }) => {
   const [curPage, setCurPage] = useState(1);

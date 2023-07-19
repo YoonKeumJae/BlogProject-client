@@ -7,7 +7,7 @@ import { removeAssignCategoryAPI } from '@services/category-api';
 import { deletePostAPI } from '@services/post-api';
 import { replaceCategory } from '@store/category-store';
 import { deletePost } from '@store/post-store';
-import StyledPostContent from '@styles/main/post/detail-post/PostContent';
+import StyledPostContent from '@styles/components/detail/PostContent-styled';
 
 const PostContent = ({ post }) => {
   const { id, category, title, username, date, tagList, content, like } = post;

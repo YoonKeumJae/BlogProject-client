@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const StyledHeader = styled.header`
+const StyledMainHeader = styled.header`
   position: relative;
 
   padding: 64px 0 16px;
@@ -49,4 +49,4 @@ const StyledHeader = styled.header`
   }
 `;
 
-export default StyledHeader;
+export default StyledMainHeader;

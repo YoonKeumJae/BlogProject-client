@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
 
-import StyledPosts from '@styles/main/Posts-styled';
+import StyledPosts from '@styles/components/home/Posts-styled';
 import Header from './Header';
 import PostCard from './PostCard';
 

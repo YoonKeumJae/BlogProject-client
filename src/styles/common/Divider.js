@@ -1,7 +1,5 @@
 import styled from 'styled-components';
 
-const Divider = styled.div`
-  border-bottom: 1px solid #ccc;
-`;
+const Divider = styled.hr``;
 
 export default Divider;
