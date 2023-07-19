@@ -14,9 +14,11 @@ import HomePage from './pages/Home';
 import CreatePage from './pages/Create';
 import UpdatePage from './pages/Update';
 import DetailPage from './pages/Detail';
+
 import AuthLayout from './pages/AuthLayout';
 import SignInPage from './pages/SignIn';
 import SignUpPage from './pages/SignUp';
+import FilterPostsPage from './pages/FilterPosts';
 
 const router = createBrowserRouter([
   {
@@ -25,6 +27,7 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
     children: [
       { index: true, element: <HomePage /> },
+      { path: 'search?', element: <FilterPostsPage /> },
       { path: 'create', element: <CreatePage /> },
       {
         path: 'post/:postId',
@@ -39,7 +42,6 @@ const router = createBrowserRouter([
           },
         ],
       },
-      // { path: 'search?', element: <Main /> },
     ],
   },
   {
