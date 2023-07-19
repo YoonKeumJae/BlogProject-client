@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 const StyledCreate = styled.section`
   width: 800px;
-  margin: 0 auto;
+  margin: 32px auto 0;
 
   .post-form {
     margin: 0 24px;

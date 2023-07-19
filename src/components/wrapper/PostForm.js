@@ -3,7 +3,6 @@ import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
 
 import TagBox from '@components/wrapper/TagBox';
-import Header from '@pages/main/Header';
 import StyledIndex from '@styles/main/Index-styled';
 import StyledCreate from '@styles/main/post/Create-styled';
 
@@ -70,9 +69,6 @@ const PostForm = ({ post, onSubmit }) => {
 
   return (
     <StyledIndex>
-      {/* Header */}
-      <Header />
-
       {/* Create Post Section */}
       <StyledCreate>
         <div className='post-form'>

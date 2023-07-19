@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Routes, Route } from 'react-router';
+import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
 import { getPostAPI } from '@services/post-api';
@@ -7,10 +7,37 @@ import { initPost } from '@store/post-store';
 import { getCategoriesAPI } from './services/category-api';
 import { initCategories } from './store/category-store';
 import StyledApp from './styles/App-styled';
-import Main from './pages/main/Index';
-import Create from './pages/create/Create';
-import Update from './pages/update/Update';
-import Detail from './pages/main/post/Detail';
+
+import RootLayout from './pages/RootLayout';
+import ErrorPage from './pages/Error';
+import HomePage from './pages/Home';
+import CreatePage from './pages/Create';
+import UpdatePage from './pages/Update';
+import DetailPage from './pages/Detail';
+import SignInPage from './pages/SignIn';
+import SignUpPage from './pages/SignUp';
+
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <RootLayout />,
+    errorElement: <ErrorPage />,
+    children: [
+      { index: true, element: <HomePage /> },
+      { path: 'create', element: <CreatePage /> },
+      { path: 'update/:post', element: <UpdatePage /> },
+      { path: 'post/:postId', element: <DetailPage /> },
+      // { path: 'search?', element: <Main /> },
+    ],
+  },
+  {
+    path: '/auth',
+    children: [
+      { path: 'signin', element: <SignInPage /> },
+      { path: 'signup', element: <SignUpPage /> },
+    ],
+  },
+]);
 
 const App = () => {
   const dispatch = useDispatch();
@@ -39,14 +66,7 @@ const App = () => {
 
   return (
     <StyledApp>
-      <Routes>
-        <Route path='/' element={<Main />}>
-          <Route path='/search?' element={<Main />} />
-        </Route>
-        <Route path='/create' element={<Create />} />
-        <Route path='/update/:post' element={<Update />} />
-        <Route path='/post/:postId' element={<Detail />} />
-      </Routes>
+      <RouterProvider router={router} />
     </StyledApp>
   );
 };

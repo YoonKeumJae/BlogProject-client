@@ -2,8 +2,8 @@ import { useCallback, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
 import StyledPosts from '@styles/main/Posts-styled';
-import Header from './main-content/Header';
-import PostCard from './main-content/PostCard';
+import Header from './Header';
+import PostCard from './PostCard';
 
 const Posts = () => {
   const [curPage, setCurPage] = useState(1);

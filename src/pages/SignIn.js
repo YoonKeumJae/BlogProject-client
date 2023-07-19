@@ -1,11 +1,8 @@
 import { useState, useCallback } from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 const StyledLoginPage = styled.div`
-  * {
-    margin: 0;
-    box-sizing: border-box;
-  }
   .wrapper {
     display: flex;
     flex-direction: column;
@@ -16,9 +13,8 @@ const StyledLoginPage = styled.div`
     height: 100vh;
 
     .title {
-      font-size: 60px;
       font-weight: 600;
-      margin-bottom: 50px;
+      margin-bottom: 48px;
     }
 
     .container {
@@ -26,9 +22,8 @@ const StyledLoginPage = styled.div`
       flex-direction: column;
       align-items: center;
       border: 1px solid #cdcdcd;
-      width: 1000px;
-      height: 650px;
-      padding: 100px;
+      width: 544px;
+      padding: 32px 16px;
 
       .form {
         display: flex;
@@ -37,42 +32,68 @@ const StyledLoginPage = styled.div`
         height: 100%;
 
         .titleIdpw {
-          font-size: 35px;
-          font-weight: 600;
-          margin-bottom: 30px;
+          margin-bottom: 12px;
         }
+
         .inputIdpw {
           width: 100%;
-          height: 50px;
-          font-size: 25px;
+          height: 24px;
+          font-size: 18px;
           border: none;
           border-bottom: 1px solid #cdcdcd;
           margin-bottom: 30px;
+
+          &:focus {
+            outline: none;
+          }
+
+          &::placeholder {
+            font-size: 16px;
+          }
         }
         .buttonWrapper {
-            margin-bottom: 30px;
+          display: inline-flex;
+          align-items: start;
+          gap: 4px;
+          font-size: 14px;
+          margin-top: 16px;
         }
+
         .loginBtn {
           width: 100%;
-          height: 80px;
+          height: 36px;
           background-color: black;
           color: white;
-          font-size: 40px;
+          font-size: 22px;
           border-radius: 15px;
-          margin-bottom: 30px;
+          margin: 8px 0;
         }
       }
       .finder {
-        width: 300px;
+        width: 100%;
+
         display: flex;
-        flex-direction: row;
-        justify-content: space-between;
+        justify-content: end;
+        gap: 8px;
+
+        a {
+          color: #cdcdcd;
+          font-size: 12px;
+
+          &:last-child {
+            margin-right: 16px;
+          }
+
+          &:hover {
+            color: #000000;
+          }
+        }
       }
     }
   }
 `;
 
-const Signin = () => {
+const SignInPage = () => {
   const [isClicked, setIsClicked] = useState(false);
 
   const clickHandler = useCallback(() => {
@@ -82,30 +103,30 @@ const Signin = () => {
   return (
     <StyledLoginPage>
       <div className='wrapper'>
-        <div className='title'>LOGIN</div>
+        <h1 className='title'>LOGIN</h1>
         <div className='container'>
           <form className='form'>
-            <div className='titleIdpw'>ID</div>
-            
+            <h4 className='titleIdpw'>ID</h4>
+
             <input
               className='inputIdpw'
               type='text'
               placeholder='아이디를 입력해 주세요.'
             />
-            
-            <div className='titleIdpw'>PASSWORD</div>
-            
+
+            <h4 className='titleIdpw'>PASSWORD</h4>
+
             <input
               className='inputIdpw'
               type='password'
               placeholder='비밀번호를 입력해 주세요.'
             />
-            
+
             <div className='buttonWrapper'>
               <button type='button' onClick={clickHandler}>
                 <svg
-                  width='34'
-                  height='34'
+                  width='18'
+                  height='18'
                   viewBox='0 0 34 34'
                   fill='none'
                   xmlns='http://www.w3.org/2000/svg'
@@ -116,13 +137,17 @@ const Signin = () => {
                   />
                 </svg>
               </button>
-              로그인 유지
+              <span style={{ color: `${isClicked ? '#5cdb5c' : '#BDBDBD'}` }}>
+                로그인 유지
+              </span>
             </div>
-            
+
             <button className='loginBtn'>LOGIN</button>
           </form>
           <div className='finder'>
-            <a>아이디 찾기 </a>|<a> 비밀번호 찾기 </a>|<a>회원가입</a>
+            <Link to='findId'>아이디 찾기</Link>
+            <Link to='findPwd'>비밀번호 찾기</Link>
+            <Link to='/auth/signup'>회원가입</Link>
           </div>
         </div>
       </div>
@@ -130,4 +155,4 @@ const Signin = () => {
   );
 };
 
-export default Signin;
+export default SignInPage;

@@ -79,7 +79,7 @@ const StyledSignupPage = styled.div`
   }
 `;
 
-const Signup = () => (
+const SignUpPage = () => (
   <StyledSignupPage>
     <div className='wrapper'>
       <div className='title'>JOIN US</div>
@@ -119,4 +119,4 @@ const Signup = () => (
   </StyledSignupPage>
 );
 
-export default Signup;
+export default SignUpPage;

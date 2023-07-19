@@ -9,7 +9,7 @@ import { createPostAPI } from '@services/post-api';
 import { replaceCategory } from '@store/category-store';
 import { createPost } from '@store/post-store';
 
-const Create = () => {
+const CreatePage = () => {
   const categories = useSelector((state) => state.category.items);
   const dispatch = useDispatch();
   const navigation = useNavigate();
@@ -72,4 +72,4 @@ const Create = () => {
   return <PostForm onSubmit={createPostHandler} />;
 };
 
-export default Create;
+export default CreatePage;

@@ -18,26 +18,30 @@ const StyledHeader = styled.header`
     justify-content: right;
     align-items: center;
 
-    .mini-profile {
-      width: 16px;
-      vertical-align: bottom;
-      border-radius: 50%;
+    a {
+      margin: 0 16px;
 
-      margin-right: 4px;
-    }
+      .mini-profile {
+        width: 16px;
+        vertical-align: bottom;
+        border-radius: 50%;
 
-    button {
-      text-align: center;
-
-      width: 64px;
-      color: #8e8e8e;
-
-      &:hover {
-        color: black;
+        margin-right: 4px;
       }
 
-      &:first-child {
-        width: auto;
+      button {
+        text-align: center;
+
+        width: 64px;
+        color: #8e8e8e;
+
+        &:hover {
+          color: black;
+        }
+
+        &:first-child {
+          width: auto;
+        }
       }
     }
   }
