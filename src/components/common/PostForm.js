@@ -2,9 +2,8 @@ import { useState, useEffect } from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
 
-import Divider from '@styles/common/Divider';
-import TagBox from '@components/common/TagBox';
 import StyledPostForm from '@styles/components/common/PostForm-styled';
+import TagBox from './TagBox';
 
 const PostForm = ({ post, onSubmit }) => {
   const [enteredCategory, setEnteredCategory] = useState('');
@@ -53,7 +52,7 @@ const PostForm = ({ post, onSubmit }) => {
 
   return (
     <>
-      <Divider />
+      <hr />
 
       {/* Create Post Section */}
       <StyledPostForm>
@@ -84,6 +83,7 @@ const PostForm = ({ post, onSubmit }) => {
                 placeholder='제목을 입력하세요.'
                 value={enteredTitle}
                 onChange={onInputTitleHandler}
+                required
               />
             </div>
           </div>
@@ -172,6 +172,7 @@ const PostForm = ({ post, onSubmit }) => {
                 placeholder='내용을 입력하세요.'
                 value={enteredContent}
                 onChange={onInputContentHandler}
+                required
               />
             </div>
           </div>
