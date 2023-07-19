@@ -10,7 +10,7 @@ const StyledHeader = styled.header`
 
   .gnb {
     position: absolute;
-    top: 0;
+    top: 16px;
     right: 0;
 
     display: flex;
@@ -19,7 +19,7 @@ const StyledHeader = styled.header`
     align-items: center;
 
     a {
-      margin: 0 16px;
+      margin: 0 8px;
 
       .mini-profile {
         width: 16px;
@@ -31,8 +31,6 @@ const StyledHeader = styled.header`
 
       button {
         text-align: center;
-
-        width: 64px;
         color: #8e8e8e;
 
         &:hover {

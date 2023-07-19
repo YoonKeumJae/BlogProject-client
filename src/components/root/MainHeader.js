@@ -24,6 +24,9 @@ const MainHeader = () => {
         <Link to='auth/signin'>
           <button>로그인</button>
         </Link>
+        <Link to='auth/signup'>
+          <button>회원가입</button>
+        </Link>
       </nav>
 
       {/* Blog Title */}
