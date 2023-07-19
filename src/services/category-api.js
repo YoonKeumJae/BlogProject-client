@@ -1,5 +1,7 @@
 import axios from 'axios';
+
 import FIREBASE_URL from '@config/firebase';
+import { convertDataToCategoryArray } from '@utils/convert';
 
 /**
  * Category 정보를 받아오기 위한 API
@@ -12,16 +14,7 @@ export const getCategoriesAPI = async () => {
     .catch((error) => console.log(error));
 
   const responseData = await response.data;
-
-  const categoriesData = [];
-
-  Object.keys(responseData).forEach((key) => {
-    categoriesData.push({
-      id: key,
-      name: responseData[key].name,
-      count: responseData[key].count,
-    });
-  });
+  const categoriesData = convertDataToCategoryArray(responseData);
 
   return categoriesData;
 };

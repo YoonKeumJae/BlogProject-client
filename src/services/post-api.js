@@ -1,5 +1,7 @@
 import axios from 'axios';
+
 import FIREBASE_URL from '@config/firebase';
+import { convertDataToPostArray } from '@utils/convert';
 
 /**
  * Post 정보를 받아오기 위한 API
@@ -12,39 +14,7 @@ export const getPostAPI = async () => {
     .catch((error) => console.log(error));
 
   const responseData = await response.data;
-
-  const postsData = [];
-
-  Object.keys(responseData).forEach((key) => {
-    const commentArray = [];
-
-    const responseComment = responseData[key].comment;
-
-    if (responseComment !== undefined) {
-      Object.keys(responseComment).forEach((key2) =>
-        commentArray.push({
-          id: key2,
-          type: responseComment[key2].type,
-          profile: responseComment[key2].profile,
-          username: responseComment[key2].username,
-          content: responseComment[key2].content,
-          date: responseComment[key2].date,
-        }),
-      );
-    }
-
-    postsData.push({
-      id: key,
-      username: responseData[key].username,
-      category: responseData[key].category,
-      title: responseData[key].title,
-      content: responseData[key].content,
-      comment: commentArray,
-      tagList: responseData[key].tagList,
-      like: responseData[key].like,
-      date: responseData[key].date,
-    });
-  });
+  const postsData = convertDataToPostArray(responseData);
 
   return postsData;
 };
@@ -62,39 +32,7 @@ export const getQueryPostAPI = async (type, query) => {
     .catch((error) => console.log(error));
 
   const responseData = await response.data;
-
-  const postsData = [];
-
-  Object.keys(responseData).forEach((key) => {
-    const commentArray = [];
-
-    const responseComment = responseData[key].comment;
-
-    if (responseComment !== undefined) {
-      Object.keys(responseComment).forEach((key2) =>
-        commentArray.push({
-          id: key2,
-          type: responseComment[key2].type,
-          profile: responseComment[key2].profile,
-          username: responseComment[key2].username,
-          content: responseComment[key2].content,
-          date: responseComment[key2].date,
-        }),
-      );
-    }
-
-    postsData.push({
-      id: key,
-      username: responseData[key].username,
-      category: responseData[key].category,
-      title: responseData[key].title,
-      content: responseData[key].content,
-      comment: commentArray,
-      tagList: responseData[key].tagList,
-      like: responseData[key].like,
-      date: responseData[key].date,
-    });
-  });
+  const postsData = convertDataToPostArray(responseData);
 
   if (query.trim().length === 0) return postsData;
 
