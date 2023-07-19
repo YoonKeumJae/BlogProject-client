@@ -4,16 +4,13 @@ import styled from 'styled-components';
 
 const StyledLoginPage = styled.div`
   .wrapper {
+    padding-top: 128px;
+
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    place-items: center;
-    width: 100%;
-    height: 100vh;
 
     .title {
-      font-weight: 600;
       margin-bottom: 48px;
     }
 
@@ -145,6 +142,7 @@ const SignInPage = () => {
             <button className='loginBtn'>LOGIN</button>
           </form>
           <div className='finder'>
+            <Link to='/'>홈</Link>
             <Link to='findId'>아이디 찾기</Link>
             <Link to='findPwd'>비밀번호 찾기</Link>
             <Link to='/auth/signup'>회원가입</Link>
