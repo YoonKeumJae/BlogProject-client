@@ -15,6 +15,7 @@ const StyledCreate = styled.section`
         font-size: 14px;
         font-weight: bold;
         border: none;
+        border-bottom: 1px solid #ccc;
 
         cursor: pointer;
 
