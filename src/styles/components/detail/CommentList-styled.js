@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const StyledPostComment = styled.div`
+const StyledCommentList = styled.div`
   margin-top: 16px;
 
   .comment-title {
@@ -15,4 +15,4 @@ const StyledPostComment = styled.div`
   }
 `;
 
-export default StyledPostComment;
+export default StyledCommentList;

@@ -1,13 +1,13 @@
 import { useState } from 'react';
 
-import StyledPostComment from '@styles/components/detail/PostComment-styled';
+import StyledCommentList from '@styles/components/detail/CommentList-styled';
 import CommentItem from './CommentItem';
 
 const CommentList = ({ postId, comments }) => {
   const [updateingId, setUpdatingId] = useState('');
 
   return (
-    <StyledPostComment>
+    <StyledCommentList>
       <div className='comment-title'>
         <h3>댓글</h3>
         <span>{comments.length}</span>
@@ -23,7 +23,7 @@ const CommentList = ({ postId, comments }) => {
           />
         ))}
       </div>
-    </StyledPostComment>
+    </StyledCommentList>
   );
 };
 
