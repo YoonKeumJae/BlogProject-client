@@ -26,8 +26,19 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <HomePage /> },
       { path: 'create', element: <CreatePage /> },
-      { path: 'update/:post', element: <UpdatePage /> },
-      { path: 'post/:postId', element: <DetailPage /> },
+      {
+        path: 'post/:postId',
+        children: [
+          {
+            index: true,
+            element: <DetailPage />,
+          },
+          {
+            path: 'update',
+            element: <UpdatePage />,
+          },
+        ],
+      },
       // { path: 'search?', element: <Main /> },
     ],
   },

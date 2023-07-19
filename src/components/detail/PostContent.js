@@ -25,10 +25,10 @@ const PostContent = ({ post }) => {
   }, [category, categories]);
 
   const onClickUpdateHandler = useCallback(() => {
-    navigation(`/update/${id}`, {
+    navigation('update/', {
       state: post,
     });
-  }, [navigation, post, id]);
+  }, [navigation, post]);
 
   const onClickDeleteHandler = useCallback(async () => {
     // eslint-disable-next-line no-restricted-globals

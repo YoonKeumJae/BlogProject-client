@@ -48,15 +48,16 @@ const TagBox = ({ tagList, setTagList }) => {
   return (
     <>
       <div className='tag-list'>
-        {tagList.map((tag, idx) => (
-          <span
-            key={`${tag}_${idx}`}
-            className='tag-item'
-            onClick={() => deleteTagHandler(idx)}
-          >
-            #{tag}
-          </span>
-        ))}
+        {tagList &&
+          tagList.map((tag, idx) => (
+            <span
+              key={`${tag}_${idx}`}
+              className='tag-item'
+              onClick={() => deleteTagHandler(idx)}
+            >
+              #{tag}
+            </span>
+          ))}
       </div>
       <form className='tag-box' onSubmit={createTagHandler}>
         <span>태그</span>

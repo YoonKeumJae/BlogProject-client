@@ -2,6 +2,7 @@ import { useState, useCallback, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
 
+import Divider from '@styles/common/Divider';
 import TagBox from '@components/wrapper/TagBox';
 import StyledIndex from '@styles/main/Index-styled';
 import StyledCreate from '@styles/main/post/Create-styled';
@@ -69,6 +70,8 @@ const PostForm = ({ post, onSubmit }) => {
 
   return (
     <StyledIndex>
+      <Divider />
+
       {/* Create Post Section */}
       <StyledCreate>
         <div className='post-form'>
