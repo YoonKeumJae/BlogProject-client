@@ -1,34 +1,21 @@
-import { useParams } from 'react-router';
-import { useSelector } from 'react-redux';
-
 import PostContent from './PostContent';
 import CategoryList from './CategoryList';
 import PostComment from './PostComment';
 
-const PostDetail = () => {
-  const { postId } = useParams();
-  const posts = useSelector((state) => state.post.items);
-  const renderPost = posts.filter((post) => post.id === postId);
+const PostDetail = ({ post }) => (
+  <section>
+    <PostContent post={post} />
 
-  if (renderPost.length === 0) {
-    return null;
-  }
+    {/* Post Comment */}
+    <PostComment
+      postId={post.id}
+      username={post.username}
+      comments={post.comment}
+    />
 
-  return (
-    <section>
-      <PostContent post={renderPost[0]} />
-
-      {/* Post Comment */}
-      <PostComment
-        postId={renderPost[0].id}
-        username={renderPost[0].username}
-        comments={renderPost[0].comment}
-      />
-
-      {/* Category List */}
-      <CategoryList category={renderPost[0].category} />
-    </section>
-  );
-};
+    {/* Category List */}
+    <CategoryList category={post.category} />
+  </section>
+);
 
 export default PostDetail;

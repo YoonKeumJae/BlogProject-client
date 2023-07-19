@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
 
 import PostForm from '@components/wrapper/PostForm';
@@ -10,20 +10,17 @@ import { replaceCategory } from '@store/category-store';
 import { createPost } from '@store/post-store';
 
 const CreatePage = () => {
-  const categories = useSelector((state) => state.category.items);
+  const categories = useSelector((state) => state.category.items, shallowEqual);
   const dispatch = useDispatch();
   const navigation = useNavigate();
 
   const assignCategoryHandler = useCallback(
-    (enteredCategory) => {
-      const updatedCategory = categories.map((category) =>
+    (enteredCategory) =>
+      categories.map((category) =>
         category.name === enteredCategory || category.id === '0'
           ? { ...category, count: category.count + 1 }
           : category,
-      );
-
-      return updatedCategory;
-    },
+      ),
     [categories],
   );
 

@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -82,9 +82,7 @@ const StyledLoginPage = styled.div`
 const SignInPage = () => {
   const [isClicked, setIsClicked] = useState(false);
 
-  const clickHandler = useCallback(() => {
-    setIsClicked((prevClicked) => !prevClicked);
-  }, []);
+  const clickHandler = () => setIsClicked((prevClicked) => !prevClicked);
 
   return (
     <StyledLoginPage>

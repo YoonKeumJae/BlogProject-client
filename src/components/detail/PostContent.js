@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import { useNavigate } from 'react-router';
-import { useDispatch, useSelector } from 'react-redux';
+import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 
 import DefaultProfileImage from '@assets/default-profile-image.png';
 import { removeAssignCategoryAPI } from '@services/category-api';
@@ -12,27 +12,25 @@ import StyledPostContent from '@styles/main/post/detail-post/PostContent';
 const PostContent = ({ post }) => {
   const { id, category, title, username, date, tagList, content, like } = post;
 
-  const categories = useSelector((state) => state.category.items);
+  const categories = useSelector((state) => state.category.items, shallowEqual);
   const navigation = useNavigate();
   const dispatch = useDispatch();
 
-  const removeAssignCategoryHandler = useCallback(() => {
-    const updatedCategory = categories.map((c) =>
-      c.name === category || c.id === '0' ? { ...c, count: c.count - 1 } : c,
-    );
+  const removeAssignCategoryHandler = useCallback(
+    () =>
+      categories.map((c) =>
+        c.name === category || c.id === '0' ? { ...c, count: c.count - 1 } : c,
+      ),
+    [category, categories],
+  );
 
-    return updatedCategory;
-  }, [category, categories]);
-
-  const onClickUpdateHandler = useCallback(() => {
+  const onClickUpdateHandler = () =>
     navigation('update/', {
       state: post,
     });
-  }, [navigation, post]);
 
   const onClickDeleteHandler = useCallback(async () => {
-    // eslint-disable-next-line no-restricted-globals
-    const isCheck = confirm('정말 삭제하시겠습니까?');
+    const isCheck = window.confirm('정말 삭제하시겠습니까?');
 
     const updatedCategory = removeAssignCategoryHandler();
 

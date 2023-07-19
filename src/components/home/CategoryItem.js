@@ -37,13 +37,10 @@ const CategoryItem = ({
     navigation(`/search?category=${name}`);
   }, [navigation, dispatch, name, mode, filterMode]);
 
-  const changeItemHandler = useCallback((e) => {
-    setInputItem(e.target.value);
-  }, []);
+  const changeItemHandler = (e) => setInputItem(e.target.value);
 
-  const clickUpdateModeHandler = useCallback(() => {
+  const clickUpdateModeHandler = () =>
     setUpdateMode({ mode: UPDATE, selectedId: id });
-  }, [setUpdateMode, id]);
 
   const submitCategoryHandler = useCallback(
     (e) => {

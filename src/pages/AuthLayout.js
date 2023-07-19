@@ -15,13 +15,8 @@ const StyledAuth = styled.section`
 `;
 
 const AuthLayout = () => {
-  const location = useLocation();
-
-  let title = 'login';
-
-  if (location.pathname === '/auth/signup') {
-    title = 'join us';
-  }
+  const { pathname } = useLocation();
+  const title = pathname === '/auth/signin' ? 'login' : 'join us';
 
   return (
     <StyledAuth>

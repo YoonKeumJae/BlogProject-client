@@ -23,10 +23,11 @@ const StyledPosts = styled.section`
       font-weight: 700;
     }
 
-    span {
+    a {
       margin: 0 8px;
 
       cursor: pointer;
+      color: #ccc;
     }
   }
 `;

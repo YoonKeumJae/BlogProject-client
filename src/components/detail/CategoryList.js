@@ -1,12 +1,12 @@
-import { useCallback, useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useEffect, useState } from 'react';
+import { shallowEqual, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router';
 
 import StyledCategoryList from '@styles/main/post/detail-post/CategoryList-styled';
 
 const CategoryList = ({ category }) => {
   const [curPage, setCurPage] = useState(1);
-  const posts = useSelector((state) => state.post.items);
+  const posts = useSelector((state) => state.post.items, shallowEqual);
 
   const navigation = useNavigate();
   const { postId } = useParams();
@@ -26,6 +26,11 @@ const CategoryList = ({ category }) => {
     setCurPage(Math.round(calculatedPostPage));
   }, [category, posts, postId]);
 
+  const onClickPostHandler = (id) => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    navigation(`/post/${id}`);
+  };
+
   const filterPost = posts
     .filter((post) => post.category === category)
     .reverse();
@@ -37,14 +42,6 @@ const CategoryList = ({ category }) => {
       : filterPost.length / 4 + 1;
   const pageArray = [];
   for (let i = 1; i <= totPage; i += 1) pageArray.push(i);
-
-  const onClickPostHandler = useCallback(
-    (id) => {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      navigation(`/post/${id}`);
-    },
-    [navigation],
-  );
 
   return (
     <StyledCategoryList>

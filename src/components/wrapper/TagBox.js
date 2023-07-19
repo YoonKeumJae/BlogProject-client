@@ -3,9 +3,7 @@ import { useState, useCallback } from 'react';
 const TagBox = ({ tagList, setTagList }) => {
   const [enteredTag, setEnteredTag] = useState('');
 
-  const onInputTagHandler = useCallback((e) => {
-    setEnteredTag(e.target.value);
-  }, []);
+  const onInputTagHandler = (e) => setEnteredTag(e.target.value);
 
   const createTagHandler = useCallback(
     (e) => {
@@ -38,12 +36,8 @@ const TagBox = ({ tagList, setTagList }) => {
     [enteredTag, tagList, setTagList],
   );
 
-  const deleteTagHandler = useCallback(
-    (index) => {
-      setTagList(tagList.filter((val, idx) => idx !== index));
-    },
-    [tagList, setTagList],
-  );
+  const deleteTagHandler = (index) =>
+    setTagList(tagList.filter((val, idx) => idx !== index));
 
   return (
     <>
