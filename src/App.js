@@ -14,6 +14,7 @@ import HomePage from './pages/Home';
 import CreatePage from './pages/Create';
 import UpdatePage from './pages/Update';
 import DetailPage from './pages/Detail';
+import AuthLayout from './pages/AuthLayout';
 import SignInPage from './pages/SignIn';
 import SignUpPage from './pages/SignUp';
 
@@ -32,6 +33,8 @@ const router = createBrowserRouter([
   },
   {
     path: '/auth',
+    element: <AuthLayout />,
+    errorElement: <ErrorPage />,
     children: [
       { path: 'signin', element: <SignInPage /> },
       { path: 'signup', element: <SignUpPage /> },
@@ -42,26 +45,19 @@ const router = createBrowserRouter([
 const App = () => {
   const dispatch = useDispatch();
 
-  // Post 불러오기
+  /** 초기 데이터 설정
+   * Posts, Categories
+   */
   useEffect(() => {
-    const getPost = async () => {
+    const getInitData = async () => {
       const data = await getPostAPI();
-
-      dispatch(initPost(data));
-    };
-
-    getPost();
-  }, [dispatch]);
-
-  // Categories 불러오기
-  useEffect(() => {
-    const getCategories = async () => {
       const categoriesData = await getCategoriesAPI();
 
+      dispatch(initPost(data));
       dispatch(initCategories(categoriesData));
     };
 
-    getCategories();
+    getInitData();
   }, [dispatch]);
 
   return (
