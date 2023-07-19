@@ -2,7 +2,7 @@ import { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router';
 
-import PostForm from '@components/wrapper/PostForm';
+import PostForm from '@components/common/PostForm';
 import { regLineBreak } from '@constants/regExp';
 import { updatePostAPI } from '@services/post-api';
 import { updatePost } from '@store/post-store';

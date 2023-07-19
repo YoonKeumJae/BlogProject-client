@@ -3,7 +3,7 @@ import { shallowEqual, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
 
 import Divider from '@styles/common/Divider';
-import TagBox from '@components/wrapper/TagBox';
+import TagBox from '@components/common/TagBox';
 import StyledIndex from '@styles/main/Index-styled';
 import StyledCreate from '@styles/main/post/Create-styled';
 

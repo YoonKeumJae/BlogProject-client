@@ -2,7 +2,7 @@ import { useCallback } from 'react';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
 
-import PostForm from '@components/wrapper/PostForm';
+import PostForm from '@components/common/PostForm';
 import { regLineBreak } from '@constants/regExp';
 import { assignCategoryAPI } from '@services/category-api';
 import { createPostAPI } from '@services/post-api';
