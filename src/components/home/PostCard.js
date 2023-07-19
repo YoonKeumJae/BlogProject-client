@@ -1,4 +1,3 @@
-import { useCallback } from 'react';
 import { useNavigate } from 'react-router';
 
 import DefaultPostImage from '@assets/default-post-image.png';
@@ -9,9 +8,7 @@ const PostCard = ({ post }) => {
 
   const navigation = useNavigate();
 
-  const onClickPost = useCallback(() => {
-    navigation(`/post/${id}`);
-  }, [navigation, id]);
+  const onClickPost = () => navigation(`/post/${id}`);
 
   return (
     <StyledPostCard>

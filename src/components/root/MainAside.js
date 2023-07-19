@@ -1,9 +1,9 @@
+import Category from '@components/home/Category';
+import Search from '@components/home/Search';
 import DefaultProfileImage from '@assets/default-profile-image.png';
 import StyledAside from '@styles/main/Aside-styled';
-import Category from './main-aside/Category';
-import Search from './main-aside/Search';
 
-const Aside = () => (
+const MainAside = () => (
   <StyledAside>
     {/* User Profile */}
     <div className='user-profile'>
@@ -27,4 +27,4 @@ const Aside = () => (
   </StyledAside>
 );
 
-export default Aside;
+export default MainAside;

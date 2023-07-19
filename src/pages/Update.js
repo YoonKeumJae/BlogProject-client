@@ -7,7 +7,7 @@ import { regLineBreak } from '@constants/regExp';
 import { updatePostAPI } from '@services/post-api';
 import { updatePost } from '@store/post-store';
 
-const Update = () => {
+const UpdatePage = () => {
   const { state: post } = useLocation();
   const dispatch = useDispatch();
   const navigation = useNavigate();
@@ -52,4 +52,4 @@ const Update = () => {
   return <PostForm post={post} onSubmit={updatePostHandler} />;
 };
 
-export default Update;
+export default UpdatePage;

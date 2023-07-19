@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Routes, Route } from 'react-router';
+import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
 import { getPostAPI } from '@services/post-api';
@@ -7,46 +7,75 @@ import { initPost } from '@store/post-store';
 import { getCategoriesAPI } from './services/category-api';
 import { initCategories } from './store/category-store';
 import StyledApp from './styles/App-styled';
-import Main from './pages/main/Index';
-import Create from './pages/create/Create';
-import Update from './pages/update/Update';
-import Detail from './pages/main/post/Detail';
+
+import RootLayout from './pages/RootLayout';
+import ErrorPage from './pages/Error';
+import HomePage from './pages/Home';
+import CreatePage from './pages/Create';
+import UpdatePage from './pages/Update';
+import DetailPage from './pages/Detail';
+
+import AuthLayout from './pages/AuthLayout';
+import SignInPage from './pages/SignIn';
+import SignUpPage from './pages/SignUp';
+import FilterPostsPage from './pages/FilterPosts';
+
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <RootLayout />,
+    errorElement: <ErrorPage />,
+    children: [
+      { index: true, element: <HomePage /> },
+      { path: 'search?', element: <FilterPostsPage /> },
+      { path: 'create', element: <CreatePage /> },
+      {
+        path: 'post/:postId',
+        children: [
+          {
+            index: true,
+            element: <DetailPage />,
+          },
+          {
+            path: 'update',
+            element: <UpdatePage />,
+          },
+        ],
+      },
+    ],
+  },
+  {
+    path: '/auth',
+    element: <AuthLayout />,
+    errorElement: <ErrorPage />,
+    children: [
+      { path: 'signin', element: <SignInPage /> },
+      { path: 'signup', element: <SignUpPage /> },
+    ],
+  },
+]);
 
 const App = () => {
   const dispatch = useDispatch();
 
-  // Post 불러오기
+  /** 초기 데이터 설정
+   * Posts, Categories
+   */
   useEffect(() => {
-    const getPost = async () => {
+    const getInitData = async () => {
       const data = await getPostAPI();
-
-      dispatch(initPost(data));
-    };
-
-    getPost();
-  }, [dispatch]);
-
-  // Categories 불러오기
-  useEffect(() => {
-    const getCategories = async () => {
       const categoriesData = await getCategoriesAPI();
 
+      dispatch(initPost(data));
       dispatch(initCategories(categoriesData));
     };
 
-    getCategories();
+    getInitData();
   }, [dispatch]);
 
   return (
     <StyledApp>
-      <Routes>
-        <Route path='/' element={<Main />}>
-          <Route path='/search?' element={<Main />} />
-        </Route>
-        <Route path='/create' element={<Create />} />
-        <Route path='/update/:post' element={<Update />} />
-        <Route path='/post/:postId' element={<Detail />} />
-      </Routes>
+      <RouterProvider router={router} />
     </StyledApp>
   );
 };

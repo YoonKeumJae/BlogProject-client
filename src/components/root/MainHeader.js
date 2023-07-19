@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import DefaultProfileImage from '@assets/default-profile-image.png';
 import StyledHeader from '@styles/main/Header-styled';
 
-const Header = () => {
+const MainHeader = () => {
   return (
     <StyledHeader>
       {/* Global Navigation */}
@@ -11,8 +11,7 @@ const Header = () => {
         <Link to='/'>
           <button>홈</button>
         </Link>
-        <button>태그</button>
-        <Link to='/user'>
+        <Link to='user'>
           <button>
             <img
               className='mini-profile'
@@ -22,7 +21,12 @@ const Header = () => {
             <span>걍하지</span>
           </button>
         </Link>
-        <button>로그인</button>
+        <Link to='auth/signin'>
+          <button>로그인</button>
+        </Link>
+        <Link to='auth/signup'>
+          <button>회원가입</button>
+        </Link>
       </nav>
 
       {/* Blog Title */}
@@ -31,4 +35,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default MainHeader;

@@ -1,9 +1,9 @@
-import { useState, useCallback, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useState, useEffect } from 'react';
+import { shallowEqual, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
 
+import Divider from '@styles/common/Divider';
 import TagBox from '@components/wrapper/TagBox';
-import Header from '@pages/main/Header';
 import StyledIndex from '@styles/main/Index-styled';
 import StyledCreate from '@styles/main/post/Create-styled';
 
@@ -13,7 +13,7 @@ const PostForm = ({ post, onSubmit }) => {
   const [enteredContent, setEnteredContent] = useState('');
   const [enteredTagList, setEnteredTagList] = useState([]);
 
-  const categories = useSelector((state) => state.category.items);
+  const categories = useSelector((state) => state.category.items, shallowEqual);
   const navigation = useNavigate();
 
   useEffect(() => {
@@ -29,20 +29,11 @@ const PostForm = ({ post, onSubmit }) => {
     }
   }, [post]);
 
-  const onInputCategoryHandler = useCallback(
-    (e) => setEnteredCategory(e.target.value),
-    [],
-  );
-  const onInputTitleHandler = useCallback(
-    (e) => setEnteredTitle(e.target.value),
-    [],
-  );
-  const onInputContentHandler = useCallback(
-    (e) => setEnteredContent(e.target.value),
-    [],
-  );
+  const onInputCategoryHandler = (e) => setEnteredCategory(e.target.value);
+  const onInputTitleHandler = (e) => setEnteredTitle(e.target.value);
+  const onInputContentHandler = (e) => setEnteredContent(e.target.value);
 
-  const submitPostHandler = useCallback(() => {
+  const submitPostHandler = () => {
     const id = post ? post.id : `content-${Math.floor(Math.random() * 65565)}`;
 
     onSubmit({
@@ -52,26 +43,18 @@ const PostForm = ({ post, onSubmit }) => {
       enteredContent,
       enteredTagList,
     });
-  }, [
-    onSubmit,
-    post,
-    enteredCategory,
-    enteredTitle,
-    enteredContent,
-    enteredTagList,
-  ]);
+  };
 
-  const cancelPostHandler = useCallback(() => {
+  const cancelPostHandler = () => {
     setEnteredCategory('');
     setEnteredTitle('');
     setEnteredContent('');
     navigation('/');
-  }, [navigation]);
+  };
 
   return (
     <StyledIndex>
-      {/* Header */}
-      <Header />
+      <Divider />
 
       {/* Create Post Section */}
       <StyledCreate>

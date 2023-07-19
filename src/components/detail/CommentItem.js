@@ -19,22 +19,15 @@ const CommentItem = ({ postId, comment, isUpdate, onUpdateMode }) => {
     }
   }, [isUpdate, content]);
 
-  const onInputContent = useCallback(
-    (e) => setEnteredContent(e.target.value),
-    [],
-  );
+  const onInputContent = (e) => setEnteredContent(e.target.value);
 
-  const onClickSettingModeHandler = useCallback(() => {
+  const onClickSettingModeHandler = () =>
     setIsSettingMode((prevMode) => !prevMode);
-  }, []);
 
-  const updateModeHandler = useCallback(() => {
-    onUpdateMode(commentId);
-  }, [onUpdateMode, commentId]);
+  const updateModeHandler = () => onUpdateMode(commentId);
 
   const updateCommentHandler = useCallback(async () => {
-    // eslint-disable-next-line no-restricted-globals
-    const isUpdateContent = confirm('수정하시겠습니까?');
+    const isUpdateContent = window.confirm('수정하시겠습니까?');
 
     if (isUpdateContent) {
       const updatedComment = { ...comment, content: enteredContent };
@@ -47,8 +40,7 @@ const CommentItem = ({ postId, comment, isUpdate, onUpdateMode }) => {
   }, [dispatch, onUpdateMode, postId, commentId, enteredContent, comment]);
 
   const deleteCommentHandler = useCallback(async () => {
-    // eslint-disable-next-line no-restricted-globals
-    const isDelete = confirm('정말 삭제하시겠습니까?');
+    const isDelete = window.confirm('정말 삭제하시겠습니까?');
 
     if (isDelete) {
       setIsSettingMode(false);

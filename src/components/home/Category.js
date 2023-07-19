@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 
 import { DEFAULT, SETTING, CREATE } from '@constants/category-mode';
 import {
@@ -26,24 +26,20 @@ const Category = () => {
   const [inputCategory, setInputCategory] = useState('');
 
   const clickedCategory = useSelector((state) => state.category.current);
-  const categories = useSelector((state) => state.category.items);
+  const categories = useSelector((state) => state.category.items, shallowEqual);
   const dispatch = useDispatch();
 
   const { mode } = modeState;
 
-  const onChangeCategory = useCallback(
-    (e) => setInputCategory(e.target.value),
-    [],
-  );
+  const onChangeCategory = (e) => setInputCategory(e.target.value);
 
-  const clickSettingHandler = useCallback(() => {
+  const clickSettingHandler = () => {
     if (mode === SETTING) setModeState({ mode: DEFAULT, selectedId: '' });
     else setModeState({ mode: SETTING, selectedId: '' });
-  }, [mode]);
+  };
 
-  const showCategoryHandler = useCallback(() => {
+  const showCategoryHandler = () =>
     setIsShowCategory((prevState) => !prevState);
-  }, []);
 
   const createCategoryHandler = useCallback(
     async (e) => {
@@ -83,8 +79,7 @@ const Category = () => {
 
   const deleteCategoryHandler = useCallback(
     async (id) => {
-      // eslint-disable-next-line no-alert, no-restricted-globals
-      const isDelete = confirm('정말 삭제하시겠습니까?');
+      const isDelete = window.confirm('정말 삭제하시겠습니까?');
 
       if (isDelete) {
         dispatch(deleteCategory(id));

@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 import StyledHeader from '@styles/main/main-content/Header-styled';
-import { Link } from 'react-router-dom';
 
 const Header = () => {
   const clickedCategory = useSelector((state) => state.category.current);
@@ -10,7 +10,7 @@ const Header = () => {
     <StyledHeader>
       <h3 className='title'>{clickedCategory}</h3>
       <div className='lnb'>
-        <Link to='/create'>
+        <Link to='create'>
           <button className='menu'>
             <svg
               width='16'

@@ -1,16 +1,16 @@
-import { useCallback, useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useEffect, useState } from 'react';
+import { shallowEqual, useSelector } from 'react-redux';
 
 import StyledPosts from '@styles/main/Posts-styled';
-import Header from './main-content/Header';
-import PostCard from './main-content/PostCard';
+import Header from './Header';
+import PostCard from './PostCard';
 
 const Posts = () => {
   const [curPage, setCurPage] = useState(1);
   const [filteredPost, setFilteredPost] = useState([]);
 
   const clickedCategory = useSelector((state) => state.category.current);
-  const posts = useSelector((state) => state.post.items);
+  const posts = useSelector((state) => state.post.items, shallowEqual);
 
   useEffect(() => {
     const postInCategory = posts
@@ -24,14 +24,11 @@ const Posts = () => {
     setCurPage(1);
   }, [posts, clickedCategory]);
 
-  const clickPageHandler = useCallback(
-    (clickedPage) => {
-      if (clickedPage === curPage) return;
+  const clickPageHandler = (clickedPage) => {
+    if (clickedPage === curPage) return;
 
-      setCurPage(clickedPage);
-    },
-    [curPage],
-  );
+    setCurPage(clickedPage);
+  };
 
   const renderedPost = filteredPost.slice(8 * curPage - 8, 8 * curPage);
   const totPage =

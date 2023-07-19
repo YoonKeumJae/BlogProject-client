@@ -9,14 +9,10 @@ import CommentItem from './CommentItem';
 const PostComment = ({ postId, username, comments }) => {
   const [enteredContent, setEnteredContent] = useState('');
   const [updateingId, setUpdatingId] = useState('');
-  // const [isReply, setIsReply] = useState(false);
 
   const dispatch = useDispatch();
 
-  const onInputCommentHandler = useCallback(
-    (e) => setEnteredContent(e.target.value),
-    [],
-  );
+  const onInputCommentHandler = (e) => setEnteredContent(e.target.value);
 
   const createCommentHandler = useCallback(
     async (e) => {
@@ -45,12 +41,9 @@ const PostComment = ({ postId, username, comments }) => {
     [enteredContent, postId, username, dispatch],
   );
 
-  const submitCommentHandler = useCallback(
-    (e) => {
-      if (e.key === 'Enter') createCommentHandler(e);
-    },
-    [createCommentHandler],
-  );
+  const submitCommentHandler = (e) => {
+    if (e.key === 'Enter') createCommentHandler(e);
+  };
 
   return (
     <StyledPostComment>

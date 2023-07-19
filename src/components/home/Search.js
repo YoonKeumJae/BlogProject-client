@@ -13,11 +13,8 @@ const Search = () => {
   const dispatch = useDispatch();
   const navigation = useNavigate();
 
-  const onInputQueryType = useCallback(
-    (e) => setInputQueryType(e.target.value),
-    [],
-  );
-  const onInputQuery = useCallback((e) => setInputQuery(e.target.value), []);
+  const onInputQueryType = (e) => setInputQueryType(e.target.value);
+  const onInputQuery = (e) => setInputQuery(e.target.value);
 
   const searchHandler = useCallback(
     async (e) => {

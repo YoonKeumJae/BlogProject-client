@@ -3,9 +3,7 @@ import { useState, useCallback } from 'react';
 const TagBox = ({ tagList, setTagList }) => {
   const [enteredTag, setEnteredTag] = useState('');
 
-  const onInputTagHandler = useCallback((e) => {
-    setEnteredTag(e.target.value);
-  }, []);
+  const onInputTagHandler = (e) => setEnteredTag(e.target.value);
 
   const createTagHandler = useCallback(
     (e) => {
@@ -38,25 +36,22 @@ const TagBox = ({ tagList, setTagList }) => {
     [enteredTag, tagList, setTagList],
   );
 
-  const deleteTagHandler = useCallback(
-    (index) => {
-      setTagList(tagList.filter((val, idx) => idx !== index));
-    },
-    [tagList, setTagList],
-  );
+  const deleteTagHandler = (index) =>
+    setTagList(tagList.filter((val, idx) => idx !== index));
 
   return (
     <>
       <div className='tag-list'>
-        {tagList.map((tag, idx) => (
-          <span
-            key={`${tag}_${idx}`}
-            className='tag-item'
-            onClick={() => deleteTagHandler(idx)}
-          >
-            #{tag}
-          </span>
-        ))}
+        {tagList &&
+          tagList.map((tag, idx) => (
+            <span
+              key={`${tag}_${idx}`}
+              className='tag-item'
+              onClick={() => deleteTagHandler(idx)}
+            >
+              #{tag}
+            </span>
+          ))}
       </div>
       <form className='tag-box' onSubmit={createTagHandler}>
         <span>태그</span>
