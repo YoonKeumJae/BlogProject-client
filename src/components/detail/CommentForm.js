@@ -3,12 +3,10 @@ import { useDispatch } from 'react-redux';
 
 import { createCommentAPI } from '@services/comment-api';
 import { createComment } from '@store/post-store';
-import StyledPostComment from '@styles/components/detail/PostComment-styled';
-import CommentItem from './CommentItem';
+import StyledCommentForm from '@styles/components/detail/CommentForm-styled';
 
-const PostComment = ({ postId, username, comments }) => {
+const CommentForm = ({ postId, username }) => {
   const [enteredContent, setEnteredContent] = useState('');
-  const [updateingId, setUpdatingId] = useState('');
 
   const dispatch = useDispatch();
 
@@ -46,38 +44,17 @@ const PostComment = ({ postId, username, comments }) => {
   };
 
   return (
-    <StyledPostComment>
-      <div className='post-comment'>
-        <div className='comment-title'>
-          <h3>댓글</h3>
-          <span>{comments.length}</span>
-        </div>
-        <div className='comment-list'>
-          {comments.map((comment) => (
-            <CommentItem
-              key={comment.id}
-              postId={postId}
-              comment={comment}
-              isUpdate={updateingId === comment.id}
-              onUpdateMode={setUpdatingId}
-            />
-          ))}
-        </div>
-      </div>
-
-      {/* Post Comment Form */}
-      <form className='post-comment-form' onSubmit={createCommentHandler}>
-        <textarea
-          className='input-form'
-          placeholder='댓글을 입력하세요.'
-          value={enteredContent}
-          onKeyDown={submitCommentHandler}
-          onChange={onInputCommentHandler}
-        />
-        <button className='submit-button'>등록</button>
-      </form>
-    </StyledPostComment>
+    <StyledCommentForm onSubmit={createCommentHandler}>
+      <textarea
+        className='input-form'
+        placeholder='댓글을 입력하세요.'
+        value={enteredContent}
+        onKeyDown={submitCommentHandler}
+        onChange={onInputCommentHandler}
+      />
+      <button className='submit-button'>등록</button>
+    </StyledCommentForm>
   );
 };
 
-export default PostComment;
+export default CommentForm;

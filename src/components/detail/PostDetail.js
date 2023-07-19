@@ -1,20 +1,18 @@
 import PostContent from './PostContent';
+import CommentList from './CommentList';
+import CommentForm from './CommentForm';
 import CategoryList from './CategoryList';
-import PostComment from './PostComment';
 
 const PostDetail = ({ post }) => (
   <section>
     <PostContent post={post} />
 
     {/* Post Comment */}
-    <PostComment
-      postId={post.id}
-      username={post.username}
-      comments={post.comment}
-    />
+    <CommentList postId={post.id} comments={post.comment} />
+    <CommentForm postId={post.id} username={post.username} />
 
     {/* Category List */}
-    <CategoryList category={post.category} />
+    <CategoryList postId={post.id} category={post.category} />
   </section>
 );
 
