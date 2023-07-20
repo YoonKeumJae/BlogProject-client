@@ -35,11 +35,10 @@ const CategoryItem = ({
   const clickCategoryHandler = () => {
     if (name === '전체글') {
       navigate('/');
-      return;
+    } else {
+      const queryURI = convertListToQueryURI(queryList, ['category', name]);
+      navigate(queryURI);
     }
-
-    const queryURI = convertListToQueryURI(queryList, ['category', name]);
-    navigate(queryURI);
 
     dispatch(changeCategory(name));
     onChangeMode(DEFAULT);
