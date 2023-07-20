@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux';
 import { DEFAULT } from '@constants/category-mode';
 import { createCategoryAPI } from '@services/category-api';
 import { createCategory } from '@store/category-store';
+import StyledCategoryForm from '@styles/components/home/CategoryForm-styled';
 
 const CategoryForm = ({ onChangeMode }) => {
   const [enteredCategory, setEnteredCategory] = useState('');
@@ -35,7 +36,7 @@ const CategoryForm = ({ onChangeMode }) => {
   );
 
   return (
-    <form className='category-form' onSubmit={createCategoryHandler}>
+    <StyledCategoryForm onSubmit={createCategoryHandler}>
       <input
         className='category-input'
         value={enteredCategory}
@@ -46,7 +47,7 @@ const CategoryForm = ({ onChangeMode }) => {
       <button type='button' onClick={() => onChangeMode(DEFAULT)}>
         취소
       </button>
-    </form>
+    </StyledCategoryForm>
   );
 };
 
