@@ -3,30 +3,30 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
 
 import { DEFAULT, SETTING, UPDATE } from '@constants/category-mode';
+import { deleteCategoryAPI } from '@services/category-api';
 import { getPostAPI } from '@services/post-api';
 import { replacePost } from '@store/post-store';
-import { changeCategory } from '@store/category-store';
+import { changeCategory, deleteCategory } from '@store/category-store';
 import StyledCategoryItem from '@styles/components/home/CategoryItem-styled';
 
 const CategoryItem = ({
   id,
   name,
   count,
-  clicked,
   mode,
   onChangeMode,
-  updateCategory,
-  deleteCategory,
+  onUpdateCategory,
 }) => {
-  const [inputItem, setInputItem] = useState(name);
+  const [enteredCategory, setEnteredCategory] = useState(name);
 
   const filterMode = useSelector((state) => state.post.filterMode);
+  const clickedCategory = useSelector((state) => state.category.current);
   const dispatch = useDispatch();
-  const navigation = useNavigate();
+  const navigate = useNavigate();
 
   const { current, id: selectedId } = mode;
 
-  const changeItemHandler = (e) => setInputItem(e.target.value);
+  const changeItemHandler = (e) => setEnteredCategory(e.target.value);
   const clickUpdateModeHandler = () => onChangeMode(UPDATE, id);
 
   const clickCategoryHandler = useCallback(async () => {
@@ -38,28 +38,42 @@ const CategoryItem = ({
     }
 
     dispatch(changeCategory(name));
-    navigation(`/search?category=${name}`);
-  }, [navigation, dispatch, name, current, filterMode]);
+    navigate(`/search?category=${name}`);
+  }, [navigate, dispatch, name, current, filterMode]);
 
-  const submitCategoryHandler = useCallback(
-    (e) => {
+  const updateCategoryHandler = useCallback(
+    async (e) => {
       e.preventDefault();
 
-      if (inputItem.trim().length === 0) {
-        onChangeMode(DEFAULT);
-        return;
-      }
+      const updateForm = {
+        id,
+        name,
+        enteredCategory,
+        count,
+      };
 
-      if (inputItem.trim().length > 7) {
-        alert('카테고리명의 길이를 7이하로 설정해주세요.');
-        return;
-      }
-
-      onChangeMode(DEFAULT);
-      updateCategory({ id, name, count, updatedName: inputItem });
+      onUpdateCategory(updateForm);
     },
-    [onChangeMode, updateCategory, id, name, count, inputItem],
+    [onUpdateCategory, id, name, count, enteredCategory],
   );
+
+  const deleteCategoryHandler = useCallback(async () => {
+    if (count > 0) {
+      alert('존재하는 게시글이 있습니다.');
+      return;
+    }
+
+    const isDelete = window.confirm('정말 삭제하시겠습니까?');
+
+    if (isDelete) {
+      dispatch(deleteCategory(id));
+      onChangeMode(DEFAULT);
+      navigate('/');
+      await deleteCategoryAPI(id);
+    }
+  }, [navigate, dispatch, count, onChangeMode, id]);
+
+  const isClicked = clickedCategory === name;
 
   return (
     <StyledCategoryItem>
@@ -93,9 +107,9 @@ const CategoryItem = ({
             </>
           )}
           {current === UPDATE && id === selectedId && (
-            <form className='item-form' onSubmit={submitCategoryHandler}>
+            <form className='item-form' onSubmit={updateCategoryHandler}>
               <input
-                value={inputItem}
+                value={enteredCategory}
                 onChange={changeItemHandler}
                 placeholder='카테고리를 입력해주세요.'
               />
@@ -104,7 +118,7 @@ const CategoryItem = ({
           )}
         </div>
 
-        {clicked && current !== UPDATE && filterMode === 'category' && (
+        {isClicked && current !== UPDATE && filterMode === 'category' && (
           <div className='underline' />
         )}
       </div>
@@ -120,7 +134,7 @@ const CategoryItem = ({
           <button
             type='button'
             className='item-delete'
-            onClick={() => deleteCategory(id)}
+            onClick={deleteCategoryHandler}
           >
             삭제
           </button>

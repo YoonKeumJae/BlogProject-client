@@ -1,61 +1,91 @@
 import { useCallback, useState } from 'react';
-import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 import { DEFAULT, SETTING, CREATE } from '@constants/category-mode';
-import { updateCategoryAPI, deleteCategoryAPI } from '@services/category-api';
+import { createCategoryAPI, updateCategoryAPI } from '@services/category-api';
 import {
   changeCategory,
+  createCategory,
   updateCategory,
-  deleteCategory,
 } from '@store/category-store';
 import { updatePostCategory } from '@store/post-store';
 import StyledCategory from '@styles/components/home/Category-styled';
 import CategoryItem from './CategoryItem';
 import CategoryForm from './CategoryForm';
 
-const Category = () => {
+const Category = ({ categories }) => {
   const [mode, setMode] = useState({
     current: DEFAULT,
     id: '',
   });
 
-  const clickedCategory = useSelector((state) => state.category.current);
-  const categories = useSelector((state) => state.category.items, shallowEqual);
   const dispatch = useDispatch();
 
-  const onChangeMode = (selectedMode, selectedId = '') =>
-    setMode({ current: selectedMode, id: selectedId });
+  const onChangeMode = (type, selectedId = '') =>
+    setMode({ current: type, id: selectedId });
 
   const clickSettingHandler = () =>
-    setMode(
-      mode.current === SETTING
-        ? { current: DEFAULT, id: '' }
-        : { current: SETTING, id: '' },
-    );
+    mode.current === SETTING ? onChangeMode(DEFAULT) : onChangeMode(SETTING);
 
-  const updateCategoryHandler = useCallback(
-    async (updatedItem) => {
-      const { id, name, count, updatedName } = updatedItem;
+  const isValidateCategory = useCallback(
+    (enteredCategory) => {
+      if (enteredCategory.trim().length === 0) {
+        alert('카테고리명을 입력해주세요.');
+        return false;
+      }
 
-      dispatch(updateCategory({ id, name: updatedName, count }));
-      dispatch(updatePostCategory({ name, updatedName }));
-      dispatch(changeCategory(updatedName));
-      await updateCategoryAPI({ id, name: updatedName, count });
+      if (enteredCategory.trim().length > 7) {
+        alert('카테고리명의 길이를 7이하로 설정해주세요.');
+        return false;
+      }
+
+      const isDuplicate = categories.some(
+        (category) => category.name === enteredCategory,
+      );
+
+      if (isDuplicate) {
+        alert('존재하는 카테고리입니다.');
+        return false;
+      }
+
+      return true;
     },
-    [dispatch],
+    [categories],
   );
 
-  const deleteCategoryHandler = useCallback(
-    async (id) => {
-      const isDelete = window.confirm('정말 삭제하시겠습니까?');
+  const createCategoryHandler = useCallback(
+    async (enteredCategory) => {
+      const isValidate = isValidateCategory(enteredCategory);
 
-      if (isDelete) {
-        dispatch(deleteCategory(id));
-        setMode(DEFAULT);
-        await deleteCategoryAPI(id);
-      }
+      if (!isValidate) return;
+
+      const newItem = {
+        id: `category-${Math.floor(Math.random() * 65565)}`,
+        name: enteredCategory,
+        count: 0,
+      };
+
+      dispatch(createCategory(newItem));
+      await createCategoryAPI(newItem);
+      onChangeMode(DEFAULT);
     },
-    [dispatch],
+    [dispatch, isValidateCategory],
+  );
+
+  const updateCategoryHandler = useCallback(
+    async (updateForm) => {
+      const { id, name, enteredCategory, count } = updateForm;
+      const isValidate = isValidateCategory(enteredCategory);
+
+      if (!isValidate) return;
+
+      dispatch(updateCategory({ id, name: enteredCategory, count }));
+      dispatch(updatePostCategory({ name, enteredCategory }));
+      dispatch(changeCategory(enteredCategory));
+      await updateCategoryAPI({ id, name: enteredCategory, count });
+      onChangeMode(DEFAULT);
+    },
+    [dispatch, isValidateCategory],
   );
 
   return (
@@ -93,26 +123,27 @@ const Category = () => {
             id={category.id}
             name={category.name}
             count={category.count}
-            clicked={clickedCategory === category.name}
             mode={index !== 0 && mode}
             onChangeMode={onChangeMode}
-            updateCategory={updateCategoryHandler}
-            deleteCategory={deleteCategoryHandler}
+            onUpdateCategory={updateCategoryHandler}
           />
         ))}
-        {mode.current === CREATE && (
-          <CategoryForm onChangeMode={onChangeMode} />
-        )}
-        {mode.current !== CREATE && (
-          <button
-            type='button'
-            className='item-create'
-            onClick={() => onChangeMode(CREATE)}
-          >
-            카테고리 추가하기
-          </button>
-        )}
       </div>
+      {mode.current === CREATE && (
+        <CategoryForm
+          onChangeMode={onChangeMode}
+          onCreateCategory={createCategoryHandler}
+        />
+      )}
+      {mode.current !== CREATE && (
+        <button
+          type='button'
+          className='item-create'
+          onClick={() => onChangeMode(CREATE)}
+        >
+          카테고리 추가하기
+        </button>
+      )}
     </StyledCategory>
   );
 };

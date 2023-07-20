@@ -37,7 +37,7 @@ const StyledCategory = styled.div`
 
     width: inherit;
 
-    margin: 12px 0;
+    margin-top: 12px;
   }
 
   .item-create {
