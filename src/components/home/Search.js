@@ -1,41 +1,35 @@
-import { useCallback, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router';
+import { useState } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
-import { getQueryPostAPI } from '@services/post-api';
-import { replacePost } from '@store/post-store';
 import StyledSearch from '@styles/components/home/Search-styled';
+import { convertListToQueryURI } from '@utils/convert';
 
 const Search = () => {
   const [inputQueryType, setInputQueryType] = useState('');
   const [inputQuery, setInputQuery] = useState('');
 
-  const dispatch = useDispatch();
-  const navigation = useNavigate();
+  const [searchParams] = useSearchParams();
+  const queryList = [...searchParams];
+
+  const navigate = useNavigate();
 
   const onInputQueryType = (e) => setInputQueryType(e.target.value);
   const onInputQuery = (e) => setInputQuery(e.target.value);
 
-  const searchHandler = useCallback(
-    async (e) => {
-      e.preventDefault();
+  const searchHandler = (e) => {
+    e.preventDefault();
 
-      if (inputQueryType.trim().length === 0) {
-        alert('검색 타입을 지정해주세요.');
-        return;
-      }
+    if (inputQueryType.trim().length === 0) {
+      alert('검색 타입을 지정해주세요.');
+      return;
+    }
 
-      // Query 검색
-      const postsData = await getQueryPostAPI(
-        inputQueryType,
-        inputQuery.toLowerCase(),
-      );
-
-      dispatch(replacePost({ postsData, mode: 'search' }));
-      navigation(`/search?${inputQueryType}=${inputQuery}`);
-    },
-    [navigation, dispatch, inputQueryType, inputQuery],
-  );
+    const queryURI = convertListToQueryURI(queryList, [
+      inputQueryType,
+      inputQuery,
+    ]);
+    navigate(queryURI);
+  };
 
   return (
     <StyledSearch onSubmit={searchHandler}>

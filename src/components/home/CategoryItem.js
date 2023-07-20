@@ -1,13 +1,12 @@
 import { useCallback, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import { DEFAULT, SETTING, UPDATE } from '@constants/category-mode';
 import { deleteCategoryAPI } from '@services/category-api';
-import { getPostAPI } from '@services/post-api';
-import { replacePost } from '@store/post-store';
 import { changeCategory, deleteCategory } from '@store/category-store';
 import StyledCategoryItem from '@styles/components/home/CategoryItem-styled';
+import { convertListToQueryURI } from '@utils/convert';
 
 const CategoryItem = ({
   id,
@@ -21,6 +20,10 @@ const CategoryItem = ({
 
   const filterMode = useSelector((state) => state.post.filterMode);
   const clickedCategory = useSelector((state) => state.category.current);
+
+  const [searchParams] = useSearchParams();
+  const queryList = [...searchParams];
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -29,17 +32,18 @@ const CategoryItem = ({
   const changeItemHandler = (e) => setEnteredCategory(e.target.value);
   const clickUpdateModeHandler = () => onChangeMode(UPDATE, id);
 
-  const clickCategoryHandler = useCallback(async () => {
-    if (current === UPDATE) return;
-    if (filterMode === 'search') {
-      const postsData = await getPostAPI();
-
-      await dispatch(replacePost({ postsData, mode: 'category' }));
+  const clickCategoryHandler = () => {
+    if (name === '전체글') {
+      navigate('/');
+      return;
     }
 
+    const queryURI = convertListToQueryURI(queryList, ['category', name]);
+    navigate(queryURI);
+
     dispatch(changeCategory(name));
-    navigate(`/search?category=${name}`);
-  }, [navigate, dispatch, name, current, filterMode]);
+    onChangeMode(DEFAULT);
+  };
 
   const updateCategoryHandler = useCallback(
     async (e) => {
