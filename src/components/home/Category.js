@@ -2,68 +2,36 @@ import { useCallback, useState } from 'react';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 
 import { DEFAULT, SETTING, CREATE } from '@constants/category-mode';
-import {
-  createCategoryAPI,
-  updateCategoryAPI,
-  deleteCategoryAPI,
-} from '@services/category-api';
+import { updateCategoryAPI, deleteCategoryAPI } from '@services/category-api';
 import {
   changeCategory,
-  createCategory,
   updateCategory,
   deleteCategory,
 } from '@store/category-store';
 import { updatePostCategory } from '@store/post-store';
 import StyledCategory from '@styles/components/home/Category-styled';
 import CategoryItem from './CategoryItem';
+import CategoryForm from './CategoryForm';
 
 const Category = () => {
-  const [modeState, setModeState] = useState({
-    mode: DEFAULT,
-    selectedId: '',
+  const [mode, setMode] = useState({
+    current: DEFAULT,
+    id: '',
   });
-  const [isShowCategory, setIsShowCategory] = useState(false);
-  const [inputCategory, setInputCategory] = useState('');
 
   const clickedCategory = useSelector((state) => state.category.current);
   const categories = useSelector((state) => state.category.items, shallowEqual);
   const dispatch = useDispatch();
 
-  const { mode } = modeState;
+  const onChangeMode = (selectedMode, selectedId = '') =>
+    setMode({ current: selectedMode, id: selectedId });
 
-  const onChangeCategory = (e) => setInputCategory(e.target.value);
-
-  const clickSettingHandler = () => {
-    if (mode === SETTING) setModeState({ mode: DEFAULT, selectedId: '' });
-    else setModeState({ mode: SETTING, selectedId: '' });
-  };
-
-  const showCategoryHandler = () =>
-    setIsShowCategory((prevState) => !prevState);
-
-  const createCategoryHandler = useCallback(
-    async (e) => {
-      e.preventDefault();
-
-      if (inputCategory.trim().length === 0) {
-        setInputCategory('');
-        setModeState({ mode: DEFAULT, selectedId: '' });
-        return;
-      }
-
-      const newItem = {
-        id: `category${categories.length + 1}`,
-        name: inputCategory,
-        count: 0,
-      };
-
-      dispatch(createCategory(newItem));
-      await createCategoryAPI(newItem);
-      setInputCategory('');
-      setModeState({ mode: DEFAULT, selectedId: '' });
-    },
-    [dispatch, categories, inputCategory],
-  );
+  const clickSettingHandler = () =>
+    setMode(
+      mode.current === SETTING
+        ? { current: DEFAULT, id: '' }
+        : { current: SETTING, id: '' },
+    );
 
   const updateCategoryHandler = useCallback(
     async (updatedItem) => {
@@ -83,43 +51,11 @@ const Category = () => {
 
       if (isDelete) {
         dispatch(deleteCategory(id));
-        setModeState({ mode: DEFAULT, selectedId: '' });
+        setMode(DEFAULT);
         await deleteCategoryAPI(id);
       }
     },
     [dispatch],
-  );
-
-  const toggleButton = isShowCategory ? (
-    <svg
-      width='12'
-      height='7'
-      viewBox='0 0 12 7'
-      fill='none'
-      xmlns='http://www.w3.org/2000/svg'
-    >
-      <path
-        fillRule='evenodd'
-        clipRule='evenodd'
-        d='M0.999787 7C0.802037 6.99996 0.608738 6.94128 0.444329 6.83139C0.279919 6.7215 0.151779 6.56534 0.0761092 6.38264C0.000439122 6.19993 -0.0193641 5.99889 0.0192034 5.80493C0.057771 5.61097 0.152978 5.4328 0.292787 5.29295L5.29279 0.292801C5.48031 0.105319 5.73462 -8.9407e-08 5.99979 -8.9407e-08C6.26495 -8.9407e-08 6.51926 0.105319 6.70679 0.292801L11.7068 5.29295C11.8466 5.4328 11.9418 5.61097 11.9804 5.80493C12.0189 5.99889 11.9991 6.19993 11.9235 6.38264C11.8478 6.56534 11.7197 6.7215 11.5552 6.83139C11.3908 6.94128 11.1975 6.99996 10.9998 7H0.999787Z'
-        fill='currentColor'
-      />
-    </svg>
-  ) : (
-    <svg
-      width='12'
-      height='7'
-      viewBox='0 0 12 7'
-      fill='none'
-      xmlns='http://www.w3.org/2000/svg'
-    >
-      <path
-        fillRule='evenodd'
-        clipRule='evenodd'
-        d='M0.999787 0C0.802037 4.22256e-05 0.608738 0.0587157 0.444329 0.168603C0.279919 0.278491 0.151779 0.434659 0.0761092 0.617365C0.000439122 0.80007 -0.0193641 1.00111 0.0192034 1.19507C0.057771 1.38903 0.152978 1.5672 0.292787 1.70705L5.29279 6.7072C5.48031 6.89468 5.73462 7 5.99979 7C6.26495 7 6.51926 6.89468 6.70679 6.7072L11.7068 1.70705C11.8466 1.5672 11.9418 1.38903 11.9804 1.19507C12.0189 1.00111 11.9991 0.80007 11.9235 0.617365C11.8478 0.434659 11.7197 0.278491 11.5552 0.168603C11.3908 0.0587157 11.1975 4.22256e-05 10.9998 0H0.999787Z'
-        fill='currentColor'
-      />
-    </svg>
   );
 
   return (
@@ -147,50 +83,31 @@ const Category = () => {
             </svg>
           </button>
         </div>
-
-        <button type='button' className='right' onClick={showCategoryHandler}>
-          {toggleButton}
-        </button>
       </div>
 
       {/* Category List */}
       <div className='items'>
-        {isShowCategory &&
-          categories.map((category, index) => (
-            <CategoryItem
-              key={category.id}
-              id={category.id}
-              name={category.name}
-              count={category.count}
-              clicked={clickedCategory === category.name}
-              modeState={index !== 0 && modeState}
-              setUpdateMode={setModeState}
-              updateCategory={updateCategoryHandler}
-              deleteCategory={deleteCategoryHandler}
-            />
-          ))}
-        {mode === CREATE && (
-          <form className='category-form' onSubmit={createCategoryHandler}>
-            <input
-              className='category-input'
-              value={inputCategory}
-              onChange={onChangeCategory}
-              placeholder='카테고리를 입력해주세요.'
-            />
-            <button type='submit'>추가</button>
-            <button
-              type='button'
-              onClick={() => setModeState({ mode: DEFAULT, selectedId: '' })}
-            >
-              취소
-            </button>
-          </form>
+        {categories.map((category, index) => (
+          <CategoryItem
+            key={category.id}
+            id={category.id}
+            name={category.name}
+            count={category.count}
+            clicked={clickedCategory === category.name}
+            mode={index !== 0 && mode}
+            onChangeMode={onChangeMode}
+            updateCategory={updateCategoryHandler}
+            deleteCategory={deleteCategoryHandler}
+          />
+        ))}
+        {mode.current === CREATE && (
+          <CategoryForm onChangeMode={onChangeMode} />
         )}
-        {mode !== CREATE && (
+        {mode.current !== CREATE && (
           <button
             type='button'
             className='item-create'
-            onClick={() => setModeState({ mode: CREATE, selectedId: '' })}
+            onClick={() => onChangeMode(CREATE)}
           >
             카테고리 추가하기
           </button>
