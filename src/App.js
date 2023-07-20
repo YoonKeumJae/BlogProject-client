@@ -11,10 +11,10 @@ import StyledApp from './styles/App-styled';
 import RootLayout from './layouts/RootLayout';
 import ErrorPage from './pages/Error';
 import HomePage from './pages/Home';
+import FilterHomePage from './pages/FilterHome';
 import CreatePage from './pages/Create';
-import UpdatePage from './pages/Update';
 import DetailPage from './pages/Detail';
-import FilterPostsPage from './pages/FilterPosts';
+import UpdatePage from './pages/Update';
 
 import AuthLayout from './layouts/AuthLayout';
 import SignInPage from './pages/SignIn';
@@ -27,7 +27,7 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
     children: [
       { index: true, element: <HomePage /> },
-      { path: 'search?', element: <FilterPostsPage /> },
+      { path: 'search?', element: <FilterHomePage /> },
       { path: 'create', element: <CreatePage /> },
       {
         path: 'post/:postId',
