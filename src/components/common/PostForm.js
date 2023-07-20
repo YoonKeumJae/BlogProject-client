@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
 
+import { regLineBreak } from '@constants/regExp';
 import StyledPostForm from '@styles/components/common/PostForm-styled';
 import TagBox from './TagBox';
 
@@ -34,13 +35,39 @@ const PostForm = ({ post, onSubmit }) => {
   const submitPostHandler = () => {
     const id = post ? post.id : `content-${Math.floor(Math.random() * 65565)}`;
 
-    onSubmit({
-      id,
-      enteredCategory,
-      enteredTitle,
-      enteredContent,
-      enteredTagList,
-    });
+    if (enteredCategory.trim().length === 0) {
+      alert('카테고리를 설정해주세요.');
+      return;
+    }
+    if (enteredTitle.trim().length === 0) {
+      alert('제목을 입력해주세요.');
+      return;
+    }
+    if (enteredContent.trim().length === 0) {
+      alert('내용을 입력해주세요.');
+      return;
+    }
+
+    const date = new Date();
+    const enteredDate = `${date.getFullYear()}.${
+      date.getMonth() + 1
+    }.${date.getDate()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
+
+    const formattedContent = enteredContent.replace(regLineBreak, '\\r\\n');
+
+    const postForm = {
+      content: formattedContent,
+      category: enteredCategory,
+      comment: [],
+      date: enteredDate,
+      id, // 수정 필요,
+      like: 0,
+      tagList: enteredTagList,
+      title: enteredTitle,
+      username: '걍하지', // 수정 필요
+    };
+
+    onSubmit(postForm);
   };
 
   const cancelPostHandler = () => {

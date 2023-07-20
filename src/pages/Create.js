@@ -3,7 +3,6 @@ import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
 
 import PostForm from '@components/common/PostForm';
-import { regLineBreak } from '@constants/regExp';
 import { assignCategoryAPI } from '@services/category-api';
 import { createPostAPI } from '@services/post-api';
 import { replaceCategory } from '@store/category-store';
@@ -25,37 +24,9 @@ const CreatePage = () => {
   );
 
   const createPostHandler = useCallback(
-    async (form) => {
-      const {
-        id,
-        enteredCategory,
-        enteredTitle,
-        enteredContent,
-        enteredTagList,
-      } = form;
-      if (enteredCategory.trim().length === 0) return;
-      if (enteredTitle.trim().length === 0) return;
-      if (enteredContent.trim().length === 0) return;
-
-      const date = new Date();
-      const enteredDate = `${date.getFullYear()}.${
-        date.getMonth() + 1
-      }.${date.getDate()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
-
-      const formattedContent = enteredContent.replace(regLineBreak, '\\r\\n');
-
-      const postForm = {
-        content: formattedContent,
-        category: enteredCategory,
-        comment: [],
-        date: enteredDate,
-        id, // 수정 필요,
-        like: 0,
-        tagList: enteredTagList,
-        title: enteredTitle,
-        username: '걍하지', // 수정 필요
-      };
-      const updatedCategory = assignCategoryHandler(enteredCategory);
+    async (postForm) => {
+      const { category } = postForm;
+      const updatedCategory = assignCategoryHandler(category);
 
       dispatch(createPost(postForm));
       dispatch(replaceCategory(updatedCategory));
