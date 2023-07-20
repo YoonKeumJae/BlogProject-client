@@ -5,8 +5,6 @@ const StyledCategory = styled.div`
 
   .head {
     display: flex;
-    justify-content: space-between;
-    align-items: baseline;
 
     .left {
       display: flex;
