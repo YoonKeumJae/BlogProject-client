@@ -13,8 +13,8 @@ const CategoryItem = ({
   name,
   count,
   clicked,
-  modeState,
-  setUpdateMode,
+  mode,
+  onChangeMode,
   updateCategory,
   deleteCategory,
 }) => {
@@ -24,10 +24,13 @@ const CategoryItem = ({
   const dispatch = useDispatch();
   const navigation = useNavigate();
 
-  const { mode, selectedId } = modeState;
+  const { current, id: selectedId } = mode;
+
+  const changeItemHandler = (e) => setInputItem(e.target.value);
+  const clickUpdateModeHandler = () => onChangeMode(UPDATE, id);
 
   const clickCategoryHandler = useCallback(async () => {
-    if (mode === UPDATE) return;
+    if (current === UPDATE) return;
     if (filterMode === 'search') {
       const postsData = await getPostAPI();
 
@@ -36,19 +39,14 @@ const CategoryItem = ({
 
     dispatch(changeCategory(name));
     navigation(`/search?category=${name}`);
-  }, [navigation, dispatch, name, mode, filterMode]);
-
-  const changeItemHandler = (e) => setInputItem(e.target.value);
-
-  const clickUpdateModeHandler = () =>
-    setUpdateMode({ mode: UPDATE, selectedId: id });
+  }, [navigation, dispatch, name, current, filterMode]);
 
   const submitCategoryHandler = useCallback(
     (e) => {
       e.preventDefault();
 
       if (inputItem.trim().length === 0) {
-        setUpdateMode({ mode: DEFAULT, selectedId: '' });
+        onChangeMode(DEFAULT);
         return;
       }
 
@@ -57,10 +55,10 @@ const CategoryItem = ({
         return;
       }
 
-      setUpdateMode({ mode: DEFAULT, selectedId: '' });
+      onChangeMode(DEFAULT);
       updateCategory({ id, name, count, updatedName: inputItem });
     },
-    [setUpdateMode, updateCategory, id, name, count, inputItem],
+    [onChangeMode, updateCategory, id, name, count, inputItem],
   );
 
   return (
@@ -94,7 +92,7 @@ const CategoryItem = ({
               <span className='item-count'>({count})</span>
             </>
           )}
-          {mode === UPDATE && id === selectedId && (
+          {current === UPDATE && id === selectedId && (
             <form className='item-form' onSubmit={submitCategoryHandler}>
               <input
                 value={inputItem}
@@ -106,11 +104,11 @@ const CategoryItem = ({
           )}
         </div>
 
-        {clicked && mode !== UPDATE && filterMode === 'category' && (
+        {clicked && current !== UPDATE && filterMode === 'category' && (
           <div className='underline' />
         )}
       </div>
-      {mode === SETTING && (
+      {current === SETTING && (
         <div className='setting-option'>
           <button
             type='button'
