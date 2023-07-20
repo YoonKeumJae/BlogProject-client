@@ -2,8 +2,8 @@ import styled from 'styled-components';
 
 const StyledApp = styled.div`
   margin: 0 auto;
-
   width: 1080px;
+  font-size: 14px;
 
   h1,
   h2,
@@ -23,6 +23,11 @@ const StyledApp = styled.div`
     background: none;
 
     cursor: pointer;
+  }
+
+  a {
+    text-decoration: none;
+    color: black;
   }
 
   textarea {
