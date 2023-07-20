@@ -1,8 +1,11 @@
 import { useState } from 'react';
 
 import StyledPosts from '@styles/components/home/Posts-styled';
+import { filterPostOnPage, makePageArray } from '@utils/post';
 import Header from './Header';
 import PostCard from './PostCard';
+
+const VIEW_POST = 8;
 
 const Posts = ({ posts }) => {
   const [curPage, setCurPage] = useState(1);
@@ -13,11 +16,8 @@ const Posts = ({ posts }) => {
     setCurPage(clickedPage);
   };
 
-  const renderedPost = posts.slice(8 * curPage - 8, 8 * curPage);
-  const totPage =
-    posts.length % 8 === 0 ? posts.length / 8 : posts.length / 8 + 1;
-  const pageArray = [];
-  for (let i = 1; i <= totPage; i += 1) pageArray.push(i);
+  const renderedPost = filterPostOnPage(posts, curPage, VIEW_POST);
+  const pages = makePageArray(posts, VIEW_POST);
 
   return (
     <StyledPosts>
@@ -33,14 +33,14 @@ const Posts = ({ posts }) => {
 
       {/* Content Paging */}
       <div className='page-box'>
-        {pageArray.map((page) => (
-          <span
+        {pages.map((page) => (
+          <button
             key={page}
             className={`${page === curPage ? 'clicked-page' : ''}`}
             onClick={() => clickPageHandler(page)}
           >
             {page}
-          </span>
+          </button>
         ))}
       </div>
     </StyledPosts>

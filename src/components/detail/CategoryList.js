@@ -3,6 +3,9 @@ import { shallowEqual, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router';
 
 import StyledCategoryList from '@styles/components/detail/CategoryList-styled';
+import { filterPostOnPage, makePageArray } from '@utils/post';
+
+const VIEW_POST = 4;
 
 const CategoryList = ({ category }) => {
   const [curPage, setCurPage] = useState(1);
@@ -23,7 +26,7 @@ const CategoryList = ({ category }) => {
         ? selectedPostPage / 4
         : selectedPostPage / 4 + 1;
 
-    setCurPage(Math.round(calculatedPostPage));
+    setCurPage(Math.floor(calculatedPostPage));
   }, [category, posts, postId]);
 
   const onClickPostHandler = (id) => {
@@ -35,13 +38,8 @@ const CategoryList = ({ category }) => {
     .filter((post) => post.category === category)
     .reverse();
 
-  const renderedPost = filterPost.slice(4 * curPage - 4, 4 * curPage);
-  const totPage =
-    filterPost.length % 4 === 0
-      ? filterPost.length / 4
-      : filterPost.length / 4 + 1;
-  const pageArray = [];
-  for (let i = 1; i <= totPage; i += 1) pageArray.push(i);
+  const renderedPost = filterPostOnPage(filterPost, curPage, VIEW_POST);
+  const pages = makePageArray(filterPost, VIEW_POST);
 
   return (
     <StyledCategoryList>
@@ -77,12 +75,12 @@ const CategoryList = ({ category }) => {
         })}
 
         {/* Category paging */}
-        <div className='category-page-container'>
-          {pageArray.map((page, index) => (
+        <div className='page-box'>
+          {pages.map((page) => (
             <button
-              key={index}
+              key={page}
               onClick={() => setCurPage(page)}
-              className={`${page === curPage ? 'selected-category-page' : ''}`}
+              className={`${page === curPage ? 'clicked-page' : ''}`}
             >
               {page}
             </button>
