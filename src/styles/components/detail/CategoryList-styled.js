@@ -59,23 +59,6 @@ const StyledCategoryList = styled.div`
       }
     }
   }
-
-  .category-page-container {
-    margin-top: 48px;
-    text-align: center;
-    color: #8d8d8d;
-
-    .selected-category-page {
-      padding: 4px 12px;
-
-      border: 1px solid #ccc;
-      border-radius: 10px;
-    }
-
-    button {
-      margin: 0 8px;
-    }
-  }
 `;
 
 export default StyledCategoryList;

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 
+import Pagenaition from '@components/common/Pagination';
 import StyledPosts from '@styles/components/home/Posts-styled';
 import { filterPostOnPage, makePageArray } from '@utils/post';
 import Header from './Header';
@@ -9,12 +10,6 @@ const VIEW_POST = 8;
 
 const Posts = ({ posts }) => {
   const [curPage, setCurPage] = useState(1);
-
-  const clickPageHandler = (clickedPage) => {
-    if (clickedPage === curPage) return;
-
-    setCurPage(clickedPage);
-  };
 
   const renderedPost = filterPostOnPage(posts, curPage, VIEW_POST);
   const pages = makePageArray(posts, VIEW_POST);
@@ -31,18 +26,8 @@ const Posts = ({ posts }) => {
         ))}
       </div>
 
-      {/* Content Paging */}
-      <div className='page-box'>
-        {pages.map((page) => (
-          <button
-            key={page}
-            className={`${page === curPage ? 'clicked-page' : ''}`}
-            onClick={() => clickPageHandler(page)}
-          >
-            {page}
-          </button>
-        ))}
-      </div>
+      {/* Posts Paging */}
+      <Pagenaition pages={pages} curPage={curPage} onSetPage={setCurPage} />
     </StyledPosts>
   );
 };

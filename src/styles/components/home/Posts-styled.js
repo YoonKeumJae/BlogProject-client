@@ -14,23 +14,6 @@ const StyledPosts = styled.section`
     column-gap: 12px;
     row-gap: 24px;
   }
-
-  .page-box {
-    text-align: center;
-
-    .clicked-page {
-      font-size: 16px;
-      font-weight: 600;
-      color: #000000;
-    }
-
-    span {
-      margin: 0 8px;
-
-      cursor: pointer;
-      color: #cdcdcd;
-    }
-  }
 `;
 
 export default StyledPosts;

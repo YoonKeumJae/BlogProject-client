@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router';
 
+import Pagenaition from '@components/common/Pagination';
 import StyledCategoryList from '@styles/components/detail/CategoryList-styled';
 import { filterPostOnPage, makePageArray } from '@utils/post';
 
@@ -74,18 +75,8 @@ const CategoryList = ({ category }) => {
           );
         })}
 
-        {/* Category paging */}
-        <div className='page-box'>
-          {pages.map((page) => (
-            <button
-              key={page}
-              onClick={() => setCurPage(page)}
-              className={`${page === curPage ? 'clicked-page' : ''}`}
-            >
-              {page}
-            </button>
-          ))}
-        </div>
+        {/* Category List Paging */}
+        <Pagenaition pages={pages} curPage={curPage} onSetPage={setCurPage} />
       </div>
     </StyledCategoryList>
   );
