@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import StyledSearch from '@styles/components/home/Search-styled';
-import { convertListToQueryURI } from '@utils/convert';
+import convertListToQueryURI from '@utils/convert';
 
 const Search = () => {
   const [inputQueryType, setInputQueryType] = useState('');

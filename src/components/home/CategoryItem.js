@@ -6,7 +6,7 @@ import { DEFAULT, SETTING, UPDATE } from '@constants/category-mode';
 import { deleteCategoryAPI } from '@services/category-api';
 import { changeCategory, deleteCategory } from '@store/category-store';
 import StyledCategoryItem from '@styles/components/home/CategoryItem-styled';
-import { convertListToQueryURI } from '@utils/convert';
+import convertListToQueryURI from '@utils/convert';
 
 const CategoryItem = ({
   id,
