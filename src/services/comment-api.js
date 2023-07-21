@@ -1,5 +1,4 @@
-import axios from 'axios';
-import FIREBASE_URL from '@config/firebase';
+import callAPI from './interface-api';
 
 /**
  * Comment 생성 API
@@ -7,14 +6,8 @@ import FIREBASE_URL from '@config/firebase';
  * @param {Object} commentForm 생성한 댓글
  * @returns 성공 여부
  */
-export const createCommentAPI = async (postId, commentForm) => {
-  const response = await axios
-    .post(`${FIREBASE_URL}/posts/${postId}/comment.json`, commentForm)
-    // eslint-disable-next-line no-console
-    .catch((error) => console.log(error));
-
-  return response;
-};
+export const createCommentAPI = (postId, commentForm) =>
+  callAPI('post', `/posts/${postId}/comment.json`, commentForm);
 
 /**
  * 댓글 수정 API
@@ -23,17 +16,8 @@ export const createCommentAPI = async (postId, commentForm) => {
  * @param {Object} updatedComment 수정된 게시글
  * @returns 성공 여부
  */
-export const updateCommentAPI = async (postId, commentId, updatedComment) => {
-  const response = await axios
-    .put(
-      `${FIREBASE_URL}/posts/${postId}/comment/${commentId}.json`,
-      updatedComment,
-    )
-    // eslint-disable-next-line no-console
-    .catch((error) => console.log(error));
-
-  return response;
-};
+export const updateCommentAPI = (postId, commentId, updatedComment) =>
+  callAPI('put', `/posts/${postId}/comment/${commentId}.json`, updatedComment);
 
 /**
  * 댓글 삭제 API
@@ -41,11 +25,5 @@ export const updateCommentAPI = async (postId, commentId, updatedComment) => {
  * @param {String} commentId 댓글 ID
  * @returns 성공 여부
  */
-export const deleteCommentAPI = async (postId, commentId) => {
-  const response = await axios
-    .delete(`${FIREBASE_URL}/posts/${postId}/comment/${commentId}.json`)
-    // eslint-disable-next-line no-console
-    .catch((error) => console.log(error));
-
-  return response;
-};
+export const deleteCommentAPI = (postId, commentId) =>
+  callAPI('delete', `/posts/${postId}/comment/${commentId}.json`);
