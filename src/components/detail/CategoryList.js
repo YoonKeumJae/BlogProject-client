@@ -19,7 +19,6 @@ const CategoryList = ({ category }) => {
     const selectedPostPage =
       posts
         .filter((post) => post.category === category)
-        .reverse()
         .findIndex((post) => post.id === postId) + 1;
 
     const calculatedPostPage =
@@ -35,9 +34,7 @@ const CategoryList = ({ category }) => {
     navigation(`/post/${id}`);
   };
 
-  const filterPost = posts
-    .filter((post) => post.category === category)
-    .reverse();
+  const filterPost = posts.filter((post) => post.category === category);
 
   const renderedPost = filterPostOnPage(filterPost, curPage, VIEW_POST);
   const pages = makePageArray(filterPost, VIEW_POST);
@@ -53,8 +50,7 @@ const CategoryList = ({ category }) => {
       {/* Post Item List */}
       <div className='category-item-list'>
         {renderedPost.map((item) => {
-          const commentCount =
-            item.comment.length !== 0 ? `(${item.comment.length})` : '';
+          const commentCount = item.comment ? `(${item.comment.length})` : '';
 
           return (
             <div

@@ -20,11 +20,21 @@ const StyledPostCard = styled.div`
     }
   }
 
-  .title {
-    font-size: 18px;
+  .title-header {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
 
-    margin: 12px 0 6px;
-    cursor: pointer;
+    .title {
+      font-size: 18px;
+
+      margin: 12px 0 6px;
+      cursor: pointer;
+    }
+
+    span {
+      font-size: 16px;
+    }
   }
 
   .content-slice {

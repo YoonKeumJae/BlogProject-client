@@ -1,12 +1,14 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
 import { createCommentAPI } from '@services/comment-api';
 import { createComment } from '@store/post-store';
 import StyledCommentForm from '@styles/components/detail/CommentForm-styled';
 
-const CommentForm = ({ postId, username }) => {
+const CommentForm = ({ postId, username, nextCommentId }) => {
   const [enteredContent, setEnteredContent] = useState('');
+
+  const nextCommentIdRef = useRef(nextCommentId);
 
   const dispatch = useDispatch();
 
@@ -24,7 +26,7 @@ const CommentForm = ({ postId, username }) => {
       }.${date.getDate()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
 
       const commentForm = {
-        id: `comment-${Math.floor(Math.random() * 65565)}`,
+        id: nextCommentId.current.toString(),
         type: 'comment',
         profile: '',
         username,
@@ -32,11 +34,12 @@ const CommentForm = ({ postId, username }) => {
         date: enteredDate,
       };
 
+      nextCommentIdRef.current += 1;
       setEnteredContent('');
       dispatch(createComment({ postId, commentForm }));
       await createCommentAPI(postId, commentForm);
     },
-    [enteredContent, postId, username, dispatch],
+    [dispatch, enteredContent, postId, username, nextCommentId],
   );
 
   const submitCommentHandler = (e) => {

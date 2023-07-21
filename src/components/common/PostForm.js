@@ -13,6 +13,7 @@ const PostForm = ({ post, onSubmit }) => {
   const [enteredTagList, setEnteredTagList] = useState([]);
 
   const categories = useSelector((state) => state.category.items, shallowEqual);
+  const nextPostId = useSelector((state) => state.post.nextPostId);
   const navigation = useNavigate();
 
   useEffect(() => {
@@ -33,7 +34,7 @@ const PostForm = ({ post, onSubmit }) => {
   const onInputContentHandler = (e) => setEnteredContent(e.target.value);
 
   const submitPostHandler = () => {
-    const id = post ? post.id : `content-${Math.floor(Math.random() * 65565)}`;
+    const id = post ? post.id : nextPostId.toString();
 
     if (enteredCategory.trim().length === 0) {
       alert('카테고리를 설정해주세요.');
@@ -60,7 +61,7 @@ const PostForm = ({ post, onSubmit }) => {
       category: enteredCategory,
       comment: [],
       date: enteredDate,
-      id, // 수정 필요,
+      id,
       like: 0,
       tagList: enteredTagList,
       title: enteredTitle,

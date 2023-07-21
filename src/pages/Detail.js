@@ -1,4 +1,4 @@
-import { useSelector, shallowEqual } from 'react-redux';
+import { shallowEqual, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
 import PostDetail from '@components/detail/PostDetail';
@@ -8,9 +8,7 @@ const Detail = () => {
   const posts = useSelector((state) => state.post.items, shallowEqual);
   const renderPost = posts.filter((post) => post.id === postId);
 
-  if (renderPost.length === 0) {
-    return null;
-  }
+  if (!renderPost[0]) return null;
 
   return <PostDetail post={renderPost[0]} />;
 };

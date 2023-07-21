@@ -6,7 +6,7 @@ import { DEFAULT, SETTING, UPDATE } from '@constants/category-mode';
 import { deleteCategoryAPI } from '@services/category-api';
 import { changeCategory, deleteCategory } from '@store/category-store';
 import StyledCategoryItem from '@styles/components/home/CategoryItem-styled';
-import { convertListToQueryURI } from '@utils/convert';
+import convertListToQueryURI from '@utils/convert';
 
 const CategoryItem = ({
   id,
@@ -33,6 +33,8 @@ const CategoryItem = ({
   const clickUpdateModeHandler = () => onChangeMode(UPDATE, id);
 
   const clickCategoryHandler = () => {
+    if (current === UPDATE && id === selectedId) return;
+
     if (name === '전체글') {
       navigate('/');
     } else {
@@ -52,12 +54,11 @@ const CategoryItem = ({
         id,
         name,
         enteredCategory,
-        count,
       };
 
       onUpdateCategory(updateForm);
     },
-    [onUpdateCategory, id, name, count, enteredCategory],
+    [onUpdateCategory, id, name, enteredCategory],
   );
 
   const deleteCategoryHandler = useCallback(async () => {

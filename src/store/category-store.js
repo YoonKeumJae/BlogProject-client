@@ -5,47 +5,48 @@ const CHANGE_CATEGORY = 'category/CHANGE';
 const CREATE_CATEGORY = 'category/CREATE';
 const UPDATE_CATEGORY = 'category/UPDATE';
 const DELETE_CATEGORY = 'category/DELETE';
-const REPLACE_CATEGORY = 'category/ASSIGN';
 
 export const initCategories = createAction(INIT_CATEGORIES);
 export const changeCategory = createAction(CHANGE_CATEGORY);
 export const createCategory = createAction(CREATE_CATEGORY);
 export const updateCategory = createAction(UPDATE_CATEGORY);
 export const deleteCategory = createAction(DELETE_CATEGORY);
-export const replaceCategory = createAction(REPLACE_CATEGORY);
 
 const initialCategory = {
   current: '전체글',
   items: [],
+  nextCategoryId: 0,
 };
 
 const categoryReducer = handleActions(
   {
-    [INIT_CATEGORIES]: (state, action) => ({
+    [INIT_CATEGORIES]: (state, { payload: categories }) => {
+      const nextCategoryId = categories.slice(-1)[0].id;
+
+      return {
+        ...state,
+        items: categories,
+        nextCategoryId: Number(nextCategoryId) + 1,
+      };
+    },
+    [CHANGE_CATEGORY]: (state, { payload: category }) => ({
       ...state,
-      items: action.payload,
+      current: category,
     }),
-    [CHANGE_CATEGORY]: (state, action) => ({
+    [CREATE_CATEGORY]: (state, { payload: category }) => ({
       ...state,
-      current: action.payload,
+      items: state.items.concat(category),
+      nextCategoryId: state.nextCategoryId + 1,
     }),
-    [CREATE_CATEGORY]: (state, action) => ({
-      ...state,
-      items: state.items.concat(action.payload),
-    }),
-    [UPDATE_CATEGORY]: (state, action) => ({
+    [UPDATE_CATEGORY]: (state, { payload }) => ({
       ...state,
       items: state.items.map((item) =>
-        item.id === action.payload.id ? action.payload : item,
+        item.id === payload.id ? { ...item, name: payload.updatedName } : item,
       ),
     }),
-    [DELETE_CATEGORY]: (state, action) => ({
+    [DELETE_CATEGORY]: (state, { payload: deleteId }) => ({
       ...state,
-      items: state.items.filter((category) => category.id !== action.payload),
-    }),
-    [REPLACE_CATEGORY]: (state, action) => ({
-      ...state,
-      items: action.payload,
+      items: state.items.filter((category) => category.id !== deleteId),
     }),
   },
   initialCategory,

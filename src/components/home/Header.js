@@ -1,16 +1,16 @@
-import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 
 import StyledHeader from '@styles/components/home/Header-styled';
 
 const Header = () => {
-  const clickedCategory = useSelector((state) => state.category.current);
+  const [searchParams] = useSearchParams();
+  const currentCategory = searchParams.get('category');
 
   return (
     <StyledHeader>
-      <h3 className='title'>{clickedCategory}</h3>
+      <h3 className='title'>{currentCategory || '전체글'}</h3>
       <div className='lnb'>
-        <Link to='create'>
+        <Link to='/create'>
           <button className='menu'>
             <svg
               width='16'

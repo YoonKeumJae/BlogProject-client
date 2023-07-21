@@ -1,14 +1,11 @@
 import { useCallback, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 import { DEFAULT, SETTING, CREATE } from '@constants/category-mode';
 import { createCategoryAPI, updateCategoryAPI } from '@services/category-api';
-import {
-  changeCategory,
-  createCategory,
-  updateCategory,
-} from '@store/category-store';
-import { updatePostCategory } from '@store/post-store';
+import { createCategory, updateCategory } from '@store/category-store';
+import { updateCategoryInPost } from '@store/post-store';
 import StyledCategory from '@styles/components/home/Category-styled';
 import CategoryItem from './CategoryItem';
 import CategoryForm from './CategoryForm';
@@ -19,7 +16,10 @@ const Category = ({ categories }) => {
     id: '',
   });
 
+  const posts = useSelector((state) => state.post.items);
+  const nextCategoryId = useSelector((state) => state.category.nextCategoryId);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const onChangeMode = (type, selectedId = '') =>
     setMode({ current: type, id: selectedId });
@@ -60,32 +60,32 @@ const Category = ({ categories }) => {
       if (!isValidate) return;
 
       const newItem = {
-        id: `category-${Math.floor(Math.random() * 65565)}`,
+        id: nextCategoryId.toString(),
         name: enteredCategory,
         count: 0,
       };
 
       dispatch(createCategory(newItem));
-      await createCategoryAPI(newItem);
       onChangeMode(DEFAULT);
+      await createCategoryAPI(newItem);
     },
-    [dispatch, isValidateCategory],
+    [dispatch, isValidateCategory, nextCategoryId],
   );
 
   const updateCategoryHandler = useCallback(
     async (updateForm) => {
-      const { id, name, enteredCategory, count } = updateForm;
+      const { id, name, enteredCategory } = updateForm;
       const isValidate = isValidateCategory(enteredCategory);
 
       if (!isValidate) return;
 
-      dispatch(updateCategory({ id, name: enteredCategory, count }));
-      dispatch(updatePostCategory({ name, enteredCategory }));
-      dispatch(changeCategory(enteredCategory));
-      await updateCategoryAPI({ id, name: enteredCategory, count });
+      dispatch(updateCategory({ id, updatedName: enteredCategory }));
+      dispatch(updateCategoryInPost({ name, enteredCategory }));
       onChangeMode(DEFAULT);
+      await updateCategoryAPI({ id, name: enteredCategory });
+      navigate('/');
     },
-    [dispatch, isValidateCategory],
+    [dispatch, navigate, isValidateCategory],
   );
 
   return (
@@ -117,17 +117,23 @@ const Category = ({ categories }) => {
 
       {/* Category List */}
       <div className='items'>
-        {categories.map((category, index) => (
-          <CategoryItem
-            key={category.id}
-            id={category.id}
-            name={category.name}
-            count={category.count}
-            mode={index !== 0 && mode}
-            onChangeMode={onChangeMode}
-            onUpdateCategory={updateCategoryHandler}
-          />
-        ))}
+        {categories.map((category, index) => {
+          const filteredPost = posts.filter(
+            (post) => post.category === category.name,
+          );
+
+          return (
+            <CategoryItem
+              key={category.id}
+              id={category.id}
+              name={category.name}
+              count={index === 0 ? posts.length : filteredPost.length}
+              mode={index !== 0 && mode}
+              onChangeMode={onChangeMode}
+              onUpdateCategory={updateCategoryHandler}
+            />
+          );
+        })}
       </div>
       {mode.current === CREATE && (
         <CategoryForm
