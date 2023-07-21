@@ -5,18 +5,19 @@ const CHANGE_CATEGORY = 'category/CHANGE';
 const CREATE_CATEGORY = 'category/CREATE';
 const UPDATE_CATEGORY = 'category/UPDATE';
 const DELETE_CATEGORY = 'category/DELETE';
-const REPLACE_CATEGORY = 'category/ASSIGN';
+const ASSIGN_CATEGORY = 'category/ASSIGN';
 
 export const initCategories = createAction(INIT_CATEGORIES);
 export const changeCategory = createAction(CHANGE_CATEGORY);
 export const createCategory = createAction(CREATE_CATEGORY);
 export const updateCategory = createAction(UPDATE_CATEGORY);
 export const deleteCategory = createAction(DELETE_CATEGORY);
-export const replaceCategory = createAction(REPLACE_CATEGORY);
+export const assignCategory = createAction(ASSIGN_CATEGORY);
 
 const initialCategory = {
   current: '전체글',
   items: [],
+  size: 0,
 };
 
 const categoryReducer = handleActions(
@@ -24,6 +25,7 @@ const categoryReducer = handleActions(
     [INIT_CATEGORIES]: (state, action) => ({
       ...state,
       items: action.payload,
+      size: action.payload.length,
     }),
     [CHANGE_CATEGORY]: (state, action) => ({
       ...state,
@@ -32,21 +34,38 @@ const categoryReducer = handleActions(
     [CREATE_CATEGORY]: (state, action) => ({
       ...state,
       items: state.items.concat(action.payload),
+      size: state.size + 1,
     }),
     [UPDATE_CATEGORY]: (state, action) => ({
       ...state,
       items: state.items.map((item) =>
-        item.id === action.payload.id ? action.payload : item,
+        item.id === action.payload.id
+          ? { ...item, name: action.payload.updatedName }
+          : item,
       ),
     }),
     [DELETE_CATEGORY]: (state, action) => ({
       ...state,
       items: state.items.filter((category) => category.id !== action.payload),
+      size: state.size - 1,
     }),
-    [REPLACE_CATEGORY]: (state, action) => ({
-      ...state,
-      items: action.payload,
-    }),
+    [ASSIGN_CATEGORY]: (state, action) => {
+      const category = action.payload;
+
+      const updatedCategory = state.items.map((item, index) =>
+        item.name === category || index === 0
+          ? {
+              ...item,
+              count: item.count + 1,
+            }
+          : item,
+      );
+
+      return {
+        ...state,
+        items: updatedCategory,
+      };
+    },
   },
   initialCategory,
 );

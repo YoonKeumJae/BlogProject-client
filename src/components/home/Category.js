@@ -1,5 +1,6 @@
 import { useCallback, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 import { DEFAULT, SETTING, CREATE } from '@constants/category-mode';
 import { createCategoryAPI, updateCategoryAPI } from '@services/category-api';
@@ -15,7 +16,9 @@ const Category = ({ categories }) => {
     id: '',
   });
 
+  const categorySize = useSelector((state) => state.category.size);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const onChangeMode = (type, selectedId = '') =>
     setMode({ current: type, id: selectedId });
@@ -56,31 +59,32 @@ const Category = ({ categories }) => {
       if (!isValidate) return;
 
       const newItem = {
-        id: `category-${Math.floor(Math.random() * 65565)}`,
+        id: categorySize,
         name: enteredCategory,
         count: 0,
       };
 
       dispatch(createCategory(newItem));
-      await createCategoryAPI(newItem);
       onChangeMode(DEFAULT);
+      await createCategoryAPI(newItem);
     },
-    [dispatch, isValidateCategory],
+    [dispatch, isValidateCategory, categorySize],
   );
 
   const updateCategoryHandler = useCallback(
     async (updateForm) => {
-      const { id, name, enteredCategory, count } = updateForm;
+      const { id, name, enteredCategory } = updateForm;
       const isValidate = isValidateCategory(enteredCategory);
 
       if (!isValidate) return;
 
-      dispatch(updateCategory({ id, name: enteredCategory, count }));
+      dispatch(updateCategory({ id, updatedName: enteredCategory }));
       dispatch(updatePostCategory({ name, enteredCategory }));
-      await updateCategoryAPI({ id, name: enteredCategory, count });
       onChangeMode(DEFAULT);
+      await updateCategoryAPI({ id, name: enteredCategory });
+      navigate('/');
     },
-    [dispatch, isValidateCategory],
+    [dispatch, navigate, isValidateCategory],
   );
 
   return (

@@ -1,4 +1,3 @@
-import { convertDataToPostArray } from '@utils/convert';
 import callAPI from './interface-api';
 
 /**
@@ -7,7 +6,7 @@ import callAPI from './interface-api';
  */
 export const getPostAPI = async () => {
   const responseData = await callAPI('get', '/posts.json');
-  return responseData ? convertDataToPostArray(responseData) : [];
+  return responseData || [];
 };
 
 /**
@@ -15,7 +14,8 @@ export const getPostAPI = async () => {
  * @param {Object} post 작성한 Post
  * @returns 성공 여부
  */
-export const createPostAPI = (post) => callAPI('post', '/posts.json', post);
+export const createPostAPI = (post) =>
+  callAPI('put', `/posts/${post.id}.json`, post);
 
 /**
  * Post 수정 API
