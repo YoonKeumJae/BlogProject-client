@@ -1,28 +1,17 @@
 import { useCallback } from 'react';
 import { useNavigate } from 'react-router';
-import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 import DefaultProfileImage from '@assets/default-profile-image.png';
-import { removeAssignCategoryAPI } from '@services/category-api';
 import { deletePostAPI } from '@services/post-api';
-import { replaceCategory } from '@store/category-store';
 import { deletePost } from '@store/post-store';
 import StyledPostContent from '@styles/components/detail/PostContent-styled';
 
 const PostContent = ({ post }) => {
   const { id, category, title, username, date, tagList, content, like } = post;
 
-  const categories = useSelector((state) => state.category.items, shallowEqual);
   const navigation = useNavigate();
   const dispatch = useDispatch();
-
-  const removeAssignCategoryHandler = useCallback(
-    () =>
-      categories.map((c) =>
-        c.name === category || c.id === '0' ? { ...c, count: c.count - 1 } : c,
-      ),
-    [category, categories],
-  );
 
   const onClickUpdateHandler = () =>
     navigation('update/', {
@@ -32,16 +21,12 @@ const PostContent = ({ post }) => {
   const onClickDeleteHandler = useCallback(async () => {
     const isCheck = window.confirm('정말 삭제하시겠습니까?');
 
-    const updatedCategory = removeAssignCategoryHandler();
-
     if (isCheck) {
       dispatch(deletePost(id));
-      dispatch(replaceCategory(updatedCategory));
       await deletePostAPI(id);
-      await removeAssignCategoryAPI(updatedCategory);
       navigation('/');
     }
-  }, [removeAssignCategoryHandler, dispatch, navigation, id]);
+  }, [dispatch, navigation, id]);
 
   return (
     <StyledPostContent>

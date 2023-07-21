@@ -105,12 +105,7 @@ const CategoryItem = ({
               strokeLinejoin='round'
             />
           </svg>
-          {id !== selectedId && (
-            <>
-              <span className='item-name'>{name}</span>
-              <span className='item-count'>({count})</span>
-            </>
-          )}
+          {id !== selectedId && <span className='item-name'>{name}</span>}
           {current === UPDATE && id === selectedId && (
             <form className='item-form' onSubmit={updateCategoryHandler}>
               <input
