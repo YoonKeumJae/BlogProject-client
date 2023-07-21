@@ -3,11 +3,7 @@ import { useDispatch } from 'react-redux';
 
 import { DEFAULT, SETTING, CREATE } from '@constants/category-mode';
 import { createCategoryAPI, updateCategoryAPI } from '@services/category-api';
-import {
-  changeCategory,
-  createCategory,
-  updateCategory,
-} from '@store/category-store';
+import { createCategory, updateCategory } from '@store/category-store';
 import { updatePostCategory } from '@store/post-store';
 import StyledCategory from '@styles/components/home/Category-styled';
 import CategoryItem from './CategoryItem';
@@ -81,7 +77,6 @@ const Category = ({ categories }) => {
 
       dispatch(updateCategory({ id, name: enteredCategory, count }));
       dispatch(updatePostCategory({ name, enteredCategory }));
-      dispatch(changeCategory(enteredCategory));
       await updateCategoryAPI({ id, name: enteredCategory, count });
       onChangeMode(DEFAULT);
     },

@@ -33,6 +33,8 @@ const CategoryItem = ({
   const clickUpdateModeHandler = () => onChangeMode(UPDATE, id);
 
   const clickCategoryHandler = () => {
+    if (current === UPDATE && id === selectedId) return;
+
     if (name === '전체글') {
       navigate('/');
     } else {
