@@ -4,22 +4,13 @@ import Posts from '@components/home/Posts';
 
 const FilterHomePage = () => {
   const [searchParams] = useSearchParams();
-  const queryList = [...searchParams];
 
   const posts = useSelector((state) => state.post.items, shallowEqual);
 
   let renderedPost = posts;
-  let searchedCategory = '';
-  let searchedTitle = '';
-  let searchedContent = '';
-
-  if (queryList.length > 0) {
-    queryList.forEach(([type, value]) => {
-      if (type === 'category') searchedCategory = value;
-      if (type === 'title') searchedTitle = value;
-      if (type === 'content') searchedContent = value;
-    });
-  }
+  const searchedCategory = searchParams.get('category');
+  const searchedTitle = searchParams.get('title');
+  const searchedContent = searchParams.get('content');
 
   if (searchedCategory) {
     renderedPost = renderedPost.filter(
