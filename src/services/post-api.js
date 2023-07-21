@@ -6,7 +6,9 @@ import callAPI from './interface-api';
  */
 export const getPostAPI = async () => {
   const responseData = await callAPI('get', '/posts.json');
-  return responseData || [];
+  const filteredData = responseData.filter((data) => data).reverse();
+
+  return filteredData;
 };
 
 /**

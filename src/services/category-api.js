@@ -6,7 +6,9 @@ import callAPI from './interface-api';
  */
 export const getCategoriesAPI = async () => {
   const responseData = await callAPI('get', '/categories.json');
-  return responseData || [];
+  const filteredData = responseData.filter((data) => data);
+
+  return filteredData;
 };
 
 /**
@@ -32,19 +34,3 @@ export const updateCategoryAPI = (category) =>
  */
 export const deleteCategoryAPI = (categoryId) =>
   callAPI('delete', `/categories/${categoryId}.json`);
-
-/**
- * Category 할당 API
- * @param {Object} updatedCategory Count가 수정된 Categories
- * @returns 성공 여부
- */
-export const assignCategoryAPI = (updatedCategory) =>
-  callAPI('put', `/categories/${updatedCategory.id}.json`, updatedCategory);
-
-/**
- * Category 할당 제거 API
- * @param {Object} updatedCategory Count가 수정된 Categories
- * @returns 성공 여부
- */
-export const removeAssignCategoryAPI = (updatedCategory) =>
-  callAPI('put', '/categories.json', updatedCategory);

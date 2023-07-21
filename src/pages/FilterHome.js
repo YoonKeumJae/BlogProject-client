@@ -30,7 +30,7 @@ const FilterHomePage = () => {
     );
   }
 
-  return <Posts posts={renderedPost.reverse()} />;
+  return <Posts posts={renderedPost} />;
 };
 
 export default FilterHomePage;

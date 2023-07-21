@@ -3,17 +3,21 @@ import CommentList from './CommentList';
 import CommentForm from './CommentForm';
 import CategoryList from './CategoryList';
 
-const PostDetail = ({ post }) => (
-  <section>
-    <PostContent post={post} />
+const PostDetail = ({ post }) => {
+  const comments = post.comment || [];
 
-    {/* Post Comment */}
-    <CommentList postId={post.id} comments={post.comment} />
-    <CommentForm postId={post.id} username={post.username} />
+  return (
+    <section>
+      <PostContent post={post} />
 
-    {/* Category List */}
-    <CategoryList postId={post.id} category={post.category} />
-  </section>
-);
+      {/* Post Comment */}
+      <CommentList postId={post.id} comments={comments} />
+      <CommentForm postId={post.id} username={post.username} />
+
+      {/* Category List */}
+      <CategoryList postId={post.id} category={post.category} />
+    </section>
+  );
+};
 
 export default PostDetail;
