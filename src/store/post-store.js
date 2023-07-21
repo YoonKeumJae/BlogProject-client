@@ -23,16 +23,20 @@ export const deleteComment = createAction(DELETE_COMMENT);
 const initialPost = {
   items: [],
   filterMode: 'category',
-  size: 0,
+  nextPostId: 0,
 };
 
 const contentReducer = handleActions(
   {
-    [INIT_POST]: (state, { payload: posts }) => ({
-      ...state,
-      items: posts,
-      size: posts.length,
-    }),
+    [INIT_POST]: (state, { payload: posts }) => {
+      const nextPostId = posts.slice(0, 1)[0].id;
+
+      return {
+        ...state,
+        items: posts,
+        nextPostId: Number(nextPostId) + 1,
+      };
+    },
     [CREATE_POST]: (state, { payload: newPost }) => {
       const updatedPosts = state.items;
       updatedPosts.unshift(newPost);
@@ -40,7 +44,7 @@ const contentReducer = handleActions(
       return {
         ...state,
         items: updatedPosts,
-        size: state.size + 1,
+        nextPostId: Number(state.nextPostId) + 1,
       };
     },
     [UPDATE_CATEGORY_IN_POST]: (state, action) => {
@@ -62,7 +66,7 @@ const contentReducer = handleActions(
     [DELETE_POST]: (state, { payload: deleteId }) => ({
       ...state,
       items: state.items.filter((item) => item.id !== deleteId),
-      size: state.size - 1,
+      nextPostId: Number(state.nextPostId) - 1,
     }),
     [CREATE_COMMENT]: (state, { payload }) => {
       const { postId, commentForm } = payload;

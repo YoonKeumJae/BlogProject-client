@@ -17,7 +17,7 @@ const Category = ({ categories }) => {
   });
 
   const posts = useSelector((state) => state.post.items);
-  const categorySize = useSelector((state) => state.category.size);
+  const nextCategoryId = useSelector((state) => state.category.nextCategoryId);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -60,7 +60,7 @@ const Category = ({ categories }) => {
       if (!isValidate) return;
 
       const newItem = {
-        id: categorySize.toString(),
+        id: nextCategoryId.toString(),
         name: enteredCategory,
         count: 0,
       };
@@ -69,7 +69,7 @@ const Category = ({ categories }) => {
       onChangeMode(DEFAULT);
       await createCategoryAPI(newItem);
     },
-    [dispatch, isValidateCategory, categorySize],
+    [dispatch, isValidateCategory, nextCategoryId],
   );
 
   const updateCategoryHandler = useCallback(

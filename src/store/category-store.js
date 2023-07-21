@@ -15,16 +15,20 @@ export const deleteCategory = createAction(DELETE_CATEGORY);
 const initialCategory = {
   current: '전체글',
   items: [],
-  size: 0,
+  nextCategoryId: 0,
 };
 
 const categoryReducer = handleActions(
   {
-    [INIT_CATEGORIES]: (state, { payload: categories }) => ({
-      ...state,
-      items: categories,
-      size: categories.length,
-    }),
+    [INIT_CATEGORIES]: (state, { payload: categories }) => {
+      const nextCategoryId = categories.slice(-1)[0].id;
+
+      return {
+        ...state,
+        items: categories,
+        nextCategoryId: Number(nextCategoryId) + 1,
+      };
+    },
     [CHANGE_CATEGORY]: (state, { payload: category }) => ({
       ...state,
       current: category,
@@ -32,7 +36,7 @@ const categoryReducer = handleActions(
     [CREATE_CATEGORY]: (state, { payload: category }) => ({
       ...state,
       items: state.items.concat(category),
-      size: state.size + 1,
+      nextCategoryId: state.nextCategoryId + 1,
     }),
     [UPDATE_CATEGORY]: (state, { payload }) => ({
       ...state,
@@ -43,7 +47,6 @@ const categoryReducer = handleActions(
     [DELETE_CATEGORY]: (state, { payload: deleteId }) => ({
       ...state,
       items: state.items.filter((category) => category.id !== deleteId),
-      size: state.size - 1,
     }),
   },
   initialCategory,
