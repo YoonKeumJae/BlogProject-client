@@ -10,7 +10,7 @@ const Header = () => {
     <StyledHeader>
       <h3 className='title'>{currentCategory || '전체글'}</h3>
       <div className='lnb'>
-        <Link to='create'>
+        <Link to='/create'>
           <button className='menu'>
             <svg
               width='16'
