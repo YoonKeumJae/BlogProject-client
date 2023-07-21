@@ -64,22 +64,22 @@ const contentReducer = handleActions(
       items: state.items.filter((item) => item.id !== deleteId),
       size: state.size - 1,
     }),
-    [CREATE_COMMENT]: (state, action) => {
-      const newCommentForm = state.items.filter(
-        (item) => item.id === action.payload.postId,
-      );
+    [CREATE_COMMENT]: (state, { payload }) => {
+      const { postId, commentForm } = payload;
 
-      const updtaedCommentForm = newCommentForm[0].comment.concat(
-        action.payload.commentForm,
-      );
+      const filteredPost = state.items.filter((item) => item.id === postId);
+
+      const updatedCommentForm = filteredPost[0].comment
+        ? filteredPost[0].comment.concat(commentForm)
+        : [commentForm];
 
       return {
         ...state,
         items: state.items.map((item) =>
-          item.id === action.payload.postId
+          item.id === postId
             ? {
                 ...item,
-                comment: updtaedCommentForm,
+                comment: updatedCommentForm,
               }
             : item,
         ),
