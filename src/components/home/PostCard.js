@@ -1,3 +1,4 @@
+import React from 'react';
 import { useNavigate } from 'react-router';
 
 import DefaultPostImage from '@assets/default-post-image.png';
@@ -27,4 +28,4 @@ const PostCard = ({ post }) => {
   );
 };
 
-export default PostCard;
+export default React.memo(PostCard);
