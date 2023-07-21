@@ -23,6 +23,7 @@ export const deleteComment = createAction(DELETE_COMMENT);
 const initialPost = {
   items: [],
   filterMode: 'category',
+  size: 0,
 };
 
 const contentReducer = handleActions(
@@ -30,11 +31,18 @@ const contentReducer = handleActions(
     [INIT_POST]: (state, action) => ({
       ...state,
       items: action.payload,
+      size: action.payload.length,
     }),
-    [CREATE_POST]: (state, action) => ({
-      ...state,
-      items: state.items.concat(action.payload),
-    }),
+    [CREATE_POST]: (state, action) => {
+      const updatedPosts = state.items;
+      updatedPosts.unshift(action.payload);
+
+      return {
+        ...state,
+        items: updatedPosts,
+        size: state.size + 1,
+      };
+    },
     [UPDATE_POST_CATEGORY]: (state, action) => {
       const { name, updatedName } = action.payload;
 
@@ -54,6 +62,7 @@ const contentReducer = handleActions(
     [DELETE_POST]: (state, action) => ({
       ...state,
       items: state.items.filter((item) => item.id !== action.payload),
+      size: state.size - 1,
     }),
     [CREATE_COMMENT]: (state, action) => {
       const newCommentForm = state.items.filter(
