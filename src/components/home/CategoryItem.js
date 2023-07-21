@@ -54,12 +54,11 @@ const CategoryItem = ({
         id,
         name,
         enteredCategory,
-        count,
       };
 
       onUpdateCategory(updateForm);
     },
-    [onUpdateCategory, id, name, count, enteredCategory],
+    [onUpdateCategory, id, name, enteredCategory],
   );
 
   const deleteCategoryHandler = useCallback(async () => {
@@ -105,7 +104,12 @@ const CategoryItem = ({
               strokeLinejoin='round'
             />
           </svg>
-          {id !== selectedId && <span className='item-name'>{name}</span>}
+          {id !== selectedId && (
+            <>
+              <span className='item-name'>{name}</span>
+              <span className='item-count'>({count})</span>
+            </>
+          )}
           {current === UPDATE && id === selectedId && (
             <form className='item-form' onSubmit={updateCategoryHandler}>
               <input

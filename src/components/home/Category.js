@@ -16,6 +16,7 @@ const Category = ({ categories }) => {
     id: '',
   });
 
+  const posts = useSelector((state) => state.post.items);
   const categorySize = useSelector((state) => state.category.size);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -116,17 +117,23 @@ const Category = ({ categories }) => {
 
       {/* Category List */}
       <div className='items'>
-        {categories.map((category, index) => (
-          <CategoryItem
-            key={category.id}
-            id={category.id}
-            name={category.name}
-            count={category.count}
-            mode={index !== 0 && mode}
-            onChangeMode={onChangeMode}
-            onUpdateCategory={updateCategoryHandler}
-          />
-        ))}
+        {categories.map((category, index) => {
+          const filteredPost = posts.filter(
+            (post) => post.category === category.name,
+          );
+
+          return (
+            <CategoryItem
+              key={category.id}
+              id={category.id}
+              name={category.name}
+              count={index === 0 ? posts.length : filteredPost.length}
+              mode={index !== 0 && mode}
+              onChangeMode={onChangeMode}
+              onUpdateCategory={updateCategoryHandler}
+            />
+          );
+        })}
       </div>
       {mode.current === CREATE && (
         <CategoryForm
