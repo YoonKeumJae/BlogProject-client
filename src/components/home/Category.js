@@ -59,7 +59,7 @@ const Category = ({ categories }) => {
       if (!isValidate) return;
 
       const newItem = {
-        id: categorySize,
+        id: categorySize.toString(),
         name: enteredCategory,
         count: 0,
       };
