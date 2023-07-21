@@ -3,7 +3,7 @@ import { createAction, handleActions } from 'redux-actions';
 const INIT_POST = 'post/INIT';
 const CREATE_POST = 'post/CREATE';
 const UPDATE_POST = 'post/UPDATE';
-const UPDATE_POST_CATEGORY = 'post_category/UPDATE';
+const UPDATE_CATEGORY_IN_POST = 'post-category/UPDATE';
 const DELETE_POST = 'post/DELETE';
 
 const CREATE_COMMENT = 'comment/CREATE';
@@ -13,7 +13,7 @@ const DELETE_COMMENT = 'comment/DELETE';
 export const initPost = createAction(INIT_POST);
 export const createPost = createAction(CREATE_POST);
 export const updatePost = createAction(UPDATE_POST);
-export const updatePostCategory = createAction(UPDATE_POST_CATEGORY);
+export const updateCategoryInPost = createAction(UPDATE_CATEGORY_IN_POST);
 export const deletePost = createAction(DELETE_POST);
 
 export const createComment = createAction(CREATE_COMMENT);
@@ -28,14 +28,14 @@ const initialPost = {
 
 const contentReducer = handleActions(
   {
-    [INIT_POST]: (state, action) => ({
+    [INIT_POST]: (state, { payload: posts }) => ({
       ...state,
-      items: action.payload,
-      size: action.payload.length,
+      items: posts,
+      size: posts.length,
     }),
-    [CREATE_POST]: (state, action) => {
+    [CREATE_POST]: (state, { payload: newPost }) => {
       const updatedPosts = state.items;
-      updatedPosts.unshift(action.payload);
+      updatedPosts.unshift(newPost);
 
       return {
         ...state,
@@ -43,7 +43,7 @@ const contentReducer = handleActions(
         size: state.size + 1,
       };
     },
-    [UPDATE_POST_CATEGORY]: (state, action) => {
+    [UPDATE_CATEGORY_IN_POST]: (state, action) => {
       const { name, updatedName } = action.payload;
 
       return {
@@ -53,15 +53,15 @@ const contentReducer = handleActions(
         ),
       };
     },
-    [UPDATE_POST]: (state, action) => ({
+    [UPDATE_POST]: (state, { payload: updatedPost }) => ({
       ...state,
       items: state.items.map((item) =>
-        item.id === action.payload.id ? action.payload : item,
+        item.id === updatedPost.id ? updatedPost : item,
       ),
     }),
-    [DELETE_POST]: (state, action) => ({
+    [DELETE_POST]: (state, { payload: deleteId }) => ({
       ...state,
-      items: state.items.filter((item) => item.id !== action.payload),
+      items: state.items.filter((item) => item.id !== deleteId),
       size: state.size - 1,
     }),
     [CREATE_COMMENT]: (state, action) => {

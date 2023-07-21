@@ -20,31 +20,29 @@ const initialCategory = {
 
 const categoryReducer = handleActions(
   {
-    [INIT_CATEGORIES]: (state, action) => ({
+    [INIT_CATEGORIES]: (state, { payload: categories }) => ({
       ...state,
-      items: action.payload,
-      size: action.payload.length,
+      items: categories,
+      size: categories.length,
     }),
-    [CHANGE_CATEGORY]: (state, action) => ({
+    [CHANGE_CATEGORY]: (state, { payload: category }) => ({
       ...state,
-      current: action.payload,
+      current: category,
     }),
-    [CREATE_CATEGORY]: (state, action) => ({
+    [CREATE_CATEGORY]: (state, { payload: category }) => ({
       ...state,
-      items: state.items.concat(action.payload),
+      items: state.items.concat(category),
       size: state.size + 1,
     }),
-    [UPDATE_CATEGORY]: (state, action) => ({
+    [UPDATE_CATEGORY]: (state, { payload }) => ({
       ...state,
       items: state.items.map((item) =>
-        item.id === action.payload.id
-          ? { ...item, name: action.payload.updatedName }
-          : item,
+        item.id === payload.id ? { ...item, name: payload.updatedName } : item,
       ),
     }),
-    [DELETE_CATEGORY]: (state, action) => ({
+    [DELETE_CATEGORY]: (state, { payload: deleteId }) => ({
       ...state,
-      items: state.items.filter((category) => category.id !== action.payload),
+      items: state.items.filter((category) => category.id !== deleteId),
       size: state.size - 1,
     }),
   },

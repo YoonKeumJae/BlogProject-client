@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { DEFAULT, SETTING, CREATE } from '@constants/category-mode';
 import { createCategoryAPI, updateCategoryAPI } from '@services/category-api';
 import { createCategory, updateCategory } from '@store/category-store';
-import { updatePostCategory } from '@store/post-store';
+import { updateCategoryInPost } from '@store/post-store';
 import StyledCategory from '@styles/components/home/Category-styled';
 import CategoryItem from './CategoryItem';
 import CategoryForm from './CategoryForm';
@@ -80,7 +80,7 @@ const Category = ({ categories }) => {
       if (!isValidate) return;
 
       dispatch(updateCategory({ id, updatedName: enteredCategory }));
-      dispatch(updatePostCategory({ name, enteredCategory }));
+      dispatch(updateCategoryInPost({ name, enteredCategory }));
       onChangeMode(DEFAULT);
       await updateCategoryAPI({ id, name: enteredCategory });
       navigate('/');
