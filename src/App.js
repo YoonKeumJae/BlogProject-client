@@ -1,12 +1,6 @@
-import { useEffect } from 'react';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
 
-import { getPostAPI } from '@services/post-api';
-import { initPost } from '@store/post-store';
-import { getCategoriesAPI } from './services/category-api';
-import { initCategories } from './store/category-store';
-import StyledApp from './styles/App-styled';
+import useLoadInitData from './hooks/useLoadInitData';
 
 import RootLayout from './layouts/RootLayout';
 import ErrorPage from './pages/Error';
@@ -19,6 +13,8 @@ import UpdatePage from './pages/Update';
 import AuthLayout from './layouts/AuthLayout';
 import SignInPage from './pages/SignIn';
 import SignUpPage from './pages/SignUp';
+
+import StyledApp from './styles/App-styled';
 
 const router = createBrowserRouter([
   {
@@ -56,22 +52,8 @@ const router = createBrowserRouter([
 ]);
 
 const App = () => {
-  const dispatch = useDispatch();
-
-  /** 초기 데이터 설정
-   * Posts, Categories
-   */
-  useEffect(() => {
-    const getInitData = async () => {
-      const data = await getPostAPI();
-      const categoriesData = await getCategoriesAPI();
-
-      dispatch(initPost(data));
-      dispatch(initCategories(categoriesData));
-    };
-
-    getInitData();
-  }, [dispatch]);
+  // Load Init Data Custom hook
+  useLoadInitData();
 
   return (
     <StyledApp>
