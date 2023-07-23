@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router';
 
 import { regLineBreak } from '@constants/regExp';
 import StyledPostForm from '@styles/components/common/PostForm-styled';
+import getCurrentTime from '@utils/date';
 import TagBox from './TagBox';
 
 const PostForm = ({ post, onSubmit }) => {
@@ -49,10 +50,7 @@ const PostForm = ({ post, onSubmit }) => {
       return;
     }
 
-    const date = new Date();
-    const enteredDate = `${date.getFullYear()}.${
-      date.getMonth() + 1
-    }.${date.getDate()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
+    const currentTime = getCurrentTime();
 
     const formattedContent = enteredContent.replace(regLineBreak, '\\r\\n');
 
@@ -60,7 +58,7 @@ const PostForm = ({ post, onSubmit }) => {
       content: formattedContent,
       category: enteredCategory,
       comment: [],
-      date: enteredDate,
+      date: currentTime,
       id,
       like: 0,
       tagList: enteredTagList,

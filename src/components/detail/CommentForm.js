@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux';
 import { createCommentAPI } from '@services/comment-api';
 import { createComment } from '@store/post-store';
 import StyledCommentForm from '@styles/components/detail/CommentForm-styled';
+import getCurrentTime from '@utils/date';
 
 const CommentForm = ({ postId, username, nextCommentId }) => {
   const [enteredContent, setEnteredContent] = useState('');
@@ -20,10 +21,7 @@ const CommentForm = ({ postId, username, nextCommentId }) => {
 
       if (enteredContent.trim().length === 0) return;
 
-      const date = new Date();
-      const enteredDate = `${date.getFullYear()}.${
-        date.getMonth() + 1
-      }.${date.getDate()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
+      const currentTime = getCurrentTime();
 
       const commentForm = {
         id: nextCommentId.current.toString(),
@@ -31,7 +29,7 @@ const CommentForm = ({ postId, username, nextCommentId }) => {
         profile: '',
         username,
         content: enteredContent,
-        date: enteredDate,
+        date: currentTime,
       };
 
       nextCommentIdRef.current += 1;
